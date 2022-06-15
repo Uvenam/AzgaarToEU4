@@ -10,7 +10,7 @@
 #include <stdexcept>			// for exceptions
 #include "OpenAndEdit.h"
 
-#define VERSION_STAMP	"0.03"
+#define VERSION_STAMP	"0.16"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -41,7 +41,7 @@ int main()
 
 	// storage of verticies and properties of a cell from .geojson file
 	struct cell_info {
-		std::vector<  std::tuple<float, float>  > verticies;
+		std::vector<  std::tuple<short, short>  > verticies;
 		int id;
 		int height;
 		int biome;
@@ -51,15 +51,18 @@ int main()
 		int sub_country;
 		int culture;
 		int religion;
-		std::vector<int> neighbors;
+		std::vector<short> neighbors;
+		void add_coord(short x_coord, short y_coord){
+			this->verticies.push_back(std::make_tuple(x_coord, y_coord));
+		}
 	};
 	// to create an item
 	cell_info C1;
 	// the main holder of all the cells:
 	std::vector<cell_info>	all_cells;
-	all_cells.push_back(cell_info()); // creates a new element
-	all_cells[0].id = 0;					// can only modify that vector element when its been created
-	C1.verticies.push_back(std::tuple<float, float>(-16.6, 17.7));	// how to add verticies
+//	all_cells[0].id = 0;					// can only modify that vector element when its been created
+//	C1.verticies.push_back(std::tuple<short, short>(-16.6, 17.7));	// how to add verticies
+//	C1.add_coord(5, 5);
 
 	// C++ doesn't support lookbehind, need to update those with (?<=)
 
@@ -80,8 +83,8 @@ int main()
 	*/
 
 	std::smatch fetched_data;	// whenever regex returns results, they are a string and need converted
-	float Xcoord;
-	float Ycoord;
+	short Xcoord;
+	short Ycoord;
 
 	// fetched_data[0] will be the entire match, fetched_data[1] will be the first subsection
 	// will be returned as str (prolly) that needs converted to int/float
@@ -123,7 +126,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25] // as match[1]
 	]]}
 	*/
-	const std::string regex_cell_vertex = "-?\[0-9\]+\\.?\[0-9\]+"; // of former, should get
+	const std::string regex_cell_vertex = "\-?\[0-9\]+\\.?\[0-9\]+"; // of former, should get
 	/*
 	-44.66
 	57.25
@@ -175,7 +178,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
 			buffer << fileStream.rdbuf();	// read entire file content
 			file_info = buffer.str();		// stringify it, put it into string variable
+			YELL("File info retrieved:\n");
 			YELL(file_info);
+			YELL("\n");
 			
 
 
@@ -194,6 +199,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 			std::regex rgx("[0-9]+",std::regex_constants::extended | std::regex_constants::icase);
 			std::smatch matches;
+			std::smatch fetched_unstringed;
 			// following only does it once, makes one match and the following are submatches.
 			if (std::regex_search(example_data, matches, rgx)) {
 				std::cout << "Match found\n";
@@ -224,6 +230,54 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 				pos2++;
 			}
 
+
+
+			long cell_counter = 0;
+			all_cells.push_back(cell_info()); // creates a new element
+
+			// Divy up example_data into various matches
+			std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), exp);
+			// Define regex for coords and verticies
+			std::regex rex_coords (regex_cell_coordinates);
+			std::regex rex_vertex (regex_cell_vertex);
+			// For iterator
+			std::sregex_iterator sreg_end;
+			// For temp holding of string
+			std::string CellData_str;
+			std::string CellCoord_str;
+			std::smatch CellData_matches;
+			while (CellData_itr != sreg_end) {
+
+				YELL("Cell Info Fetched: ");
+				all_cells.push_back(cell_info()); cell_counter++;
+				CellData_str = CellData_itr->str();
+				YELL(CellData_str);
+
+					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_coords);
+					YELL("Cell coords fetched: ");
+					CellCoord_str = CellData_matches[1];
+					YELL(CellCoord_str);
+					YELL("Cell vertecies: ");
+					std::sregex_iterator CellVertex_itr(CellCoord_str.cbegin(), CellCoord_str.cend(), rex_vertex);
+					short itor = 0;
+					while ( (CellVertex_itr != sreg_end)     ) {
+						std::cout << itor++ << ": ";
+						YELL(CellVertex_itr->str(0));
+						Xcoord = RenderShortFromString(CellVertex_itr->str(0));
+						CellVertex_itr++;
+						itor++;
+						Ycoord = RenderShortFromString(CellVertex_itr->str(0));
+						all_cells[cell_counter].add_coord(Xcoord, Ycoord);
+						CellVertex_itr++;
+						YELL("Vertex: ");
+						std::cout << std::get<0>(all_cells[cell_counter].verticies[0]) << std::endl;
+						std::cout << std::get<1>(all_cells[cell_counter].verticies[0]) << std::endl;
+					
+					}
+					
+
+				CellData_itr++;
+			}
 
 
 			// Cell info gotten, need to parse for specific info such as:
