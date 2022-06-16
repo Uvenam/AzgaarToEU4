@@ -10,7 +10,7 @@
 #include <stdexcept>			// for exceptions
 #include "OpenAndEdit.h"
 
-#define VERSION_STAMP	"V 0.201"
+#define VERSION_STAMP	"V 0.202"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
