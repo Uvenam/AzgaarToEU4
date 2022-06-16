@@ -10,11 +10,11 @@
 #include <stdexcept>			// for exceptions
 #include "OpenAndEdit.h"
 
-#define VERSION_STAMP	"V 0.20"
+#define VERSION_STAMP	"V 0.201"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
-// prototype
+
 void WriteToFile(const std::string& message, const std::string& file_path);
 void YELL(const std::string& message);
 short RenderShortFromStringTimes100(const std::string& message);
@@ -165,9 +165,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 	std::cout << VERSION_STAMP << std::endl;
 
-	// MAIN TRY SECTION
-	//====================================================================================================================//
-	//====================================================================================================================//
+// MAIN TRY SECTION
+//====================================================================================================================//
+//====================================================================================================================//
 
 	try {
 		if (fs::create_directory(dir_azgaar))	// returns false if it exists, true if it doesn't
@@ -192,10 +192,10 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 
-		}
+		}//end of if for fileStream
 		else {		// couldn't open file, some sort of error
 			throw std::runtime_error("Cannot open cell_file");
-		}
+		}//couldn't open fileStream else
 
 		std::ofstream outputLog("log.txt");		// Whatever is written will be an overwrite eachtime program runs
 		if (outputLog) {
@@ -362,18 +362,18 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 			}
-		}
+		}//end of if for outputLog
 		else {
 			throw std::runtime_error("Cannot open log.txt");
-		}
+		}//else if couldn't open file
 
-		}
+		}//end of try
 		catch (std::runtime_error runtime) {		// managing file opening error
 			std::cout << "Caught runtime error:" << runtime.what() << std::endl;
-		}
+		}//end of catch for runtime error
 		catch (...) {								// managing all other errors
 			std::cout << "Unknown exception\n";
-		}
+		}//end of any catch
 
 
 
@@ -382,7 +382,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 		std::cout << "\nEnd of Program";
 		system("pause>0"); // gets ride of the console extra text by pausing program execution at the very end
-	}
+}	// End of main()
 
 
 void WriteToFile(const std::string  message, const std::string& file_path) {
@@ -401,28 +401,26 @@ void WriteToFile(const std::string  message, const std::string& file_path) {
 		// Write |message| to |file|.
 		file << message << std::endl;
 
+}// end of WriteToFile
+void YELL(const std::string & message) {
+	std::cout << message << std::endl;
+}//end of YELL
+short RenderShortFromStringTimes100(const std::string & message) {
+	float temp;
+	short remp;
+	temp = std::stof(message);
+	remp = (temp * 100);
+	return remp;
+}// end of RenderShotFromStringTimes100
+short StringToShort(const std::string & message) {
+	short remp = -1;
+	int temp = -1;
+	temp = std::stoi(message);
+	if (temp >= SHRT_MAX || temp <= SHRT_MIN) {
+		throw(std::range_error("Trying to convert too large of a number!"));
 }
-	void YELL(const std::string & message) {
-
-		std::cout << message << std::endl;
-
-	}
-	short RenderShortFromStringTimes100(const std::string & message) {
-		float temp;
-		short remp;
-		temp = std::stof(message);
-		remp = (temp * 100);
-		return remp;
-	}
-	short StringToShort(const std::string & message) {
-		short remp = -1;
-		int temp = -1;
-		temp = std::stoi(message);
-		if (temp >= SHRT_MAX || temp <= SHRT_MIN) {
-			throw(std::range_error("Trying to convert too large of a number!"));
-		}
-		else {
-			remp = temp;
-		}
-		return remp;
-	}
+	else {
+		remp = temp;
+}
+	return remp;
+}// end of StringToShort
