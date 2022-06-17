@@ -10,7 +10,8 @@
 #include <stdexcept>			// for exceptions
 #include "OpenAndEdit.h"
 
-#define VERSION_STAMP	"V 0.205"
+
+#define VERSION_STAMP	"V 0.300"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -87,8 +88,8 @@ int main() {
 		*/
 
 	std::smatch fetched_data;	// whenever regex returns results, they are a string and need converted
-	short Xcoord;
-	short Ycoord;
+	short Xcoord = -1;
+	short Ycoord = -1;
 
 	// fetched_data[0] will be the entire match, fetched_data[1] will be the first subsection
 	// will be returned as str (prolly) that needs converted to int/float
@@ -120,17 +121,18 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 
-	const std::string regex_cell_block = "\"coordinates\":.*?\\}\\}";	// should get ex:
+	const std::string regex_cell_block 
+		= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"Polygon\",\"coordinates\":.*?\\}\\}";	// should get ex:
 	/*
 	"coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}}
 	*/
-	const std::string regex_cell_coordinates = "\\[\\[(.*?)\\]\\]\\}"; // of former, should get ex:
+	const std::string regex_cell_coordinates = "\\[\\[.*?\\]\\]\\}"; // of former, should get ex:
 	/*
 	[[																					// entire string as match[0]
 	[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25] // as match[1]
 	]]}
 	*/
-	const std::string regex_cell_vertex = "\-?\[0-9\]+\\.?\[0-9\]+"; // of former, should get
+	const std::string regex_cell_vertex = "\-?\[0-9\]+\\.?\[0-9\]*"; // of former, should get
 	/*
 	-44.66
 	57.25
@@ -291,30 +293,32 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 					all_cells.push_back(cell_info()); cell_counter++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
 	// TODO			// Should use size function on the array to find number of cells
-					std::cout << "\nCell data chunk for cell " << cell_counter << ": " << std::endl;
+					std::cout << "\n[INFO]Cell data chunk for cell " << cell_counter << ": " << std::endl;
 					CellData_str = CellData_itr->str();
 					YELL(CellData_str);
 
 					//Have cell_data chunk from above, need to sift out coordinates and properties
 					// Searching chunk at a time, so the following will create verticies
 					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_coords);
-					YELL("\nCell coords fetched: ");
-					CellCoord_str = CellData_matches[1];
+					YELL("\n[INFO]Cell coords fetched: ");
+					CellCoord_str = CellData_matches[0];
 					YELL(CellCoord_str);
-					YELL("Cell vertecies fetched:\n");
+					YELL("\n[INFO]Cell vertecies fetched:");
 					std::sregex_iterator CellVertex_itr(CellCoord_str.cbegin(), CellCoord_str.cend(), rex_vertex);
 					short vertex_itr = 0;
 
 
 					// TAKING sifted coordinates AND PLACING THEM in corresponding cell
-					while ((CellVertex_itr != sreg_end)) {
+					while (CellVertex_itr != sreg_end) {
 
 						Xcoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
 						CellVertex_itr++;
+						// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
+						
 						Ycoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
 						all_cells[cell_counter].add_coord(Xcoord, Ycoord);
 						CellVertex_itr++;
-						std::cout << "Vertex " << (vertex_itr) << ": " << std::endl;
+						std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
 						std::cout << std::get<0>(all_cells[cell_counter].verticies[vertex_itr]) << std::endl;
 						std::cout << std::get<1>(all_cells[cell_counter].verticies[vertex_itr]) << std::endl;
 						vertex_itr++;
@@ -323,7 +327,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 					// TAKING sifted properties AND PLACING THEM in corresponding cell
-					YELL("Cell properties fetched:\n");
+
 					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
 
 					//std::cout << "ID: ";
@@ -344,7 +348,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 					all_cells[cell_counter].culture = StringToShort(CellData_matches[8].str());
 					//std::cout << "Religion ID: " << std::endl;
 					all_cells[cell_counter].religion = StringToShort(CellData_matches[9].str());
-
+					YELL("\n[INFO]Cell properties fetched");
 
 					// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
 
@@ -352,16 +356,14 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 
-
-
 					CellData_itr++;
-				}
+				}// end of while(CellData_itr != sreg_end){
 
 
 				// CONFIRMATION of obtaining cell info and correctly parsing
-				std::cout << "\nThere are " << all_cells.size() << " many cells";
-				std::cout << "\nCell counter is " << cell_counter;
-				YELL("\nCell Data: ");
+				std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
+				std::cout << "\n[INFO]Cell counter is " << cell_counter;
+				YELL("\n[INFO]Cell Data: ");
 				for (int proll = 0; proll < all_cells.size(); proll++) {
 					std::cout << "Cell: " << all_cells[proll].id << "\n";
 					std::cout << "Height: " << all_cells[proll].height << "\n";
