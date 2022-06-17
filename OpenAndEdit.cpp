@@ -9,9 +9,9 @@
 #include <mutex>				// for protecting file access
 #include <stdexcept>			// for exceptions
 #include "OpenAndEdit.h"
+#include <thread>		// for making sure esc ends program in the middle
 
-
-#define VERSION_STAMP	"V 0.300"
+#define VERSION_STAMP	"V 0.301"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -20,6 +20,10 @@ void WriteToFile(const std::string& message, const std::string& file_path);
 void YELL(const std::string& message);
 short RenderShortFromStringTimes100(const std::string& message);
 short StringToShort(const std::string& message);
+//void WaitForEscape();
+
+//static std::exception_ptr teptr = nullptr;
+
 int main() {
 
 	std::string example_data =
@@ -172,6 +176,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 //====================================================================================================================//
 
 	try {
+
+		//std::thread EscCheck_obj(WaitForEscape);
+
 		if (fs::create_directory(dir_azgaar))	// returns false if it exists, true if it doesn't
 		{
 			std::cout << dir_azgaar << " created successfully!" << std::endl;
@@ -400,6 +407,8 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			throw std::runtime_error("Cannot open log.txt");
 		}//else if couldn't open file
 
+		//EscCheck_obj.join();
+
 		}//end of try
 		catch (std::runtime_error runtime) {		// managing file opening error
 			std::cout << "Caught runtime error:" << runtime.what() << std::endl;
@@ -411,7 +420,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 
-
+		//EscCheck_obj.join();
 
 		std::cout << "\nEnd of Program";
 		system("pause>0"); // gets ride of the console extra text by pausing program execution at the very end
@@ -457,3 +466,13 @@ short StringToShort(const std::string & message) {
 }
 	return remp;
 }// end of StringToShort
+/*
+void WaitForEscape() {
+	char ch;
+	while ((ch = std::cin.get()) != 27) {
+		if (ch == 27) {
+			teptr = std::current_exception();
+		}
+	};
+
+}*/
