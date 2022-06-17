@@ -11,7 +11,7 @@
 #include "OpenAndEdit.h"
 #include <thread>		// for making sure esc ends program in the middle
 
-#define VERSION_STAMP	"V 0.301"
+#define VERSION_STAMP	"V 0.302"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -20,7 +20,8 @@ void WriteToFile(const std::string& message, const std::string& file_path);
 void YELL(const std::string& message);
 short RenderShortFromStringTimes100(const std::string& message);
 short StringToShort(const std::string& message);
-//void WaitForEscape();
+
+
 
 //static std::exception_ptr teptr = nullptr;
 
@@ -60,7 +61,7 @@ int main() {
 		short sub_country;
 		short culture;
 		short religion;
-		std::vector<short> neighbors;
+		std::vector<int> neighbors;
 		void add_coord(short x_coord, short y_coord) {
 			this->verticies.push_back(std::make_tuple(x_coord, y_coord));
 		}
@@ -211,8 +212,8 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 			// Want to iteratively search string for individual cell info
-
-
+			// Examples
+			/*
 			std::regex rgx("[0-9]+", std::regex_constants::extended | std::regex_constants::icase);
 			std::smatch matches;
 			std::smatch fetched_unstringed;
@@ -227,10 +228,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			else {
 				std::cout << "Match not found\n";
 			}
-
-
+			*/
+			/*
 			// https://www.youtube.com/watch?v=_79j_-2xMrQ&ab_channel=BoQian
-			std::regex exp(regex_cell_block);
 			std::sregex_iterator pos(example_data.cbegin(), example_data.cend(), exp);
 			std::sregex_iterator end;	// Default constructor defines past-the-end iterator
 			while (pos != end) {
@@ -239,51 +239,25 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 				pos++;
 			}
+			*/
+			/*
 			std::sregex_token_iterator pos2(example_data.cbegin(), example_data.cend(), exp, 0);
 			std::sregex_token_iterator end2;
 			while (pos2 != end2) {
 				std::cout << "FF SubMatched: " << pos2->str() << std::endl;
 				pos2++;
 			}
-
+			*/
 
 			// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
 			//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 			example_data = file_info;
-
-
-
-
-
-
-
-
-
-			// big error: when using file_info copied into example_data, regex_iterator not dereferenceable. this happens at cell id 345
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			long cell_counter = -1;
+			std::regex rex_chunk(regex_cell_block);
 			//all_cells.push_back(cell_info()); // creates a new element
 					// Divy up example_data into various matches
-			std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), exp);
+			std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), rex_chunk);
 			// Define regex for coords and verticies
 			std::regex rex_coords(regex_cell_coordinates);
 			std::regex rex_vertex(regex_cell_vertex);
@@ -294,12 +268,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			std::string CellData_str;
 			std::string CellCoord_str;
 			std::smatch CellData_matches;
+
 			while (CellData_itr != sreg_end) {
 
 				while (CellData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
 
 					all_cells.push_back(cell_info()); cell_counter++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
-	// TODO			// Should use size function on the array to find number of cells
+// TODO				// Should use size function on the array to find number of cells
 					std::cout << "\n[INFO]Cell data chunk for cell " << cell_counter << ": " << std::endl;
 					CellData_str = CellData_itr->str();
 					YELL(CellData_str);
@@ -357,10 +332,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 					all_cells[cell_counter].religion = StringToShort(CellData_matches[9].str());
 					YELL("\n[INFO]Cell properties fetched");
 
+					
+// DO STUFF HERE
+// ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
+// ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
+					
 					// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
-
-
-
+					
 
 
 					CellData_itr++;
@@ -370,6 +348,8 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 				// CONFIRMATION of obtaining cell info and correctly parsing
 				std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
 				std::cout << "\n[INFO]Cell counter is " << cell_counter;
+
+			
 				YELL("\n[INFO]Cell Data: ");
 				for (int proll = 0; proll < all_cells.size(); proll++) {
 					std::cout << "Cell: " << all_cells[proll].id << "\n";
@@ -390,7 +370,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 						std::cout << "\n";
 					}
 				}
-
+				
 
 				// Cell info gotten, need to parse for specific info such as:
 				// Verticies
