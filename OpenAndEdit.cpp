@@ -11,7 +11,7 @@
 #include "OpenAndEdit.h"
 #include <thread>		// for making sure esc ends program in the middle
 
-#define VERSION_STAMP	"V 0.302"
+#define VERSION_STAMP	"V 0.350"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -147,7 +147,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	56.8
 	...and so on
 	*/
-	const std::string regex_cell_properties = "\"id\":\(\[0-9\]+\),\"height\":\(-?\[0-9\]+\),\"biome\":\(\[0-9\]+\),\"type\":\(\"\[^\"\]+\"\),\"population\":\(\[0-9\]+\),\"state\":\(\[0-9\]+\),\"province\":\(\[0-9\]+\),\"culture\":\(\[0-9\]+\),\"religion\":\(\[0-9\]+\)";
+	const std::string regex_cell_properties = "\"id\":\(\[0-9\]+\),\"height\":\(-?\[0-9\]+\),\"biome\":\(\[0-9\]+\),\"type\":\(\"\[^\"\]+\"\),\"population\":\(\[0-9\]+\),\"state\":\(\[0-9\]+\),\"province\":\(\[0-9\]+\),\"culture\":\(\[0-9\]+\),\"religion\":\(\[0-9\]+\),\(\"neighbors\"\:\\[\[^\\]\]+\\]\)";
 	// Regex for regex101.com
 	/*
 	\"id\":([0-9]+),\"height\":(-?[0-9]+),\"biome\":([0-9]+),\"type\":(\"[^\"]+\"),\"population\":([0-9]+),\"state\":([0-9]+),\"province\":([0-9]+),\"culture\":([0-9]+),\"religion\":([0-9]+)
@@ -165,6 +165,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	std::string file_info;
 	std::stringstream buffer{};
 
+	std::string CellNeighbor_str;
 	std::fstream fileStream;
 
 	// The .exe will create a subdirectory to its hosting folder, putting this file named file_name in there
@@ -253,7 +254,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 			example_data = file_info;
-			long cell_counter = -1;
+			long cell_index = -1;
 			std::regex rex_chunk(regex_cell_block);
 			//all_cells.push_back(cell_info()); // creates a new element
 					// Divy up example_data into various matches
@@ -262,6 +263,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			std::regex rex_coords(regex_cell_coordinates);
 			std::regex rex_vertex(regex_cell_vertex);
 			std::regex rex_properties(regex_cell_properties);
+			std::regex rex_neighbor_id("\(\[0-9\]+\)");
 			// For iterator
 			std::sregex_iterator sreg_end;
 			// For temp holding of string
@@ -273,9 +275,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 				while (CellData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
 
-					all_cells.push_back(cell_info()); cell_counter++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
+					all_cells.push_back(cell_info()); cell_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
 // TODO				// Should use size function on the array to find number of cells
-					std::cout << "\n[INFO]Cell data chunk for cell " << cell_counter << ": " << std::endl;
+					std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
 					CellData_str = CellData_itr->str();
 					YELL(CellData_str);
 
@@ -298,11 +300,11 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 						// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
 						
 						Ycoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
-						all_cells[cell_counter].add_coord(Xcoord, Ycoord);
+						all_cells[cell_index].add_coord(Xcoord, Ycoord);
 						CellVertex_itr++;
 						std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
-						std::cout << std::get<0>(all_cells[cell_counter].verticies[vertex_itr]) << std::endl;
-						std::cout << std::get<1>(all_cells[cell_counter].verticies[vertex_itr]) << std::endl;
+						std::cout << std::get<0>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
+						std::cout << std::get<1>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
 						vertex_itr++;
 
 					}
@@ -313,23 +315,36 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
 
 					//std::cout << "ID: ";
-					all_cells[cell_counter].id = StringToShort(CellData_matches[1].str());
+					all_cells[cell_index].id = StringToShort(CellData_matches[1].str());
 					//std::cout << "Height: ";
-					all_cells[cell_counter].height = StringToShort(CellData_matches[2].str());
+					all_cells[cell_index].height = StringToShort(CellData_matches[2].str());
 					//std::cout << "Biome ID: " << std::endl;
-					all_cells[cell_counter].biome = StringToShort(CellData_matches[3].str());
+					all_cells[cell_index].biome = StringToShort(CellData_matches[3].str());
 					//std::cout << "Type str: " << std::endl;
-					all_cells[cell_counter].type = (CellData_matches[4].str());
+					all_cells[cell_index].type = (CellData_matches[4].str());
 					//std::cout << "Population: " << std::endl;
-					all_cells[cell_counter].pop = std::stoi(CellData_matches[5].str());
+					all_cells[cell_index].pop = std::stoi(CellData_matches[5].str());
 					//std::cout << "Country: " << std::endl;
-					all_cells[cell_counter].country = StringToShort(CellData_matches[6].str());
+					all_cells[cell_index].country = StringToShort(CellData_matches[6].str());
 					//std::cout << "Sub-Country: " << std::endl;
-					all_cells[cell_counter].sub_country = StringToShort(CellData_matches[7].str());
+					all_cells[cell_index].sub_country = StringToShort(CellData_matches[7].str());
 					//std::cout << "Culture ID: " << std::endl;
-					all_cells[cell_counter].culture = StringToShort(CellData_matches[8].str());
+					all_cells[cell_index].culture = StringToShort(CellData_matches[8].str());
 					//std::cout << "Religion ID: " << std::endl;
-					all_cells[cell_counter].religion = StringToShort(CellData_matches[9].str());
+					all_cells[cell_index].religion = StringToShort(CellData_matches[9].str());
+
+					CellNeighbor_str = CellData_matches[10].str();
+					std::sregex_iterator CellNeighbor_itr(CellNeighbor_str.cbegin(), CellNeighbor_str.cend(), rex_neighbor_id);
+					YELL(CellNeighbor_str);
+					YELL("Cell Neighbors:");
+					while (CellNeighbor_itr != sreg_end) {
+
+						YELL(CellNeighbor_itr->str(0));
+						all_cells[cell_index].neighbors.push_back( StringToShort(	CellNeighbor_itr->str(0) ) );
+						CellNeighbor_itr++;
+					}
+
+
 					YELL("\n[INFO]Cell properties fetched");
 
 					
@@ -341,13 +356,18 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 					
 
 
+
+
+
+
+
 					CellData_itr++;
 				}// end of while(CellData_itr != sreg_end){
 
 
 				// CONFIRMATION of obtaining cell info and correctly parsing
 				std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
-				std::cout << "\n[INFO]Cell counter is " << cell_counter;
+				std::cout << "\n[INFO]As such, cell index is " << cell_index;
 
 			
 				YELL("\n[INFO]Cell Data: ");
