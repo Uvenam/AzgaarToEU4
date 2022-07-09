@@ -11,7 +11,7 @@
 #include "OpenAndEdit.h"
 #include <thread>		// for making sure esc ends program in the middle
 
-#define VERSION_STAMP	"V 0.350"
+#define VERSION_STAMP	"V 0.351"
 
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
@@ -353,12 +353,6 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 // ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
 					
 					// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
-					
-
-
-
-
-
 
 
 					CellData_itr++;
@@ -372,7 +366,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			
 				YELL("\n[INFO]Cell Data: ");
 				for (int proll = 0; proll < all_cells.size(); proll++) {
-					std::cout << "Cell: " << all_cells[proll].id << "\n";
+					std::cout << "\nCell: " << all_cells[proll].id << "\n";
 					std::cout << "Height: " << all_cells[proll].height << "\n";
 					std::cout << "Biome: " << all_cells[proll].biome << "\n";
 					std::cout << "Type: " << all_cells[proll].type << "\n";
@@ -388,6 +382,12 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 						std::cout << " , ";
 						std::cout << std::get<1>(all_cells[proll].verticies[pion]);
 						std::cout << "\n";
+					}
+
+					std::cout << "Neighbors:\n";
+					for (int plok = 0; plok < all_cells[proll].neighbors.size(); plok++) {
+						std::cout << all_cells[proll].neighbors[plok];
+						std::cout << " , ";
 					}
 				}
 				
@@ -417,10 +417,27 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			std::cout << "Unknown exception\n";
 		}//end of any catch
 
+// CREATING THE IMAGE
 
+		// Anbennar map:
+		// province.bmp is 5632 x 2048
+		// land tile ranges from ~150 to ~400 typically
+		// ocean tiles range from ~3,000 coastal to ~40,000 open ocean
+		//
 
+		// EU4 map:
+		// 5632 x 2048
+		// land tile ranges from ~200 in Germany, ~300 France, ~600 Eastern Europe, ~350 India, ~700 China, ~200 Mexico
+		// land RGB typically floored at RGB 10,10,10 and range to 200,200,200
+		// ocean tiles range from ~3,000 coastal to ~30,000 open ocean
+		// ocean RGB typically floored at RGB 0,200,200. values range to 150,252,252
+		//
+		
+		// AZGAAR
+		// Map is constructed by means of XY coordinates and polygons
+		//
 
-		//EscCheck_obj.join();
+	
 
 		std::cout << "\nEnd of Program";
 		system("pause>0"); // gets ride of the console extra text by pausing program execution at the very end
