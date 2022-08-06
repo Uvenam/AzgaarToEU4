@@ -32,7 +32,7 @@
 #include <codecvt>
 
 // commit all, then push
-#define VERSION_STAMP_	"V 0.352"
+#define VERSION_STAMP	"V 0.352"
 #define  DEBUG	// for VUCO logging
 
 template <class ST>
