@@ -1,35 +1,5 @@
-﻿#include <iostream> // IO to console
-#include <fstream>  // for manipulating files, IO to files. contains datatypes such as fstream
-#include <sstream>	// for stringstream buffer
-#include <string>   // for creating strings and using strings, treated as std::string type. Also includes string functions
-#include <filesystem>   // opendir function enability
-#include <regex>		//used for finding info in string
-#include <tuple>		// for creating binded data
-#include <vector>		// for storing varying data
-#include <mutex>				// for protecting file access
-#include <stdexcept>			// for exceptions
-#include "OpenAndEdit.h"
-#include <thread>		// for making sure esc ends program in the middle
-
-#include <memory>
-
-#include <unordered_map>
-#include <unordered_set>
-
-#include <ctime>
-#include <iomanip>
-#include <random>
-
-#include <io.h>
-#include <fcntl.h>
-
-#include <Windows.h>
-
-#include <algorithm>
-#include <cctype>
-
-#include <clocale>
-#include <codecvt>
+﻿#include "head.h"
+#include "functions.h"
 
 // commit all, then push
 #define VERSION_STAMP	"V 0.352"
@@ -60,7 +30,7 @@ void VUCO(bool act, std::string const& where_ele, ST& message)
 #endif
 }
 
-
+/*
 void make_uppercase(std::string& data)
 {
 
@@ -115,7 +85,7 @@ void make_lowercase_any(std::wstring& data)
 	}
 
 }
-
+*/
 class progressBar {			//##################################################################################
 
 public:
@@ -1379,10 +1349,7 @@ const std::vector<std::string> EU4_Government_Forms_Theocracy = {
 
 
 
-void WriteToFile(const std::string& message, const std::string& file_path);
-void YELL(const std::string& message);
-short RenderShortFromStringTimes100(const std::string& message);
-short StringToShort(const std::string& message);
+
 
 // CRTL M CRTL H to collapse section
 
@@ -1857,7 +1824,8 @@ short StringToShort(const std::string & message) {
 }
 	return remp;
 }// end of StringToShort
-/*
+
+ /*
 void WaitForEscape() {
 	char ch;
 	while ((ch = std::cin.get()) != 27) {

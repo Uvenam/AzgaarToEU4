@@ -131,10 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="OpenAndEdit.cpp" />
+    <ClCompile Include="functions.cpp" />
+    <ClCompile Include="head.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OpenAndEdit.h" />
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="head.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
