@@ -18,24 +18,21 @@
     <ClCompile Include="testing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\classes.cpp">
+    <ClCompile Include="..\UVEP\classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\head.h">
+    <ClInclude Include="..\UVEP\classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cell_class.h">
+    <ClInclude Include="..\UVEP\head.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\classes.h">
+    <ClInclude Include="..\UVEP\RScreenImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RScreenImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VUCO.h">
+    <ClInclude Include="..\UVEP\VUCO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

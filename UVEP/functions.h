@@ -1,6 +1,6 @@
 #pragma once
-#include "head.h"
-#include "classes.h"
+#include "../UVEP/head.h"
+#include "../UVEP/classes.h"
 
 void make_uppercase(std::string& data);
 void make_lowercase(std::string& data);
@@ -13,3 +13,8 @@ short RenderShortFromStringTimes100(const std::string& message);
 short StringToShort(const std::string& message);
 
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
+
+
+void ReadFromPlaceInto(std::string wanted_file, std::string& file_info);
+
+void GenericOutput(std::vector<cell_info> all_cells,std::string output_file);

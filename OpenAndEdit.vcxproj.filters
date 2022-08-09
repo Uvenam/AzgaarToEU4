@@ -18,27 +18,27 @@
     <ClCompile Include="head.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="functions.cpp">
+    <ClCompile Include="UVEP\classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="globals.cpp">
+    <ClCompile Include="UVEP\functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classes.cpp">
+    <ClCompile Include="UVEP\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="head.h">
+    <ClInclude Include="UVEP\classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functions.h">
+    <ClInclude Include="UVEP\functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="globals.h">
+    <ClInclude Include="UVEP\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classes.h">
+    <ClInclude Include="UVEP\head.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

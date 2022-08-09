@@ -1,8 +1,8 @@
-#include "../UVEP/head.h"
-//#include "cell_class.h" // https://www.learncpp.com/cpp-tutorial/class-code-and-header-files/
-#include "../UVEP/classes.h"
-#include "../UVEP/RScreenImage.h"
-#include "../UVEP/VUCO.h"
+#include "head.h"
+#include "cell_class.h" // https://www.learncpp.com/cpp-tutorial/class-code-and-header-files/
+#include "classes.h"
+#include "RScreenImage.h"
+#include "VUCO.h"
 
 #include <utility>
 #include <type_traits>

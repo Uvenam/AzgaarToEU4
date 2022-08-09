@@ -4,9 +4,7 @@
 #include "../UVEP/classes.h"
 
 // commit all, then push
-#define		VERSION_STAMP	"V 0.359"
-// Most recent change: Moving files into ../UVEP/
-// Most recent goal
+#define		VERSION_STAMP	"V 0.358"
 #define		DEBUG	// for VUCO logging
 
 template <class ST>

@@ -1,4 +1,4 @@
-#include "globals.h"
+#include "../UVEP/globals.h"
 
 const std::vector<std::string> AZGAAR_Government_Forms_Monarchy = {
 	"Beylik",

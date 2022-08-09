@@ -1,5 +1,5 @@
 #pragma once
-#include "head.h"
+#include "../UVEP/head.h"
 
 extern const std::vector<std::string> AZGAAR_Government_Forms_Monarchy;
 extern const std::vector<std::string> AZGAAR_Government_Forms_Republic;
