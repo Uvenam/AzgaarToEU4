@@ -62,3 +62,6 @@
 
 
 
+	void cell_info::add_coord(short x_coord, short y_coord) {
+		this->verticies.push_back(std::make_tuple(x_coord, y_coord));
+	}

@@ -4,7 +4,7 @@
 #include "classes.h"
 
 // commit all, then push
-#define		VERSION_STAMP	"V 0.356"
+#define		VERSION_STAMP	"V 0.357"
 #define		DEBUG	// for VUCO logging
 
 template <class ST>
@@ -89,12 +89,15 @@ void make_lowercase_any(std::wstring& data)
 }
 */
 
-class symbol_data {			//##################################################################################
+class symbol_data {			
+//##################################################################################
 
 public:
 	std::string symbol = "";
 	int	freq = 0;
-}; // end class				//##################################################################################
+//##################################################################################
+}; // end class				
+
 
 class culture_namebase {	//##################################################################################
 
@@ -1009,22 +1012,7 @@ int main() {
 	*/
 
 	// storage of verticies and properties of a cell from .geojson file
-	struct cell_info {
-		std::vector<  std::tuple<short, short>  > verticies;
-		int id;
-		short height;
-		short biome;
-		std::string type;
-		int pop;
-		short country;
-		short sub_country;
-		short culture;
-		short religion;
-		std::vector<int> neighbors;
-		void add_coord(short x_coord, short y_coord) {
-			this->verticies.push_back(std::make_tuple(x_coord, y_coord));
-		}
-	};
+
 
 	// to create an item
 	cell_info C1;
@@ -1052,9 +1040,9 @@ int main() {
 					((?<=\{)[a-zA-Z0-9\,\"\:\[\]-]+(?=\}))
 		*/
 
-	std::smatch fetched_data;	// whenever regex returns results, they are a string and need converted
-	short Xcoord = -1;
-	short Ycoord = -1;
+	//std::smatch fetched_data;	// whenever regex returns results, they are a string and need converted
+	//short Xcoord = -1;
+	//short Ycoord = -1;
 
 	// fetched_data[0] will be the entire match, fetched_data[1] will be the first subsection
 	// will be returned as str (prolly) that needs converted to int/float
@@ -1082,96 +1070,8 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	else {
 		std::cout << "Match not found\n";
 	}
-#endif
 
-
-
-	const std::string regex_cell_block 
-		= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"Polygon\",\"coordinates\":.*?\\}\\}";	// should get ex:
-	/*
-	"coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}}
-	*/
-	const std::string regex_cell_coordinates = "\\[\\[.*?\\]\\]\\}"; // of former, should get ex:
-	/*
-	[[																					// entire string as match[0]
-	[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25] // as match[1]
-	]]}
-	*/
-	const std::string regex_cell_vertex = "\-?\[0-9\]+\\.?\[0-9\]*"; // of former, should get
-	/*
-	-44.66
-	57.25
-	-50.62
-	52.65
-	-56.25
-	56.8
-	...and so on
-	*/
-	const std::string regex_cell_properties = "\"id\":\(\[0-9\]+\),\"height\":\(-?\[0-9\]+\),\"biome\":\(\[0-9\]+\),\"type\":\(\"\[^\"\]+\"\),\"population\":\(\[0-9\]+\),\"state\":\(\[0-9\]+\),\"province\":\(\[0-9\]+\),\"culture\":\(\[0-9\]+\),\"religion\":\(\[0-9\]+\),\(\"neighbors\"\:\\[\[^\\]\]+\\]\)";
-	// Regex for regex101.com
-	/*
-	\"id\":([0-9]+),\"height\":(-?[0-9]+),\"biome\":([0-9]+),\"type\":(\"[^\"]+\"),\"population\":([0-9]+),\"state\":([0-9]+),\"province\":([0-9]+),\"culture\":([0-9]+),\"religion\":([0-9]+)
-	*/
-
-
-	//const std::string wanted_file = "C:/Desktop/AZGAAR_to_EU4/OpenAndEdit/infohere/expa.txt"; // works for explicit
-	// Create a directory
-	const std::string dir_base = "base";
-	const std::string dir_azgaar = "AZGAAR";
-	const std::string cell_file = "cell_map.geojson";
-	const std::string cell_file_t = "cell_map_t.geojson";
-	const std::string file_test = "file_test.txt"; // for testing if comparisons work
-
-	std::string file_info;
-	std::stringstream buffer{};
-
-	std::string CellNeighbor_str;
-	std::fstream fileStream;
-
-	// The .exe will create a subdirectory to its hosting folder, putting this file named file_name in there
-	// This process is relative
-
-	std::cout << VERSION_STAMP << std::endl;
-
-// MAIN TRY SECTION
-//⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
-//⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
-
-
-	try {
-
-// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be places in EU4
-
-		if (fs::create_directory(dir_azgaar))	// returns false if it exists, true if it doesn't
-		{
-			std::cout << '\n' << dir_azgaar << " created successfully!" << std::endl;
-		}
-		std::cout << '\n' << dir_azgaar << " as directory exists" << std::endl;
-
-// should do a search for a cell_file that would come from AZGAAR and be placed in the AZGAAR directory.
-// should also do this for every other possible file (e.g. States.csv, and so on. Issue is that their names will be long strings of info and end in states.csv or something similar)
-		
-		std::string wanted_file = dir_azgaar + "/" + cell_file;
-// After ensuring directories exist, want to start with reading from AZGAAR cell info
-		fileStream.open(wanted_file, std::ios::in);	// read contents (don't want to output to this file)
-		if (fileStream) {
-			std::cout << wanted_file << " opened" << std::endl;
-			// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
-			buffer << fileStream.rdbuf();	// read entire file content
-			file_info = buffer.str();		// stringify it, put it into string variable
-			YELL("File info retrieved:\n");
-			YELL(file_info);
-			YELL("\n");
-
-
-
-
-		}//end of if for fileStream
-		else {		// couldn't open file, some sort of error
-			throw std::runtime_error("Cannot open cell_file");
-		}//couldn't open fileStream else
-
-// Got all the info wanted, time to calculate information
+	// Got all the info wanted, time to calculate information
 	// Want to iteratively search string for individual cell info
 	// Examples
 			/*
@@ -1209,130 +1109,80 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 				pos2++;
 			}
 			*/
+#endif
+
+
+
+
+	//const std::string wanted_file = "C:/Desktop/AZGAAR_to_EU4/OpenAndEdit/infohere/expa.txt"; // works for explicit
+	// Create a directory
+	const std::string dir_base = "base";
+	const std::string dir_azgaar = "AZGAAR";
+	const std::string cell_file = "cell_map.geojson";
+	const std::string cell_file_t = "cell_map_t.geojson";
+	const std::string file_test = "file_test.txt"; // for testing if comparisons work
+
+	std::string file_info;
+	std::stringstream buffer{};
+
+	std::string CellNeighbor_str;
+	std::fstream fileStream;
+
+	// The .exe will create a subdirectory to its hosting folder, putting this file named file_name in there
+	// This process is relative
+
+	std::cout << VERSION_STAMP << std::endl;
+
+// MAIN TRY SECTION
+//⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
+	try {
+
+// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be places in EU4
+		if (fs::create_directory(dir_azgaar))	// returns false if it exists, true if it doesn't
+		{
+			std::cout << '\n' << dir_azgaar << " created successfully!" << std::endl;
+		}
+		std::cout << '\n' << dir_azgaar << " as directory exists" << std::endl;
+
+// should do a search for a cell_file that would come from AZGAAR and be placed in the AZGAAR directory.
+// should also do this for every other possible file (e.g. States.csv, and so on. Issue is that their names will be long strings of info and end in states.csv or something similar)
+		
+		std::string wanted_file = dir_azgaar + "/" + cell_file;
+// After ensuring directories exist, want to start with reading from AZGAAR cell info
+		fileStream.open(wanted_file, std::ios::in);	// read contents (don't want to output to this file)
+		if (fileStream) {
+			std::cout << wanted_file << " opened" << std::endl;
+			// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
+			buffer << fileStream.rdbuf();	// read entire file content
+			file_info = buffer.str();		// stringify it, put it into string variable
+			YELL("File info retrieved:\n");
+			YELL(file_info);
+			YELL("\n");
+
+		}//end of if for fileStream
+		else {		// couldn't open file, some sort of error
+			throw std::runtime_error("Cannot open cell_file");
+		}//couldn't open fileStream else
+
+
 
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
-
-		example_data = file_info;
-		long cell_index = -1;
-		std::regex rex_chunk(regex_cell_block);
-		//all_cells.push_back(cell_info()); // creates a new element
-				// Divy up example_data into various matches
-		std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), rex_chunk);
-		// Define regex for coords and verticies
-		std::regex rex_coords(regex_cell_coordinates);
-		std::regex rex_vertex(regex_cell_vertex);
-		std::regex rex_properties(regex_cell_properties);
-		std::regex rex_neighbor_id("\(\[0-9\]+\)");
-		// For iterator
-		std::sregex_iterator sreg_end;
-		// For temp holding of string
-		std::string CellData_str;
-		std::string CellCoord_str;
-		std::smatch CellData_matches;
-
-
 		int left_most = 0;
 		int right_most = 0;
 		int top_most = 0;
 		int bottom_most = 0;
+		std::tie(left_most, right_most, top_most, bottom_most) = ParseStringUpdateCells(all_cells, file_info);
 
 
-		while (CellData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
-
-			all_cells.push_back(cell_info()); cell_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
-// TODO				// Should use size function on the array to find number of cells
-			std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
-			CellData_str = CellData_itr->str();
-			YELL(CellData_str);
-
-			//Have cell_data chunk from above, need to sift out coordinates and properties
-			// Searching chunk at a time, so the following will create verticies
-			std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_coords);
-			YELL("\n[INFO]Cell coords fetched: ");
-			CellCoord_str = CellData_matches[0];
-			YELL(CellCoord_str);
-			YELL("\n[INFO]Cell vertecies fetched:");
-			std::sregex_iterator CellVertex_itr(CellCoord_str.cbegin(), CellCoord_str.cend(), rex_vertex);
-			short vertex_itr = 0;
-
-
-			// TAKING sifted coordinates AND PLACING THEM in corresponding cell
-			while (CellVertex_itr != sreg_end) {
-
-				Xcoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
-				CellVertex_itr++;
-				// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
-
-				Ycoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
-				all_cells[cell_index].add_coord(Xcoord, Ycoord);
-				CellVertex_itr++;
-
-				if (Xcoord < left_most) { left_most = Xcoord; }
-				if (Xcoord > right_most) { right_most = Xcoord; }
-				if (Ycoord < bottom_most) { bottom_most = Ycoord; }
-				if (Ycoord > top_most) { top_most = Ycoord; }
-
-
-
-
-				std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
-				std::cout << std::get<0>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
-				std::cout << std::get<1>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
-				vertex_itr++;
-
-			}
-			// TAKING sifted properties AND PLACING THEM in corresponding cell
-
-			std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
-
-			//std::cout << "ID: ";
-			all_cells[cell_index].id = StringToShort(CellData_matches[1].str());
-			//std::cout << "Height: ";
-			all_cells[cell_index].height = StringToShort(CellData_matches[2].str());
-			//std::cout << "Biome ID: " << std::endl;
-			all_cells[cell_index].biome = StringToShort(CellData_matches[3].str());
-			//std::cout << "Type str: " << std::endl;
-			all_cells[cell_index].type = (CellData_matches[4].str());
-			//std::cout << "Population: " << std::endl;
-			all_cells[cell_index].pop = std::stoi(CellData_matches[5].str());
-			//std::cout << "Country: " << std::endl;
-			all_cells[cell_index].country = StringToShort(CellData_matches[6].str());
-			//std::cout << "Sub-Country: " << std::endl;
-			all_cells[cell_index].sub_country = StringToShort(CellData_matches[7].str());
-			//std::cout << "Culture ID: " << std::endl;
-			all_cells[cell_index].culture = StringToShort(CellData_matches[8].str());
-			//std::cout << "Religion ID: " << std::endl;
-			all_cells[cell_index].religion = StringToShort(CellData_matches[9].str());
-
-			CellNeighbor_str = CellData_matches[10].str();
-			std::sregex_iterator CellNeighbor_itr(CellNeighbor_str.cbegin(), CellNeighbor_str.cend(), rex_neighbor_id);
-
-			YELL("[INFO] Cell Neighbors fetched:");
-
-			while (CellNeighbor_itr != sreg_end) {
-
-				YELL(CellNeighbor_itr->str(0));
-				all_cells[cell_index].neighbors.push_back(StringToShort(CellNeighbor_itr->str(0)));
-				CellNeighbor_itr++;
-			}
-
-			YELL("\n[INFO]Cell properties fetched");
-
-
-			// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
-
-
-			CellData_itr++;
-		}// end of while(CellData_itr != sreg_end){
 
 	// CONFIRMATION of obtaining cell info and correctly parsing
-		std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
-		std::cout << "\n[INFO]As such, cell index is " << cell_index;
+	//	std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
+		//std::cout << "\n[INFO]As such, cell index is " << cell_index;
 
-		std::cout << "\nThe extents are:";
-		std::cout << "\n\t" << top_most;
-		std::cout << "\n" << left_most << "\t\t" << right_most;
-		std::cout << "\n\t" << bottom_most;
+	//	std::cout << "\nThe extents are:";
+	//	std::cout << "\n\t" << top_most;
+	//	std::cout << "\n" << left_most << "\t\t" << right_most;
+	//	std::cout << "\n\t" << bottom_most;
 
 
 // Information calculated, time to output into EU4 formats and such
@@ -1385,13 +1235,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 
-		}//end of try
-		catch (std::runtime_error runtime) {		// managing file opening error
-			std::cout << "Caught runtime error:" << runtime.what() << std::endl;
-		}//end of catch for runtime error
-		catch (...) {								// managing all other errors
-			std::cout << "Unknown exception\n";
-		}//end of any catch
+	}//end of try
+	catch (std::runtime_error runtime) {		// managing file opening error
+		std::cout << "Caught runtime error:" << runtime.what() << std::endl;
+	}//end of catch for runtime error
+	catch (...) {								// managing all other errors
+		std::cout << "Unknown exception\n";
+	}//end of any catch
 
 // CREATING THE IMAGE
 
