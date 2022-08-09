@@ -1,9 +1,11 @@
 ﻿#include "head.h"
 #include "functions.h"
+#include "globals.h"
+#include "classes.h"
 
 // commit all, then push
-#define VERSION_STAMP	"V 0.352"
-#define  DEBUG	// for VUCO logging
+#define		VERSION_STAMP	"V 0.356"
+#define		DEBUG	// for VUCO logging
 
 template <class ST>
 void VUCO(std::string const& where_ele, ST& message)
@@ -86,79 +88,7 @@ void make_lowercase_any(std::wstring& data)
 
 }
 */
-class progressBar {			//##################################################################################
 
-public:
-	int amountOfFiller = 0;
-	int pBarLength = 50;
-
-	int currentProgress = 0;
-	int items = 100;
-
-	char firstPartOfBar = '[';
-	char lastPartOfBar = ']';
-	char barFiller = '#';
-	char barEmpty = '.';
-	std::string task = "";
-	void update(int newProgress)
-	{
-		currentProgress += newProgress;
-		if (currentProgress > items)
-		{
-
-			return;
-		}
-		amountOfFiller = pBarLength * (currentProgress / items);
-
-		std::cout << std::fixed << std::setprecision(0) << "\r" // bring cursor to start of line
-			<< task << " "
-			<< firstPartOfBar
-			<< currentProgress << "/" << items << lastPartOfBar;
-		std::cout << firstPartOfBar
-			<< std::fixed << std::setprecision(1) << 100 * currentProgress / items << "%";
-
-		for (int a = 0; a < amountOfFiller; a++)
-		{ //Print out current progress
-			std::cout << barFiller;
-		}
-
-		for (int b = 0; b < pBarLength - amountOfFiller; b++)
-		{
-			std::cout << barEmpty;
-		}
-		std::cout << lastPartOfBar;
-		std::cout << std::flush;
-
-
-	}
-	void updatePercent(double newPercent)
-	{
-		int increaseBy = newPercent * (items / 100);
-		if ((increaseBy + currentProgress) > items)
-		{
-			return;
-		}
-		update(increaseBy);
-	}
-	void reuse(int items1)
-	{
-		this->amountOfFiller = 0;
-
-		this->currentProgress = 0;
-
-		this->items = items1;
-
-	}
-	progressBar(std::string task_ele, int elements)
-	{
-		task = task_ele;
-		items = elements;
-	}
-	progressBar() { };
-
-
-
-}; // end class				//##################################################################################
 class symbol_data {			//##################################################################################
 
 public:
@@ -1033,319 +963,9 @@ void fn_makeMarkov_VariableDepth ( std::vector<std::string> original_list, int d
 
 }; // end class				//##################################################################################
 
-class stateMaker {
-
-	//FORM for STATES from AZGAAR
-	/*
-	Id,State,Full Name,Form,Color,Capital,Culture,Type,Expansionism,Cells,Burgs,Area mi2,Total Population,Rural Population,Urban Population
-	EX:
-	52,Zubo,Zuban Empire,Empire,#db97e0,Zubo,Uruk,Nomadic,4.9,754,58,12232384,3226127,2895337,330790
-	*/
-	// FORM for COUNTRIES in EU4, directory: common/countries
-	/*
-		graphical_culture
-		color = { X, Y, Z}
-		historical_idea_groups
-		historical_units
-		monarch_names // optional
-		leader_names //optional
-		ship_names //optional
-		army_names //optional
-		fleet_names //optional
-
-	*/
-	// FORM for COUNTRIES in EU4, directory: history/countries
-	/*
-		setup_vision = yes
-		government = monarchy
-		add_government_reform = feudalism_reform
-		government_rank = 1
-		primary_culture = derannic
-		religion = regent_court
-		technology_group = tech_cannorian
-		capital = 113 # Deranne
-		fixed_capital = //optional // also # is for comments in paradox txt format
-
-	*/
-public:
-	// from azgaar states.csv
-	short ID;
-	std::string name;
-	std::string form;
-	long color;
-	std::string capital;
-	std::string culture;
-	std::string type;
-	float expansionism;
-
-	// eu4 to be made
-	std::string country_tag;
-	// flag as TGA
-	// country idea groups
-	// color, RGB values
-	// government
-	// technology_group
-	// religion
-	// primary_culture
-	// capital as province ID
-	// fixed_capital as province ID
-
-	// Not sure if needed since these come with cell read in
-	short burg_count;
-	long area_mi2;
-	long rural_population;
-	long urban_population;
-
-	void fnParseLine(std::string result_getLine_ele) {
-
-		std::string regex_info = "[^\\,\]+";
-		// Iterate over each match. Match 1 should be ID, Match 2 is State, 3 is full name and is discarded, 4 is form, 5 is color, 6 is capital, 7 is culture, 8 is type, 9 is expansionism, 10 is cell count and is discarded, 11 is burg count, 12 is area, 13 is total pop, 14 is rural pop, 15 is urban pop
-
-	}
-
-};
-
 
 // namespace alias (aka can type this instead of full namespace path)
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
-
-const std::vector<std::string> AZGAAR_Government_Forms_Monarchy = {
-	"Beylik",
-	"Despotate",
-	"Dominion",
-	"Duchy",
-	"Emirate",
-	"Empire",
-	"Horde",
-	"Grand Duchy",
-	"Heptarchy",
-	"Khaganate",
-	"Khanate",
-	"Kingdom",
-	"Marches",
-	"Principality",
-	"Satrapy",
-	"Shogunate",
-	"Sultanate",
-	"Tsardom",
-	"Ulus",
-	"Viceroyalty",
-
-};
-const std::vector<std::string> AZGAAR_Government_Forms_Republic = {
-
-	"Chancellery",
-	"City-state",
-	"Diarchy",
-	"Federation",
-	"Free City",
-	"Most Serene Republic",
-	"Oligarchy",
-	"Protectorate",
-	"Republic",
-	"Tetrarchy",
-	"Trade Company",
-	"Triumvirate",
-
-};
-const std::vector<std::string> AZGAAR_Government_Forms_Union = {
-	"Confederacy",
-	"Confederation",
-	"Conglomerate",
-	"Commonwealth",
-	"League",
-	"Union",
-	"United Hordes",
-	"United Kingdom",
-	"United Provinces",
-	"United Republic",
-	"United States",
-	"United Tribes",
-
-
-};
-const std::vector<std::string> AZGAAR_Government_Forms_Theocracy = {
-	"Bishopric",
-	"Brotherhood",
-	"Caliphate",
-	"Diocese",
-	"Divine Duchy",
-	"Divine Grand Duchy",
-	"Divine Principality",
-	"Divine Kingdom",
-	"Divine Empire",
-	"Eparchy",
-	"Exarchate",
-	"Holy State",
-	"Imamah",
-	"Patriarchate",
-	"Theocracy",
-};
-const std::vector<std::string> AZGAAR_Government_Forms_Anarchy = {
-
-	"Commune",
-	"Community",
-	"Council",
-	"Free Territory",
-	"Tribes",
-
-
-
-};
-
-const std::vector<std::string> EU4_Government_Forms = {
-		"monarchy",
-		"republic",
-		"tribal",
-		"native",
-		"theocracy",
-
-
-};
-// Could make this an unordered map
-const std::vector<std::string> EU4_Government_Forms_Monarchy = {
-
-
-
-};
-// Monarchy -> Level 1 
-// government = monarchy
-// add_government_reform = ___________
-/*
-
-				feudalism_reform
-				autocracy_reform
-				plutocratic_reform
-				# indian_sultanate_reform
-				# nayankara_reform
-				# misl_confederacy_reform
-				# rajput_kingdom
-				#negusa_nagast
-				#solomonic_empire
-				#Specific:
-				# grand_duchy_reform
-				# daimyo
-				# indep_daimyo
-				# elective_monarchy
-				# iqta
-				# ottoman_government
-				# prussian_monarchy
-				# austrian_dual_monarchy
-				# principality
-				# tsardom
-				# mamluk_government
-				# feudal_theocracy
-				# celestial_empire
-				# shogunate
-				# english_monarchy
-				# mandala_reform
-				# revolutionary_empire_reform
-				# holy_state_reform
-				# austrian_archduchy_reform
-				# siamese_absolutism
-				# confucian_bureaucracy
-				#musa_rule
-				#mossi_federal_kingdom
-*/
-const std::vector<std::string> EU4_Government_Forms_Republic = {
-
-
-
-};
-// Republic -> Level 1
-// government = republic
-// add_government_reform = ___________
-/*
-
-
-				oligarchy_reform
-				merchants_reform
-				# venice_merchants_reform
-				pirate_republic_reform
-				noble_elite_reform
-				free_city
-				trading_city
-				ambrosian_republic
-				veche_republic
-				# american_republic
-				# federal_republic
-				colonial_government
-				crown_colony_government
-				private_enterprise_colony_government
-				self_governing_colony_government
-				# dutch_republic
-				peasants_republic
-				revolutionary_republic_reform
-				junior_revolutionary_republic_reform
-				presidential_despot_reform
-				cossacks_reform
-				military_dictatorship_reform
-				signoria_reform
-				protectorate_parliament_reform
-				# prussian_republic_reform
-				# united_cantons_reform
-				# kongsi_federation
-				# millenarian_theocracy_reform
-
-
-
-*/
-const std::vector<std::string> EU4_Government_Forms_Tribal = {
-
-
-
-};
-// Tribal -> Level 1
-// government = tribal
-// add_government_reform = ___________
-/*
-
-				steppe_horde
-				tribal_federation
-				tribal_despotism
-				tribal_kingdom
-				siberian_tribe
-				# gond_kingdom
-				great_mongol_state_reform
-				stateless_society
-				polynesian_kingdom
-				polynesian_tribe
-
-
-
-
-*/
-const std::vector<std::string> EU4_Government_Forms_Native = {
-
-
-
-};
-// Native -> Level 1
-// government = native
-// add_government_reform = ___________
-/*
-				native_chiefdom_reform
-				native_federation_reform
-				native_clan_council_reform
-				native_hereditary_reform
-
-*/
-const std::vector<std::string> EU4_Government_Forms_Theocracy = {
-
-
-
-};
-// Theocracy -> Level 1
-// government = theocracy
-// add_government_reform = ___________
-/*
-				leading_clergy_reform
-				monastic_order_reform
-				papacy_reform
-				holy_state_reform
-				# united_cantons_reform
-
-*/
 
 
 
@@ -1354,18 +974,26 @@ const std::vector<std::string> EU4_Government_Forms_Theocracy = {
 // CRTL M CRTL H to collapse section
 
 //static std::exception_ptr teptr = nullptr;
+// FOR ESC EXIT
+DWORD WINAPI CheckEscape(LPVOID lpParam) {
+	while (GetAsyncKeyState(VK_ESCAPE) == 0) {
+		//sleep 
+		Sleep(10);
+	}
+	exit(0);
+
+}
+
 
 int main() {
-
+	// FOR ESC EXIT
+	CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);
 	// Example Info
-	std::string example_data =
-		"{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},\"properties\":{\"id\":0,\"height\":-109,\"biome\":12,\"type\":\"island\",\"population\":140,\"state\":2,\"province\":3,\"culture\":4,\"religion\":5,\"neighbors\":[1,7,6]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-40.16,51.19],[-42.53,52.2],[-44.21,54.22],[-44.66,57.25],[-44.55,58.26],[-44.1,58.6],[-41.17,58.26],[-36.56,52.65],[-38.14,51.53],[-40.16,51.19]]]},\"properties\":{\"id\":1,\"height\":-29,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[11,10,9,7,0,2,12]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-35.44,52.65],[-36.56,52.65],[-41.17,58.26],[-34.31,60.84],[-33.97,60.5],[-34.65,52.99],[-35.44,52.65]]]},\"properties\":{\"id\":2,\"height\":-70,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[13,12,1,3]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-30.6,51.76],[-34.65,52.99],[-33.97,60.5],[-27.45,58.04],[-28.57,52.43],[-28.8,52.2],[-30.6,51.76]]]},\"properties\":{\"id\":3,\"height\":-55,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[30,13,2,4,14]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-19.91,57.36],[-22.61,52.32],[-26.33,51.76],[-28.57,52.43],[-27.45,58.04],[-24.52,59.94],[-19.91,57.36]]]},\"properties\":{\"id\":4,\"height\":-88,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[16,15,14,3]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-55.12,47.94],[-65.7,49.29],[-67.5,52.99],[-63.79,56.02],[-56.92,56.35],[-54.9,48.17],[-55.12,47.94]]]},\"properties\":{\"id\":5,\"height\":-88,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[19,18,17,6]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-52.76,48.5],[-54.9,48.17],[-56.92,56.35],[-56.25,56.8],[-50.62,52.65],[-50.4,51.64],[-52.76,48.5]]]},\"properties\":{\"id\":6,\"height\":-70,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[8,19,5,0,7]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-47.25,49.85],[-50.4,51.64],[-50.62,52.65],[-44.66,57.25],[-44.21,54.22],[-47.25,49.85]]]},\"properties\":{\"id\":7,\"height\":-55,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[9,8,6,0,1]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-48.26,47.38],[-50.06,46.93],[-52.76,48.5],[-50.4,51.64],[-47.25,49.85],[-47.14,48.84],[-48.26,47.38]]]},\"properties\":{\"id\":8,\"height\":-70,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[22,21,19,6,7,9]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-45.56,48.17],[-47.14,48.84],[-47.25,49.85],[-44.21,54.22],[-42.53,52.2],[-43.42,48.62],[-45.56,48.17]]]},\"properties\":{\"id\":9,\"height\":-9,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[24,22,8,7,1,10]}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-40.16,51.19],[-41.17,47.27],[-43.42,48.62],[-42.53,52.2],[-40.16,51.19]]]},\"properties\":{\"id\":10,\"height\":-9,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[1,11,24,9]}}]}";
 	//Copy
 	/*
 	{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-40.16,51.19],[-42.53,52.2],[-44.21,54.22],[-44.66,57.25],[-44.55,58.26],[-44.1,58.6],[-41.17,58.26],[-36.56,52.65],[-38.14,51.53],[-40.16,51.19]]]},"properties":{"id":1,"height":-29,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[11,10,9,7,0,2,12]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-35.44,52.65],[-36.56,52.65],[-41.17,58.26],[-34.31,60.84],[-33.97,60.5],[-34.65,52.99],[-35.44,52.65]]]},"properties":{"id":2,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[13,12,1,3]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-30.6,51.76],[-34.65,52.99],[-33.97,60.5],[-27.45,58.04],[-28.57,52.43],[-28.8,52.2],[-30.6,51.76]]]},"properties":{"id":3,"height":-55,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[30,13,2,4,14]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-19.91,57.36],[-22.61,52.32],[-26.33,51.76],[-28.57,52.43],[-27.45,58.04],[-24.52,59.94],[-19.91,57.36]]]},"properties":{"id":4,"height":-88,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[16,15,14,3]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-55.12,47.94],[-65.7,49.29],[-67.5,52.99],[-63.79,56.02],[-56.92,56.35],[-54.9,48.17],[-55.12,47.94]]]},"properties":{"id":5,"height":-88,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[19,18,17,6]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-52.76,48.5],[-54.9,48.17],[-56.92,56.35],[-56.25,56.8],[-50.62,52.65],[-50.4,51.64],[-52.76,48.5]]]},"properties":{"id":6,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[8,19,5,0,7]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-47.25,49.85],[-50.4,51.64],[-50.62,52.65],[-44.66,57.25],[-44.21,54.22],[-47.25,49.85]]]},"properties":{"id":7,"height":-55,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[9,8,6,0,1]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-48.26,47.38],[-50.06,46.93],[-52.76,48.5],[-50.4,51.64],[-47.25,49.85],[-47.14,48.84],[-48.26,47.38]]]},"properties":{"id":8,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[22,21,19,6,7,9]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-45.56,48.17],[-47.14,48.84],[-47.25,49.85],[-44.21,54.22],[-42.53,52.2],[-43.42,48.62],[-45.56,48.17]]]},"properties":{"id":9,"height":-9,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[24,22,8,7,1,10]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-40.16,51.19],[-41.17,47.27],[-43.42,48.62],[-42.53,52.2],[-40.16,51.19]]]},"properties":{"id":10,"height":-9,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,11,24,9]}}]}
 	*/
-	const std::string example_snippet =
-		"{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},\"properties\":{\"id\":0,\"height\":-109,\"biome\":0,\"type\":\"ocean\",\"population\":0,\"state\":0,\"province\":0,\"culture\":0,\"religion\":0,\"neighbors\":[1,7,6]}}";
+
 
 	//Searching for
 	/*
@@ -1506,25 +1134,28 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	std::cout << VERSION_STAMP << std::endl;
 
 // MAIN TRY SECTION
-//====================================================================================================================//
-//====================================================================================================================//
+//⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
+//⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
+
 
 	try {
 
-		//std::thread EscCheck_obj(WaitForEscape);
+// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be places in EU4
 
 		if (fs::create_directory(dir_azgaar))	// returns false if it exists, true if it doesn't
 		{
-			std::cout << dir_azgaar << " created successfully!" << std::endl;
+			std::cout << '\n' << dir_azgaar << " created successfully!" << std::endl;
 		}
-		std::cout << dir_azgaar << " as directory exists" << std::endl;
+		std::cout << '\n' << dir_azgaar << " as directory exists" << std::endl;
 
+// should do a search for a cell_file that would come from AZGAAR and be placed in the AZGAAR directory.
+// should also do this for every other possible file (e.g. States.csv, and so on. Issue is that their names will be long strings of info and end in states.csv or something similar)
+		
 		std::string wanted_file = dir_azgaar + "/" + cell_file;
-
+// After ensuring directories exist, want to start with reading from AZGAAR cell info
 		fileStream.open(wanted_file, std::ios::in);	// read contents (don't want to output to this file)
-		std::cout << wanted_file << " opened" << std::endl;
 		if (fileStream) {
-
+			std::cout << wanted_file << " opened" << std::endl;
 			// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
 			buffer << fileStream.rdbuf();	// read entire file content
 			file_info = buffer.str();		// stringify it, put it into string variable
@@ -1540,12 +1171,9 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			throw std::runtime_error("Cannot open cell_file");
 		}//couldn't open fileStream else
 
-		std::ofstream outputLog("log.txt");		// Whatever is written will be an overwrite eachtime program runs
-		if (outputLog) {
-
-
-			// Want to iteratively search string for individual cell info
-			// Examples
+// Got all the info wanted, time to calculate information
+	// Want to iteratively search string for individual cell info
+	// Examples
 			/*
 			std::regex rgx("[0-9]+", std::regex_constants::extended | std::regex_constants::icase);
 			std::smatch matches;
@@ -1582,147 +1210,162 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 			}
 			*/
 
-			// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
-			//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
 
-			example_data = file_info;
-			long cell_index = -1;
-			std::regex rex_chunk(regex_cell_block);
-			//all_cells.push_back(cell_info()); // creates a new element
-					// Divy up example_data into various matches
-			std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), rex_chunk);
-			// Define regex for coords and verticies
-			std::regex rex_coords(regex_cell_coordinates);
-			std::regex rex_vertex(regex_cell_vertex);
-			std::regex rex_properties(regex_cell_properties);
-			std::regex rex_neighbor_id("\(\[0-9\]+\)");
-			// For iterator
-			std::sregex_iterator sreg_end;
-			// For temp holding of string
-			std::string CellData_str;
-			std::string CellCoord_str;
-			std::smatch CellData_matches;
+		example_data = file_info;
+		long cell_index = -1;
+		std::regex rex_chunk(regex_cell_block);
+		//all_cells.push_back(cell_info()); // creates a new element
+				// Divy up example_data into various matches
+		std::sregex_iterator CellData_itr(example_data.cbegin(), example_data.cend(), rex_chunk);
+		// Define regex for coords and verticies
+		std::regex rex_coords(regex_cell_coordinates);
+		std::regex rex_vertex(regex_cell_vertex);
+		std::regex rex_properties(regex_cell_properties);
+		std::regex rex_neighbor_id("\(\[0-9\]+\)");
+		// For iterator
+		std::sregex_iterator sreg_end;
+		// For temp holding of string
+		std::string CellData_str;
+		std::string CellCoord_str;
+		std::smatch CellData_matches;
 
-			while (CellData_itr != sreg_end) {
 
-				while (CellData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
+		int left_most = 0;
+		int right_most = 0;
+		int top_most = 0;
+		int bottom_most = 0;
 
-					all_cells.push_back(cell_info()); cell_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
+
+		while (CellData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
+
+			all_cells.push_back(cell_info()); cell_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
 // TODO				// Should use size function on the array to find number of cells
-					std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
-					CellData_str = CellData_itr->str();
-					YELL(CellData_str);
+			std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
+			CellData_str = CellData_itr->str();
+			YELL(CellData_str);
 
-					//Have cell_data chunk from above, need to sift out coordinates and properties
-					// Searching chunk at a time, so the following will create verticies
-					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_coords);
-					YELL("\n[INFO]Cell coords fetched: ");
-					CellCoord_str = CellData_matches[0];
-					YELL(CellCoord_str);
-					YELL("\n[INFO]Cell vertecies fetched:");
-					std::sregex_iterator CellVertex_itr(CellCoord_str.cbegin(), CellCoord_str.cend(), rex_vertex);
-					short vertex_itr = 0;
-
-
-					// TAKING sifted coordinates AND PLACING THEM in corresponding cell
-					while (CellVertex_itr != sreg_end) {
-
-						Xcoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
-						CellVertex_itr++;
-						// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
-						
-						Ycoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
-						all_cells[cell_index].add_coord(Xcoord, Ycoord);
-						CellVertex_itr++;
-						std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
-						std::cout << std::get<0>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
-						std::cout << std::get<1>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
-						vertex_itr++;
-
-					}
+			//Have cell_data chunk from above, need to sift out coordinates and properties
+			// Searching chunk at a time, so the following will create verticies
+			std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_coords);
+			YELL("\n[INFO]Cell coords fetched: ");
+			CellCoord_str = CellData_matches[0];
+			YELL(CellCoord_str);
+			YELL("\n[INFO]Cell vertecies fetched:");
+			std::sregex_iterator CellVertex_itr(CellCoord_str.cbegin(), CellCoord_str.cend(), rex_vertex);
+			short vertex_itr = 0;
 
 
-					// TAKING sifted properties AND PLACING THEM in corresponding cell
+			// TAKING sifted coordinates AND PLACING THEM in corresponding cell
+			while (CellVertex_itr != sreg_end) {
 
-					std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
+				Xcoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
+				CellVertex_itr++;
+				// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
 
-					//std::cout << "ID: ";
-					all_cells[cell_index].id = StringToShort(CellData_matches[1].str());
-					//std::cout << "Height: ";
-					all_cells[cell_index].height = StringToShort(CellData_matches[2].str());
-					//std::cout << "Biome ID: " << std::endl;
-					all_cells[cell_index].biome = StringToShort(CellData_matches[3].str());
-					//std::cout << "Type str: " << std::endl;
-					all_cells[cell_index].type = (CellData_matches[4].str());
-					//std::cout << "Population: " << std::endl;
-					all_cells[cell_index].pop = std::stoi(CellData_matches[5].str());
-					//std::cout << "Country: " << std::endl;
-					all_cells[cell_index].country = StringToShort(CellData_matches[6].str());
-					//std::cout << "Sub-Country: " << std::endl;
-					all_cells[cell_index].sub_country = StringToShort(CellData_matches[7].str());
-					//std::cout << "Culture ID: " << std::endl;
-					all_cells[cell_index].culture = StringToShort(CellData_matches[8].str());
-					//std::cout << "Religion ID: " << std::endl;
-					all_cells[cell_index].religion = StringToShort(CellData_matches[9].str());
+				Ycoord = RenderShortFromStringTimes100(CellVertex_itr->str(0));
+				all_cells[cell_index].add_coord(Xcoord, Ycoord);
+				CellVertex_itr++;
 
-					CellNeighbor_str = CellData_matches[10].str();
-					std::sregex_iterator CellNeighbor_itr(CellNeighbor_str.cbegin(), CellNeighbor_str.cend(), rex_neighbor_id);
-					
-					YELL("[INFO] Cell Neighbors fetched:");
-					
-					while (CellNeighbor_itr != sreg_end) {
-
-						YELL(CellNeighbor_itr->str(0));
-						all_cells[cell_index].neighbors.push_back( StringToShort(	CellNeighbor_itr->str(0) ) );
-						CellNeighbor_itr++;
-					}
+				if (Xcoord < left_most) { left_most = Xcoord; }
+				if (Xcoord > right_most) { right_most = Xcoord; }
+				if (Ycoord < bottom_most) { bottom_most = Ycoord; }
+				if (Ycoord > top_most) { top_most = Ycoord; }
 
 
-					YELL("\n[INFO]Cell properties fetched");
-
-					
-// DO STUFF HERE
-// ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
-// ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛ //
-					
-					// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
 
 
-					CellData_itr++;
-				}// end of while(CellData_itr != sreg_end){
+				std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
+				std::cout << std::get<0>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
+				std::cout << std::get<1>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
+				vertex_itr++;
+
+			}
+			// TAKING sifted properties AND PLACING THEM in corresponding cell
+
+			std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
+
+			//std::cout << "ID: ";
+			all_cells[cell_index].id = StringToShort(CellData_matches[1].str());
+			//std::cout << "Height: ";
+			all_cells[cell_index].height = StringToShort(CellData_matches[2].str());
+			//std::cout << "Biome ID: " << std::endl;
+			all_cells[cell_index].biome = StringToShort(CellData_matches[3].str());
+			//std::cout << "Type str: " << std::endl;
+			all_cells[cell_index].type = (CellData_matches[4].str());
+			//std::cout << "Population: " << std::endl;
+			all_cells[cell_index].pop = std::stoi(CellData_matches[5].str());
+			//std::cout << "Country: " << std::endl;
+			all_cells[cell_index].country = StringToShort(CellData_matches[6].str());
+			//std::cout << "Sub-Country: " << std::endl;
+			all_cells[cell_index].sub_country = StringToShort(CellData_matches[7].str());
+			//std::cout << "Culture ID: " << std::endl;
+			all_cells[cell_index].culture = StringToShort(CellData_matches[8].str());
+			//std::cout << "Religion ID: " << std::endl;
+			all_cells[cell_index].religion = StringToShort(CellData_matches[9].str());
+
+			CellNeighbor_str = CellData_matches[10].str();
+			std::sregex_iterator CellNeighbor_itr(CellNeighbor_str.cbegin(), CellNeighbor_str.cend(), rex_neighbor_id);
+
+			YELL("[INFO] Cell Neighbors fetched:");
+
+			while (CellNeighbor_itr != sreg_end) {
+
+				YELL(CellNeighbor_itr->str(0));
+				all_cells[cell_index].neighbors.push_back(StringToShort(CellNeighbor_itr->str(0)));
+				CellNeighbor_itr++;
+			}
+
+			YELL("\n[INFO]Cell properties fetched");
 
 
-				// CONFIRMATION of obtaining cell info and correctly parsing
-				std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
-				std::cout << "\n[INFO]As such, cell index is " << cell_index;
+			// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
 
+
+			CellData_itr++;
+		}// end of while(CellData_itr != sreg_end){
+
+	// CONFIRMATION of obtaining cell info and correctly parsing
+		std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
+		std::cout << "\n[INFO]As such, cell index is " << cell_index;
+
+		std::cout << "\nThe extents are:";
+		std::cout << "\n\t" << top_most;
+		std::cout << "\n" << left_most << "\t\t" << right_most;
+		std::cout << "\n\t" << bottom_most;
+
+
+// Information calculated, time to output into EU4 formats and such
+		std::ofstream outputLog("log.txt");		// Whatever is written will be an overwrite eachtime program runs
+		if (outputLog) {
+
+			YELL("\n[INFO]Cell Data: ");
 			
-				YELL("\n[INFO]Cell Data: ");
-				for (int proll = 0; proll < all_cells.size(); proll++) {
-					std::cout << "\nCell: " << all_cells[proll].id << "\n";
-					std::cout << "Height: " << all_cells[proll].height << "\n";
-					std::cout << "Biome: " << all_cells[proll].biome << "\n";
-					std::cout << "Type: " << all_cells[proll].type << "\n";
-					std::cout << "Population: " << all_cells[proll].pop << "\n";
-					std::cout << "State: " << all_cells[proll].country << "\n";
-					std::cout << "Sub-state: " << all_cells[proll].sub_country << "\n";
-					std::cout << "Culture: " << all_cells[proll].culture << "\n";
-					std::cout << "Religion: " << all_cells[proll].religion << "\n";
+			for (int proll = 0; proll < all_cells.size(); proll++) {
+				outputLog << "\nCell: " << all_cells[proll].id << "\n";
+				outputLog << "Height: " << all_cells[proll].height << "\n";
+				outputLog << "Biome: " << all_cells[proll].biome << "\n";
+				outputLog << "Type: " << all_cells[proll].type << "\n";
+				outputLog << "Population: " << all_cells[proll].pop << "\n";
+				outputLog << "State: " << all_cells[proll].country << "\n";
+				outputLog << "Sub-state: " << all_cells[proll].sub_country << "\n";
+				outputLog << "Culture: " << all_cells[proll].culture << "\n";
+				outputLog << "Religion: " << all_cells[proll].religion << "\n";
 
-					std::cout << "Verticies:\n";
-					for (int pion = 0; pion < all_cells[proll].verticies.size(); pion++) {
-						std::cout << std::get<0>(all_cells[proll].verticies[pion]);
-						std::cout << " , ";
-						std::cout << std::get<1>(all_cells[proll].verticies[pion]);
-						std::cout << "\n";
-					}
-
-					std::cout << "Neighbors:\n";
-					for (int plok = 0; plok < all_cells[proll].neighbors.size(); plok++) {
-						std::cout << all_cells[proll].neighbors[plok];
-						std::cout << " , ";
-					}
+				outputLog << "Verticies:\n";
+				for (int pion = 0; pion < all_cells[proll].verticies.size(); pion++) {
+					outputLog << std::get<0>(all_cells[proll].verticies[pion]);
+					outputLog << " , ";
+					outputLog << std::get<1>(all_cells[proll].verticies[pion]);
+					outputLog << "\n";
 				}
+
+				outputLog << "Neighbors:\n";
+				for (int plok = 0; plok < all_cells[proll].neighbors.size(); plok++) {
+					outputLog << all_cells[proll].neighbors[plok];
+					outputLog << " , ";
+				}
+			}
 				
 
 				// Cell info gotten, need to parse for specific info such as:
@@ -1734,13 +1377,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 				YELL("\nwrite complete");
 
 
-			}
+			
 		}//end of if for outputLog
 		else {
 			throw std::runtime_error("Cannot open log.txt");
 		}//else if couldn't open file
 
-		//EscCheck_obj.join();
+
 
 		}//end of try
 		catch (std::runtime_error runtime) {		// managing file opening error
@@ -1781,49 +1424,12 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	
 
 		std::cout << "\nEnd of Program";
+		
 		system("pause>0"); // gets ride of the console extra text by pausing program execution at the very end
+		return 0;
 }	// End of main()
 
 
-void WriteToFile(const std::string  message, const std::string& file_path) {
-		// |mutex| is to protect access to |file| (which is shared across threads).
-		static std::mutex mutex;
-
-		// Lock |mutex| before accessing |file|.
-		std::lock_guard<std::mutex> lock(mutex);
-
-		// Try to open file.
-		std::ofstream file(file_path);
-		if (!file.is_open()) {
-			throw std::runtime_error("[runtime error] Cannot Open");
-		}
-
-		// Write |message| to |file|.
-		file << message << std::endl;
-
-}// end of WriteToFile
-void YELL(const std::string & message) {
-	std::cout << message << std::endl;
-}//end of YELL
-short RenderShortFromStringTimes100(const std::string & message) {
-	float temp;
-	short remp;
-	temp = std::stof(message);
-	remp = (temp * 100);
-	return remp;
-}// end of RenderShotFromStringTimes100
-short StringToShort(const std::string & message) {
-	short remp = -1;
-	int temp = -1;
-	temp = std::stoi(message);
-	if (temp >= SHRT_MAX || temp <= SHRT_MIN) {
-		throw(std::range_error("Trying to convert too large of a number!"));
-}
-	else {
-		remp = temp;
-}
-	return remp;
-}// end of StringToShort
 
  /*
 void WaitForEscape() {

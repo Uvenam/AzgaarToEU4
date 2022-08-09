@@ -9,7 +9,6 @@
 #include <vector>		// for storing varying data
 #include <mutex>				// for protecting file access
 #include <stdexcept>			// for exceptions
-#include "OpenAndEdit.h"
 #include <thread>		// for making sure esc ends program in the middle
 
 #include <memory>
@@ -33,7 +32,3 @@
 #include <codecvt>
 
 
-void WriteToFile(const std::string& message, const std::string& file_path);
-void YELL(const std::string& message);
-short RenderShortFromStringTimes100(const std::string& message);
-short StringToShort(const std::string& message);

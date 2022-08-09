@@ -53,3 +53,45 @@ void make_lowercase_any(std::wstring& data)
 	}
 
 }
+
+void WriteToFile(const std::string  message, const std::string& file_path) {
+	// |mutex| is to protect access to |file| (which is shared across threads).
+	static std::mutex mutex;
+
+	// Lock |mutex| before accessing |file|.
+	std::lock_guard<std::mutex> lock(mutex);
+
+	// Try to open file.
+	std::ofstream file(file_path);
+	if (!file.is_open()) {
+		throw std::runtime_error("[runtime error] Cannot Open");
+	}
+
+	// Write |message| to |file|.
+	file << message << std::endl;
+
+	mutex.unlock();
+
+}// end of WriteToFile
+void YELL(const std::string& message) {
+	std::cout << '\n' << message << std::endl;
+}//end of YELL
+short RenderShortFromStringTimes100(const std::string& message) {
+	float temp;
+	short remp;
+	temp = std::stof(message);
+	remp = (temp * 100);
+	return remp;
+}// end of RenderShotFromStringTimes100
+short StringToShort(const std::string& message) {
+	short remp = -1;
+	int temp = -1;
+	temp = std::stoi(message);
+	if (temp >= SHRT_MAX || temp <= SHRT_MIN) {
+		throw(std::range_error("Trying to convert too large of a number!"));
+	}
+	else {
+		remp = temp;
+	}
+	return remp;
+}// end of StringToShort
