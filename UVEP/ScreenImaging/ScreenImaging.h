@@ -1,7 +1,7 @@
 #pragma once
 #include "../UVEP/head.h"
 #include "../UVEP/VUCO.h"
-//#include "../UVEP/classes.h"
+#include "../UVEP/classes.h"
 // RPixel inherits all public members/methods of RPoint
 class RPixel {
 public:

@@ -1,6 +1,7 @@
 #pragma once
 #include "../UVEP/head.h"
 #include "../UVEP/VUCO.h"
+//#include "../UVEP/RScreenImage.h"
 
 class progressBar {			//##################################################################################
 	// https://www.youtube.com/watch?v=ayfCxgVStdQ&ab_channel=JacobSorber
@@ -99,10 +100,17 @@ public:
 	}
 
 };
-
+class XPoint {
+	// https://www.tutorialspoint.com/cplusplus/cpp_inheritance.htm
+public:
+	int x_pos, y_pos;
+	XPoint();
+	XPoint(int x_value, int y_value);
+};
 
 struct cell_info {
-	std::vector<  std::tuple<short, short>  > verticies;
+							// X  ,  Y
+	std::vector<XPoint> verticies;
 	int id;
 	short height;
 	short biome;
@@ -113,8 +121,9 @@ struct cell_info {
 	short culture;
 	short religion;
 	std::vector<int> neighbors;
-	void add_coord(short x_coord, short y_coord);
+	void add_coord(int x_coord, int y_coord);
 };
+
 
 class culture_namebase {	//##################################################################################
 
@@ -497,3 +506,7 @@ public:
 	//##################################################################################
 }; // end class				
 
+// Extra functions working with classes
+std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
+
+void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);

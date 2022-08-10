@@ -128,13 +128,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\UVEP\classes.cpp" />
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\UVEP\classes.h" />
     <ClInclude Include="..\UVEP\head.h" />
     <ClInclude Include="..\UVEP\RScreenImage.h" />
+    <ClInclude Include="..\UVEP\ScreenImaging\ScreenImaging.h" />
     <ClInclude Include="..\UVEP\VUCO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

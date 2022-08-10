@@ -18,14 +18,8 @@
     <ClCompile Include="testing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\UVEP\classes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\UVEP\classes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\UVEP\head.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -33,6 +27,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\UVEP\VUCO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UVEP\ScreenImaging\ScreenImaging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

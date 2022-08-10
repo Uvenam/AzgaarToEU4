@@ -3,12 +3,13 @@
 #include "../UVEP/globals.h"
 #include "../UVEP/classes.h"
 #include "../UVEP/VUCO.h"
+//#include "../UVEP/RScreenImage.h"
 
 // commit all, then push
-#define		VERSION_STAMP	"V 0.359"
+#define		VERSION_STAMP	"V 0.360"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
-#define		DEBUG	// for VUCO logging
+#define		DEBUG	// for VUCO logging and for ending pause
 
 
 
@@ -275,31 +276,51 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
-		int left_most = 0;
-		int right_most = 0;
-		int top_most = 0;
-		int bottom_most = 0;
-		std::tie(left_most, right_most, top_most, bottom_most) = ParseStringUpdateCells(all_cells, file_info);
-
-
-
-	// CONFIRMATION of obtaining cell info and correctly parsing
-	//	std::cout << "\n[INFO]There are " << all_cells.size() << " many cells";
-		//std::cout << "\n[INFO]As such, cell index is " << cell_index;
-
-	//	std::cout << "\nThe extents are:";
-	//	std::cout << "\n\t" << top_most;
-	//	std::cout << "\n" << left_most << "\t\t" << right_most;
-	//	std::cout << "\n\t" << bottom_most;
+		
+		std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
+		extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
 
 	// Have all cell info, time to transform into EU4 shape/dimensions
-		// Want to first shift all vertexes so that none are negative (i.e. use left_most for X, bottom_most for Y
-		// then stretch such that dist between extents = dist between desired dimension
+	/*
+	void TransformPoints (int desired_width, int desired_height, std::vector<cell_info>& all_cells
+							)
+	*/
+
+		/*
+		int desired_width;
+		int desired_height;
+		int tp_cell_count;
+		int tp_vertex_amount;
+		int tp_vertex_itr;
+		tp_cell_count = all_cells.size();
+
+		double horiz_stretch_factor = 
+			static_cast<double>(desired_width) / (std::get<0>(extents) + std::get<1>(extents));
+		double vertical_stretch_factor = 
+			static_cast<double>(desired_height) / (std::get<2>(extents) + std::get<3>(extents));
+
+
+		for (int tp_itr = 0; tp_itr < tp_cell_count; tp_itr++) {
+			tp_vertex_amount = all_cells[tp_itr].verticies.size();
+			for (tp_vertex_itr = 0; tp_vertex_itr < tp_vertex_amount; tp_vertex_itr++) {
+
+			}
+
+
+
+
+
+		}
+		*/
+		
 		/*
 		double horiz_stretch_factor = static_cast<double>desired_width/right_most;
 		double vertical_stretch_factor = static_cast<double>desired_height/top_most; 
-
 		*/
+
+	
+
+
 	// RETRIEVE EMBLEMS
 			// either read it via program and batch/series of files
 			// or ASK USER TO DOWNLOAD ALL STATE PNG AND RENAME TO STATE
@@ -366,8 +387,14 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	
 
 		std::cout << "\nEnd of Program";
+
+
+#ifdef DEBUG
+		system("pause>0");
+#else
+#endif
+
 		
-		system("pause>0"); // gets ride of the console extra text by pausing program execution at the very end
 		return 0;
 }	// End of main()
 

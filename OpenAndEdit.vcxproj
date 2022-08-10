@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="head.cpp" />
+    <ClCompile Include="corazon.cpp" />
     <ClCompile Include="UVEP\classes.cpp" />
     <ClCompile Include="UVEP\functions.cpp" />
     <ClCompile Include="UVEP\globals.cpp" />
