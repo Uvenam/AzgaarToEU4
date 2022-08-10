@@ -60,7 +60,11 @@ int main() {
 
 	pentagon.SortPoints();
 
+	IPixel cyan_pix(100,20,150);
+
 	RPixel red_pix(1.0f, 0.0f, 0.0f);
+
+	red_pix = cyan_pix;
 
 	//RasterizeTriangle_rewrite(&TopMid, &BotLeft, &BotRight, temp, &red_pix);
 
@@ -134,8 +138,8 @@ int main() {
 
 	DrawPolygon(&pentagon, &red_pix, temp);
 
-	red_pix.b = 1.0f;
-	red_pix.g = 1.0f;
+	//red_pix.b = 1.0f;
+	//red_pix.g = 1.0f;
 	//temp.RenderPixel(19, 19, &red_pix);
 
 	//temp.SimpleView();

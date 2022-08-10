@@ -323,3 +323,11 @@ void GenericOutput(std::vector<cell_info> all_cells, std::string output_file) {
 
 
 }
+
+void EnsureDirectory(std::string desired_dir) {
+	if (std::filesystem::create_directory(desired_dir))	// returns false if it exists, true if it doesn't
+	{
+		std::cout << '\n' << desired_dir << " created successfully!" << std::endl;
+	}
+	std::cout << '\n' << desired_dir << " directory exists" << std::endl;
+};

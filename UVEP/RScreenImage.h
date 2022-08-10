@@ -13,9 +13,48 @@ public:
 	RPixel(float r_ele, float g_ele, float b_ele)
 		:r(r_ele), g(g_ele), b(b_ele)
 	{};
-	~RPixel()
-	{};
+
 };
+
+class IPixel {
+public:
+	unsigned char r, g, b; // 1 single byte of info, 0 to 255
+
+
+	IPixel()
+		: r(0), g(0), b(0)
+	{};
+	IPixel(unsigned char r_ele, unsigned char g_ele, unsigned char b_ele)
+		:r(r_ele), g(g_ele), b(b_ele)
+	{};
+
+	// https://cplusplus.com/doc/tutorial/typecasting/
+	// conversion from A (constructor):
+	IPixel(const RPixel& x)
+		:r(static_cast<unsigned char>(x.r * 255.0f)), 
+		g(static_cast<unsigned char>(x.g * 255.0f)), 
+		b(static_cast<unsigned char>(x.b * 255.0f))
+	{};
+	// conversion from A (assignment):
+	IPixel& operator= (const RPixel& x) 
+	{ 
+		this->r = static_cast<unsigned char>(x.r * 255.0f);
+		this->g = static_cast<unsigned char>(x.g * 255.0f);
+		this->b = static_cast<unsigned char>(x.b * 255.0f);
+		return *this; 
+	};
+	// conversion to A (type-cast operator)
+	operator RPixel()
+	{
+		return RPixel(
+			static_cast<float>(this->r/255.0f), 
+			static_cast<float>(this->g/255.0f),
+			static_cast<float>(this->b/255.0f)
+		);
+	};
+};
+
+
 class RPoint {
 	// https://www.tutorialspoint.com/cplusplus/cpp_inheritance.htm
 public:
@@ -80,7 +119,10 @@ public:
 	int height = 0;
 	int width = 0;
 
+	std::vector<std::vector<IPixel>> rgb_grid;
+
 	std::vector<std::vector<RPixel>> grid;
+
 	ScreenRaster(int width_ele, int height_ele)
 		:height(height_ele), width(width_ele)
 	{
@@ -96,6 +138,24 @@ public:
 
 
 
+			}
+		}
+	};
+
+
+	void RGB_ScreenRaster(int width_ele, int height_ele) 
+
+	{
+		this->width = width_ele;
+		this->height = height_ele;
+
+
+		std::vector<IPixel> column;
+		IPixel white_space(0,0,0);
+		for (int x = 0; x < width; x++) {
+			rgb_grid.push_back(column);
+			for (int y = 0; y < height; y++) {
+				rgb_grid[x].push_back(white_space);
 			}
 		}
 	};
@@ -161,18 +221,18 @@ public:
 class Image {
 public:
 	Image(int width, int height)
-		:m_width(width), m_height(height), m_colors(std::vector<RPixel>(width* height))
+		:m_width(width), m_height(height), m_colors(std::vector<IPixel>(width* height))
 	{};
 	~Image()
 	{};
-	RPixel GetColor(int x, int y) const	// 1) const following ) only works for member functions, 2. the const following the ) means the implicit "this" pointer is const (i.e. this function WILL NOT BE ABLE TO CHANGE ANYTHING THAT IS NOT MUTABLE
+	IPixel GetColor(int x, int y) const	// 1) const following ) only works for member functions, 2. the const following the ) means the implicit "this" pointer is const (i.e. this function WILL NOT BE ABLE TO CHANGE ANYTHING THAT IS NOT MUTABLE
 	{
 		return m_colors[y * m_width + x];
 	};
 	void SetColor(const RPixel& color, int x, int y) {
-		m_colors[y * m_width + x].r = color.r;
-		m_colors[y * m_width + x].g = color.g;
-		m_colors[y * m_width + x].b = color.b;
+		m_colors[y * m_width + x] = color;
+		//m_colors[y * m_width + x].g = color.g;
+		//m_colors[y * m_width + x].b = color.b;
 	}
 	void Export(const char* path) {
 		std::ofstream f;
@@ -272,6 +332,8 @@ public:
 		f.write(reinterpret_cast<char*>(fileHeader), fileHeaderSize);
 		f.write(reinterpret_cast<char*>(informatinHeader), informationHeaderSize);
 
+
+
 		for (int y = 0; y < m_height; y++) {
 			for (int x = 0; x < m_width; x++) {
 				unsigned char b_ch = static_cast<unsigned char>(GetColor(x, y).b * 255.0f);
@@ -313,7 +375,7 @@ public:
 
 	int m_width;
 	int m_height;
-	std::vector<RPixel> m_colors;
+	std::vector<IPixel> m_colors;
 
 };
 

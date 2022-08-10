@@ -18,3 +18,6 @@ std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& al
 void ReadFromPlaceInto(std::string wanted_file, std::string& file_info);
 
 void GenericOutput(std::vector<cell_info> all_cells,std::string output_file);
+
+void EnsureDirectory(std::string desired_dir);
+
