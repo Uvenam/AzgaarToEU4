@@ -27,6 +27,12 @@
     <ClCompile Include="UVEP\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UVEP\ScreenImaging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UVEP\RPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UVEP\classes.h">
@@ -39,6 +45,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UVEP\head.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UVEP\ScreenImaging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UVEP\EU4_INFO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UVEP\RPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

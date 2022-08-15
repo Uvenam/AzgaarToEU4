@@ -1,7 +1,6 @@
 #pragma once
 #include "../UVEP/head.h"
 
-
 void make_uppercase(std::string& data);
 void make_lowercase(std::string& data);
 int yn_isVowel(char possible_vowel);
@@ -18,4 +17,6 @@ void ReadFromPlaceInto(std::string wanted_file, std::string& file_info);
 
 
 void EnsureDirectory(std::string desired_dir);
+
+
 

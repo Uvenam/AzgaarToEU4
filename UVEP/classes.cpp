@@ -1,5 +1,5 @@
 #include "../UVEP/classes.h"
-#include "../UVEP/functions.h"
+
 
 // progressBar Class
 /*############################################################################################################*/
@@ -66,9 +66,9 @@
 
 // cell_info Class
 /*############################################################################################################*/
-	void cell_info::add_coord(int x_coord, int y_coord) {
+	void cell_info::add_coord( int x_coord, int y_coord ) {
 		//this->verticies.push_back(std::make_tuple(x_coord, y_coord));
-		this->verticies.push_back(XPoint(x_coord, y_coord));
+		this->verticies.push_back( RPoint( x_coord, y_coord ) );
 	}
 /*############################################################################################################*/
 
@@ -841,21 +841,9 @@ void culture_namebase::fn_getDias(std::vector<std::string> original_list)
 } // end funct
 /*############################################################################################################*/
 
-// XPoint class
-/*#########################################################################################################*/
-
-	XPoint::XPoint()
-		: x_pos(0), y_pos(0)
-	{}
-	XPoint::XPoint(int x_value, int y_value)
-		: x_pos(x_value), y_pos(y_value)
-	{}
 
 
-
-/*#########################################################################################################*/
-
-// Extra Functions working with relevant classes
+	// Extra Functions working with relevant classes
 	std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data) {
 
 		std::cout << "\nParsing string, updating cells...";
@@ -949,13 +937,6 @@ void culture_namebase::fn_getDias(std::vector<std::string> original_list)
 				if (Xcoord > right_most) { right_most = Xcoord; }
 				if (Ycoord < bottom_most) { bottom_most = Ycoord; }
 				if (Ycoord > top_most) { top_most = Ycoord; }
-
-
-
-
-				//std::cout << "\nVertex " << (vertex_itr) << ": " << std::endl;
-				//std::cout << std::get<0>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
-				//std::cout << std::get<1>(all_cells[cell_index].verticies[vertex_itr]) << std::endl;
 				vertex_itr++;
 
 			}
@@ -1063,6 +1044,39 @@ void culture_namebase::fn_getDias(std::vector<std::string> original_list)
 
 
 	}
+
+    void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents )
+    {
+		int tp_cell_count;
+		int tp_vertex_amount;
+		int tp_vertex_itr;
+		tp_cell_count = all_cells.size();
+
+		int horiz_shift_addend = std::abs( std::get<0>( extents ) );
+		int vertical_shift_addend = std::abs( std::get<3>( extents ) );
+
+		double horiz_stretch_factor =
+			static_cast<double>(desired_width) / (horiz_shift_addend + std::get<1>( extents ));
+		double vertical_stretch_factor =
+			static_cast<double>(desired_height) / (vertical_shift_addend + std::get<2>( extents ));
+
+
+		for (int tp_itr = 0; tp_itr < tp_cell_count; tp_itr++) {
+			tp_vertex_amount = all_cells[tp_itr].verticies.size();
+			for (tp_vertex_itr = 0; tp_vertex_itr < tp_vertex_amount; tp_vertex_itr++) {
+				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos += horiz_shift_addend;
+				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos *= horiz_stretch_factor;
+				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos += vertical_shift_addend;
+				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos *= vertical_stretch_factor;
+
+			}
+
+
+
+
+
+		}
+    }
 
 
 

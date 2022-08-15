@@ -18,18 +18,36 @@
     <ClCompile Include="testing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\UVEP\ScreenImaging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UVEP\classes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UVEP\functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UVEP\RPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\UVEP\head.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\UVEP\RScreenImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\UVEP\VUCO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\UVEP\ScreenImaging\ScreenImaging.h">
+    <ClInclude Include="..\UVEP\ScreenImaging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UVEP\classes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UVEP\functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UVEP\RPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

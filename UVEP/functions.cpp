@@ -54,7 +54,7 @@ void make_lowercase_any(std::wstring& data)
 
 }
 
-void WriteToFile(const std::string  message, const std::string& file_path) {
+void WriteToFile(const std::string&  message, const std::string& file_path) {
 	// |mutex| is to protect access to |file| (which is shared across threads).
 	static std::mutex mutex;
 

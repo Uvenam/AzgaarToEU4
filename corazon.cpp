@@ -3,10 +3,11 @@
 #include "../UVEP/globals.h"
 #include "../UVEP/classes.h"
 #include "../UVEP/VUCO.h"
-//#include "../UVEP/RScreenImage.h"
+#include "../UVEP/ScreenImaging.h"
+#include "../UVEP/RPoint.h"
 
 // commit all, then push
-#define		VERSION_STAMP	"V 0.360"
+#define		VERSION_STAMP	"V 0.370"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
@@ -258,6 +259,7 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 		EnsureDirectory(dir_azgaar);
 		EnsureDirectory(dir_cells);
 		EnsureDirectory(dir_states);
+		EnsureDirectory( dir_EU4 );
 
 		
 
@@ -276,54 +278,14 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 
 
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
-		
 		std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
 		extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
 
 	// Have all cell info, time to transform into EU4 shape/dimensions
-	/*
-	void TransformPoints (int desired_width, int desired_height, std::vector<cell_info>& all_cells
-							)
-	*/
+	
+		TransformPoints( 5632, 2048, all_cells, extents );
+	
 
-		
-		int desired_width = 5632;
-		int desired_height = 2048;
-		int tp_cell_count;
-		int tp_vertex_amount;
-		int tp_vertex_itr;
-		tp_cell_count = all_cells.size();
-
-		int horiz_shift_addend = std::abs(std::get<0>(extents));
-		int vertical_shift_addend = std::abs(std::get<3>(extents));
-
-		double horiz_stretch_factor = 
-			static_cast<double>(desired_width) / (horiz_shift_addend + std::get<1>(extents));
-		double vertical_stretch_factor = 
-			static_cast<double>(desired_height) / (vertical_shift_addend + std::get<2>(extents));
-
-
-		for (int tp_itr = 0; tp_itr < tp_cell_count; tp_itr++) {
-			tp_vertex_amount = all_cells[tp_itr].verticies.size();
-			for (tp_vertex_itr = 0; tp_vertex_itr < tp_vertex_amount; tp_vertex_itr++) {
-				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos += horiz_shift_addend;
-				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos *= horiz_stretch_factor;
-				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos += vertical_shift_addend;
-				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos *= vertical_stretch_factor;
-
-			}
-
-
-
-
-
-		}
-		
-		
-		/*
-		double horiz_stretch_factor = static_cast<double>desired_width/right_most;
-		double vertical_stretch_factor = static_cast<double>desired_height/top_most; 
-		*/
 
 	
 
@@ -363,7 +325,66 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 		std::cout << "Unknown exception\n";
 	}//end of any catch
 
+
+
+// HAVE TO GENERATE SEABOARD (make grid of hexagons that span the world, write them first, have them "replace" the cells that they take up and their neighbors (so land cells that border ocean cells (i.e. have ocean cells as neighbors) will instead have this new cell as a neighbor (or not even a cell, maybe have it as a sea province)
+// could have centers equally spaced through the map and make a new DrawHexagonCenteredHere()
+// HAVE TO DRAW SEABOARD BEFORE NON-OCEAN PROVINCES
+
+// HAVE TO MERGE LAND CELLS INTO PROVINCES (most likely 2 or 3, average size straight out of AZGAAR and into rendering is ~100 px. Avg size in EU4 is ~200 Europe, ~350 elsewhere
+// prolly want to track the size of the various polygons that are rendered and centroids
+// DEAD SPACE (e.g. Greenland, Australia, etc.)
+
 // CREATING THE IMAGE
+
+// FOLLOWING IS FOR EXAMPLE PURPOSES! FIRSTLY: PROVINCE ID NEEDS TO BE UNIQUELY MAPPED TO COLOR_RGB TO ENUSRE THAT THERE ARE NO REPEATS
+
+// NOTE THAT THE VERTICIES CONTAIN A DUPLICATE VALUE OF THE FIRST COORD INITIALLY PUT INTO THEM (just the way it is output from AZGAAR). IT WILL NOT BE USED IN RASTERIZATION because the DrawPolygon ignores duplicates (effectively)
+	std::cout << "\nCreating image";
+	std::random_device rd; // obtain random number from hardware
+	std::mt19937 gen(rd()); // seed generator
+	std::uniform_int_distribution<> distrib(0, 255); //define the range // distrib(gen)
+	ScreenRaster EU4_MAP(5632, 2048);
+	std::cout << "\nGenerating polygonmap...";
+	for (int dp_itr = 0; dp_itr < all_cells.size()-1; dp_itr++) {
+			IPixel color_rgb(distrib(gen), distrib(gen), distrib(gen));
+
+			//IPixel land( 0xFFFFFF );
+			//IPixel water( 0x000FFF );
+
+			RPoly temp_poly;
+			//RPoly temp_poly2;									// TEMP
+			temp_poly.points = all_cells[dp_itr].verticies;
+
+
+			if (all_cells[dp_itr].biome == 0) {
+				color_rgb.b = 255;
+				color_rgb.g = 255;
+			}
+			else {
+				color_rgb.b = 0;
+				color_rgb.g = 125;
+			}
+
+
+			//temp_poly2.points = all_cells[dp_itr+1].verticies; // TEMP, ALSO CHANGE size()-1 to size()
+			//temp_poly.MergePoly(temp_poly2);
+			DrawPolygon(&temp_poly, &color_rgb, EU4_MAP);
+	}
+
+	// GenerateCoastalPolygons
+	// GenerateSeaboardPolygons
+	// If we draw a hexagon grid
+
+
+
+
+
+	Image EU4_MAP_BMP(5632, 2048);
+	std::cout << "\nMapping polygons to EU4 Map...";
+	EU4_MAP_BMP.MapRaster(EU4_MAP);
+	std::cout << "\nCreating bmp...";
+	EU4_MAP_BMP.Export("eu4_map.bmp");
 
 		// Anbennar map:
 		// province.bmp is 5632 x 2048

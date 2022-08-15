@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\O\A\OpenAndEdit\UVEP;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,12 +129,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\UVEP\classes.cpp" />
+    <ClCompile Include="..\UVEP\functions.cpp" />
+    <ClCompile Include="..\UVEP\RPoint.cpp" />
+    <ClCompile Include="..\UVEP\ScreenImaging.cpp" />
     <ClCompile Include="testing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\UVEP\classes.h" />
+    <ClInclude Include="..\UVEP\functions.h" />
     <ClInclude Include="..\UVEP\head.h" />
-    <ClInclude Include="..\UVEP\RScreenImage.h" />
-    <ClInclude Include="..\UVEP\ScreenImaging\ScreenImaging.h" />
+    <ClInclude Include="..\UVEP\RPoint.h" />
+    <ClInclude Include="..\UVEP\ScreenImaging.h" />
     <ClInclude Include="..\UVEP\VUCO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,8 @@
 #pragma once
 #include "../UVEP/head.h"
 #include "../UVEP/VUCO.h"
+#include "../UVEP/RPoint.h"
+#include "../UVEP/functions.h" // for definitions
 //#include "../UVEP/RScreenImage.h"
 
 class progressBar {			//##################################################################################
@@ -100,17 +102,8 @@ public:
 	}
 
 };
-class XPoint {
-	// https://www.tutorialspoint.com/cplusplus/cpp_inheritance.htm
-public:
-	int x_pos, y_pos;
-	XPoint();
-	XPoint(int x_value, int y_value);
-};
-
 struct cell_info {
-							// X  ,  Y
-	std::vector<XPoint> verticies;
+	std::vector<RPoint> verticies;
 	int id;
 	short height;
 	short biome;
@@ -510,3 +503,5 @@ public:
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
 
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
+
+void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );

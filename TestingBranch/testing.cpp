@@ -1,9 +1,12 @@
 #include "../UVEP/head.h"
-//#include "cell_class.h" // https://www.learncpp.com/cpp-tutorial/class-code-and-header-files/
-//#include "../UVEP/classes.h"
-#include "../UVEP/RScreenImage.h"
+#include "../UVEP/functions.h"
+//#include "../UVEP/globals.h"
+#include "../UVEP/classes.h"
 #include "../UVEP/VUCO.h"
+#include "../UVEP/ScreenImaging.h"
+#include "../UVEP/RPoint.h"
 
+//#include "cell_class.h" // https://www.learncpp.com/cpp-tutorial/class-code-and-header-files/
 #include <utility>
 #include <type_traits>
 
@@ -50,25 +53,55 @@ int main() {
 	RPoint BottomLeftMid(width * 0.25, 0);
 	RPoint BottomRightMid(width * 0.75, 0);
 
-	RPoly pentagon;
+	RPoly T1;
+	RPoly T2;
+	RPoly T3;
 
-	pentagon.points.push_back(TopMid);
-	pentagon.points.push_back(BotLeft);
-	pentagon.points.push_back(BotRight);
-	pentagon.points.push_back(BottomLeftMid);
-	pentagon.points.push_back(BottomRightMid);
+	T1.points.push_back(TopMid);
+	T1.points.push_back(BotLeft);
+	T1.points.push_back(BotRight);
 
-	pentagon.SortPoints();
+	T2.points.push_back( TopMid );
+	T2.points.push_back(BottomLeftMid);
+	T2.points.push_back(BottomRightMid);
 
-	IPixel cyan_pix(100,20,150);
 
-	RPixel red_pix(1.0f, 0.0f, 0.0f);
+	
 
-	red_pix = cyan_pix;
+	//IPixel cyan_pix(0,250,250);
+
+	
+	IPixel red_pix( 1.0f, 0.0f, 0.0f );
+
+	IPixel green_pix( 0x00FF00 );
+
+
+
+	//red_pix = cyan_pix;
 
 	//RasterizeTriangle_rewrite(&TopMid, &BotLeft, &BotRight, temp, &red_pix);
 
 // TODO: Given a set of points on a convex polygon, order them based on distance to the next point. It does not matter which point starts
+
+	std::cout << "\nDrawing Polygon";
+	
+	DrawPolygon( &T1, &red_pix, temp );
+	//DrawPolygon( &T2, &green_pix, temp );
+
+	//red_pix.b = 1.0f;
+	//red_pix.g = 1.0f;
+	//temp.RenderPixel(19, 19, &red_pix);
+
+	//temp.SimpleView();
+	std::cout << "\nEmplacing in image";
+	image.MapRaster( temp );
+
+	std::cout << "\nCreating file...";
+	image.Export( "example_image.bmp" );
+
+	std::cout << "Program Finish" << std::endl;
+
+	//ScreenRaster holding(10, 10);
 
 	// Option 1:
 		// Assign a point (point_A here) order 0
@@ -135,22 +168,6 @@ int main() {
 
 
 
-
-	DrawPolygon(&pentagon, &red_pix, temp);
-
-	//red_pix.b = 1.0f;
-	//red_pix.g = 1.0f;
-	//temp.RenderPixel(19, 19, &red_pix);
-
-	//temp.SimpleView();
-
-	image.MapRaster(temp);
-
-	image.Export("example_image.bmp");
-
-	std::cout << "Program Finish" << std::endl;
-
-	//ScreenRaster holding(10, 10);
 
 
 
