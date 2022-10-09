@@ -17,6 +17,3 @@ extern const std::vector<std::string> EU4_Government_Forms_Theocracy;
 extern std::string example_data;
 extern const std::string example_snippet;
 
-inline std::string AZGAAR_DIR = "AZGAAR";
-inline std::string EU4_DIR = "AZGAAR_CONVERTED";
-inline std::string COUNTRIES_DIR = "/countries";

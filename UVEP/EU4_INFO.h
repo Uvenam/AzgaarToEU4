@@ -6,8 +6,10 @@ class IPixel;
 
 class Province {
 public:
+	// Vector of ID's that come from all_cells
+
 	// info for provinces.bmp
-		//RPoly shape;
+		//RPoly shape; // make a vector of polygons, since attaching two convex polygons may result in one that is concave and thus render differently compared to what is expected
 	
 	// info for adjacencies.csv
 
@@ -19,7 +21,7 @@ public:
 	Y – From the width of your map, take the position within your image editor and subtract it from the width (i.e. 2048 – 755). This will give you the value you need to add to the positions.txt (1293). Essentially the y co-ordinate is flipped. */
 
 	// info for definition.csv
-	int id;
+	int prov_id;	
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;

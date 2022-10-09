@@ -385,7 +385,7 @@ void DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
 {
 	int polysize = poly->points.size();
 	if (polysize == 0) {
-		VUCO(1, "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO");
+		VUCO("DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO",1);
 		return;
 	}
 	int pt_track = 0;

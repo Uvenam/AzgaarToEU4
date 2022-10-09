@@ -1,6 +1,8 @@
 #pragma once
 #include "../UVEP/head.h"
 
+#define DEBUG
+
 template <class ST>
 void VUCO(std::string const& where_ele, ST& message)
 {
@@ -12,7 +14,7 @@ void VUCO(std::string const& where_ele, ST& message)
 #endif
 }
 template <class ST>
-void VUCO(bool act, std::string const& where_ele, ST& message)
+void VUCO(std::string const& where_ele, ST& message, bool act)
 {
 #ifdef DEBUG
 	// write message to std::cerr

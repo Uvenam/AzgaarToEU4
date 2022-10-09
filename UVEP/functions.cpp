@@ -94,7 +94,33 @@ short StringToShort(const std::string& message) {
 		remp = temp;
 	}
 	return remp;
-}// end of StringToShort
+}
+std::string OpenFileReturnString( std::string desired_dir )
+{
+	// Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it
+	int ONLY_ONE_ITEM = 0;
+	std::string str_path;
+	//std::fstream fileStream;
+	for (const auto& entry : std::filesystem::directory_iterator( desired_dir )) {
+		//std::cout << '\n' << entry.path();
+		str_path = entry.path().string();
+		ONLY_ONE_ITEM++;
+		//std::cout << "\nCONVERTED TO STRING: " << str_path;
+		//fileStream.open(entry.path(),std::ios::in);
+		//if (fileStream) {
+		//	std::cout << "SUCCESS";
+		//}
+		//else {
+		//	std::cout << "FAILURE";
+		//}
+		//fileStream.close();
+	}
+	if (ONLY_ONE_ITEM > 1) {
+		throw (std::exception("MORE THAN ONE ITEM IN THE FOLDER!"));
+	}
+	return str_path;
+}
+// end of StringToShort
 
 
 void ReadFromPlaceInto(std::string wanted_file, std::string& file_info) {
@@ -116,7 +142,38 @@ void ReadFromPlaceInto(std::string wanted_file, std::string& file_info) {
 
 
 }
+std::vector<std::string> ReadFromLineByLine( std::string wanted_file ) {
 
+		bool act = FALSE;
+		std::string nm = "ReadFromLbL";
+
+
+
+		VUCO( nm, "Creating vector...", act );
+		std::vector<std::string> every_file_line;
+		VUCO( nm, "Creating filestream...", act );
+		std::ifstream fileStream;
+		VUCO( nm, "Opening file...", act );
+		fileStream.open( wanted_file, std::ios::in );	// read contents (don't want to output to this file)
+		
+		if (fileStream) {
+			VUCO( nm, "File Opened", act );
+			VUCO( nm, "Get each line...", act );
+			//int i = 0;
+			for (std::string line = ""; std::getline(fileStream, line);) {
+				//std::cout << "\nLine " << i++ << ":";
+				//std::cout << line;
+				every_file_line.push_back( line );
+			}// end of for loop
+
+		}//end of if for fileStream
+		else {		// couldn't open file, some sort of error
+			throw std::runtime_error( "Cannot open file" );
+		}//couldn't open fileStream else
+
+		return every_file_line;
+
+}
 
 
 void EnsureDirectory(std::string desired_dir) {

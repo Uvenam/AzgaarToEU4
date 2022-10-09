@@ -13,7 +13,6 @@
 #define		DEBUG	// for VUCO logging and for ending pause
 
 
-
 /*
 void make_uppercase(std::string& data)
 {
@@ -72,15 +71,20 @@ void make_lowercase_any(std::wstring& data)
 */
 
 
-
 // namespace alias (aka can type this instead of full namespace path)
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
 
-
-
-
 // CRTL M CRTL H to collapse section
+
+
+
+struct settings {
+
+
+
+
+};
 
 //static std::exception_ptr teptr = nullptr;
 // FOR ESC EXIT
@@ -93,160 +97,40 @@ DWORD WINAPI CheckEscape(LPVOID lpParam) {
 
 }
 
+inline std::string AZGAAR_DIR = "AZGAAR";
+inline std::string EU4_DIR = "AZGAAR_CONVERTED";
+inline std::string COUNTRIES_DIR = "/countries";
+
+const std::string dir_base = "base";
+const std::string dir_azgaar = "AZGAAR";
+const std::string dir_cells = dir_azgaar + "/" + "PLACE_CELL_GEOJSON_HERE";
+const std::string dir_states = dir_azgaar + "/" + "PLACE_STATES_CSV_HERE";
+const std::string dir_cultures = dir_azgaar + "/" + "PLACE_CULTURES_CSV_HERE";
+const std::string dir_namebase = dir_azgaar + "/" + "PLACE_NAMEBASE_TXT_HERE";
+const std::string dir_rivers = dir_azgaar + "/" + "PLACE_RIVERS_GEOJSON_HERE";
+
+std::string dir_EU4 = "EU4_MOD";
+std::string dir_countries = dir_EU4 + "/" + "countries";
+
+
+const std::string cell_file = "cell_map.geojson";
+const std::string cell_file_t = "cell_map_t.geojson";
+const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
 int main() {
 	// FOR ESC EXIT
 	CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);
 	// Example Info
-	//Copy
-	/*
-	{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-40.16,51.19],[-42.53,52.2],[-44.21,54.22],[-44.66,57.25],[-44.55,58.26],[-44.1,58.6],[-41.17,58.26],[-36.56,52.65],[-38.14,51.53],[-40.16,51.19]]]},"properties":{"id":1,"height":-29,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[11,10,9,7,0,2,12]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-35.44,52.65],[-36.56,52.65],[-41.17,58.26],[-34.31,60.84],[-33.97,60.5],[-34.65,52.99],[-35.44,52.65]]]},"properties":{"id":2,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[13,12,1,3]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-30.6,51.76],[-34.65,52.99],[-33.97,60.5],[-27.45,58.04],[-28.57,52.43],[-28.8,52.2],[-30.6,51.76]]]},"properties":{"id":3,"height":-55,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[30,13,2,4,14]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-19.91,57.36],[-22.61,52.32],[-26.33,51.76],[-28.57,52.43],[-27.45,58.04],[-24.52,59.94],[-19.91,57.36]]]},"properties":{"id":4,"height":-88,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[16,15,14,3]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-55.12,47.94],[-65.7,49.29],[-67.5,52.99],[-63.79,56.02],[-56.92,56.35],[-54.9,48.17],[-55.12,47.94]]]},"properties":{"id":5,"height":-88,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[19,18,17,6]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-52.76,48.5],[-54.9,48.17],[-56.92,56.35],[-56.25,56.8],[-50.62,52.65],[-50.4,51.64],[-52.76,48.5]]]},"properties":{"id":6,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[8,19,5,0,7]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-47.25,49.85],[-50.4,51.64],[-50.62,52.65],[-44.66,57.25],[-44.21,54.22],[-47.25,49.85]]]},"properties":{"id":7,"height":-55,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[9,8,6,0,1]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-48.26,47.38],[-50.06,46.93],[-52.76,48.5],[-50.4,51.64],[-47.25,49.85],[-47.14,48.84],[-48.26,47.38]]]},"properties":{"id":8,"height":-70,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[22,21,19,6,7,9]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-45.56,48.17],[-47.14,48.84],[-47.25,49.85],[-44.21,54.22],[-42.53,52.2],[-43.42,48.62],[-45.56,48.17]]]},"properties":{"id":9,"height":-9,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[24,22,8,7,1,10]}},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-40.16,51.19],[-41.17,47.27],[-43.42,48.62],[-42.53,52.2],[-40.16,51.19]]]},"properties":{"id":10,"height":-9,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,11,24,9]}}]}
-	*/
-
-
-	//Searching for
-	/*
-	Need to search for
-		{"type":"Feature","geometry":{"type":"Polygon","coordinates":
-	Extract the data from
-		[	[
-		[-16.76,42.56],[-17.21,42.67],[-20.25,45.48],[-19.58,48.95],[-9.23,51.87],[-4.95,49.74],[-4.5,49.4],[-9.34,45.92],[-16.76,42.56]
-		]	]
-	and
-		,"properties":{"id":1,"height":-29,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[11,10,9,7,0,2,12]}}
-	Put into
-	*/
-
-	// storage of verticies and properties of a cell from .geojson file
-
-
-	// to create an item
-	cell_info C1;
 	// the main holder of all the cells:
 	std::vector<cell_info>	all_cells;
 	//	all_cells[0].id = 0;					// can only modify that vector element when its been created
 	//	C1.verticies.push_back(std::tuple<short, short>(-16.6, 17.7));	// how to add verticies
 	//	C1.add_coord(5, 5);
 
-		// C++ doesn't support lookbehind, need to update those with (?<=)
-
-		//Regex semi-defines
-		/*
-		 Regex for capturing entire section
-					((?<="coordinates":).*?(?=\}\}))
-			 Rgex for capturing entire section with ending }}
-					((?<="coordinates":).*?(\}\}))
-			 Regex for capturing Verticies, but also captures neighbors
-					((?<=\[)[0-9,\.-]+(?=\]))
-		 Regex for capturing X and Y as two separate groups for between []
-				\[([\-0-9\.]+)(?:,)([\-0-9\.]+)(?=\])
-			 Rgex for capturing all verticies, though they are not separated
-					((?<=\[\[)[0-9\]\[,\.-]+(?=\]\]))
-			 Regex for matching the properties unseparated
-					((?<=\{)[a-zA-Z0-9\,\"\:\[\]-]+(?=\}))
-		*/
-
-	//std::smatch fetched_data;	// whenever regex returns results, they are a string and need converted
-	//short Xcoord = -1;
-	//short Ycoord = -1;
-
-	// fetched_data[0] will be the entire match, fetched_data[1] will be the first subsection
-	// will be returned as str (prolly) that needs converted to int/float
-
-#if 0
-	// In order to examine all matches within the target sequence, std::regex_search may be called in a loop, restarting each time from m[0].second of the previous call. std::regex_iterator offers an easy interface to this iteration.
-	// 
-	// Example regex ( https://stackoverflow.com/questions/29321249/regex-grouping-matches-with-c-11-regex-library )
-	std::string s{ R"(
-t?B:Username!Username@Username.tcc.domain.com Connected
-t?B:Username!Username@Username.tcc.domain.com WEBMSG #Username :this is a message
-t?B:Username!Username@Username.tcc.domain.com Status: visible
-)" };
-
-	std::regex rgx("WEBMSG #([a-zA-Z0-9]+) :(.*)");
-	std::smatch matches;
-
-	if (std::regex_search(s, matches, rgx)) {
-		std::cout << "Match found\n";
-
-		for (size_t i = 0; i < matches.size(); ++i) {
-			std::cout << i << ": '" << matches[i].str() << "'\n";
-		}
-	}
-	else {
-		std::cout << "Match not found\n";
-	}
-
-	// Got all the info wanted, time to calculate information
-	// Want to iteratively search string for individual cell info
-	// Examples
-			/*
-			std::regex rgx("[0-9]+", std::regex_constants::extended | std::regex_constants::icase);
-			std::smatch matches;
-			std::smatch fetched_unstringed;
-			// following only does it once, makes one match and the following are submatches.
-			if (std::regex_search(example_data, matches, rgx)) {
-				std::cout << "Match found\n";
-
-				for (size_t i = 0; i < matches.size(); ++i) {
-					std::cout << i << ": '" << matches[i].str() << "'\n";
-				}
-			}
-			else {
-				std::cout << "Match not found\n";
-			}
-			*/
-			/*
-			// https://www.youtube.com/watch?v=_79j_-2xMrQ&ab_channel=BoQian
-			std::sregex_iterator pos(example_data.cbegin(), example_data.cend(), exp);
-			std::sregex_iterator end;	// Default constructor defines past-the-end iterator
-			while (pos != end) {
-				for (size_t b = 0; b < pos->size(); b++)
-					std::cout << "Matched " << b << pos->str(b) << std::endl;
-
-				pos++;
-			}
-			*/
-			/*
-			std::sregex_token_iterator pos2(example_data.cbegin(), example_data.cend(), exp, 0);
-			std::sregex_token_iterator end2;
-			while (pos2 != end2) {
-				std::cout << "FF SubMatched: " << pos2->str() << std::endl;
-				pos2++;
-			}
-			*/
-#endif
-
-
-
-
-	//const std::string wanted_file = "C:/Desktop/AZGAAR_to_EU4/OpenAndEdit/infohere/expa.txt"; // works for explicit
-	// Create a directory
-	const std::string dir_base = "base";
-	const std::string dir_azgaar = "AZGAAR";
-	const std::string dir_cells = dir_azgaar + "/" + "PLACE_CELL_GEOJSON_HERE";
-	const std::string dir_states = dir_azgaar + "/" + "PLACE_STATES_CSV_HERE";
-	const std::string dir_cultures = dir_azgaar + "/" + "PLACE_CULTURES_CSV_HERE";
-	const std::string dir_namebase = dir_azgaar + "/" + "PLACE_NAMEBASE_TXT_HERE";
-	const std::string dir_rivers = dir_azgaar + "/" + "PLACE_RIVERS_GEOJSON_HERE";
-
-	std::string dir_EU4 = "EU4_MOD";
-	std::string dir_countries = dir_EU4 + "/" + "countries";
-
-
-
-	const std::string cell_file = "cell_map.geojson";
-	const std::string cell_file_t = "cell_map_t.geojson";
-	const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
 	std::string file_info;
-
-
 	std::string CellNeighbor_str;
 	std::fstream fileStream;
-
-	// The .exe will create a subdirectory to its hosting folder, putting this file named file_name in there
-	// This process is relative
 
 	std::cout << VERSION_STAMP << std::endl;
 
@@ -255,10 +139,16 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	try {
 
 // First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be places in EU4
-
+		// First, have to ensure top  folder directory
 		EnsureDirectory(dir_azgaar);
+		// then can create sub directories inside of it
 		EnsureDirectory(dir_cells);
+		std::string cell_path;
+		// Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it
+
+		cell_path = OpenFileReturnString( dir_cells );
 		EnsureDirectory(dir_states);
+		// EU4 top  folder directory
 		EnsureDirectory( dir_EU4 );
 
 		
@@ -272,10 +162,10 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 // should do a search for a cell_file that would come from AZGAAR and be placed in the AZGAAR directory.
 // should also do this for every other possible file (e.g. States.csv, and so on. Issue is that their names will be long strings of info and end in states.csv or something similar)
 		
-		std::string wanted_file = dir_azgaar + "/" + cell_file;
+		//std::string wanted_file = dir_azgaar + "/" + cell_file;
 // After ensuring directories exist, want to start with reading from AZGAAR cell info
-		ReadFromPlaceInto(wanted_file, file_info);
-
+		ReadFromPlaceInto(cell_path, file_info);
+		std::cout << "\nRead from " << cell_path;
 
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
 		std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
@@ -285,9 +175,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 	
 		TransformPoints( 5632, 2048, all_cells, extents );
 	
-
-
-	
+		// Create Map using ID of all_cell element and correspond it to the cell_info
+		std::unordered_map <int, cell_info> indexed_cells;
+		int all_cells_size = all_cells.size();
+		for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
+			indexed_cells.emplace( all_cells[t_itr].id, all_cells[t_itr] );
+		}
+		
 
 
 	// RETRIEVE EMBLEMS
@@ -330,16 +224,13 @@ t?B:Username!Username@Username.tcc.domain.com Status: visible
 // HAVE TO GENERATE SEABOARD (make grid of hexagons that span the world, write them first, have them "replace" the cells that they take up and their neighbors (so land cells that border ocean cells (i.e. have ocean cells as neighbors) will instead have this new cell as a neighbor (or not even a cell, maybe have it as a sea province)
 // could have centers equally spaced through the map and make a new DrawHexagonCenteredHere()
 // HAVE TO DRAW SEABOARD BEFORE NON-OCEAN PROVINCES
-
 // HAVE TO MERGE LAND CELLS INTO PROVINCES (most likely 2 or 3, average size straight out of AZGAAR and into rendering is ~100 px. Avg size in EU4 is ~200 Europe, ~350 elsewhere
 // prolly want to track the size of the various polygons that are rendered and centroids
 // DEAD SPACE (e.g. Greenland, Australia, etc.)
-
 // CREATING THE IMAGE
-
 // FOLLOWING IS FOR EXAMPLE PURPOSES! FIRSTLY: PROVINCE ID NEEDS TO BE UNIQUELY MAPPED TO COLOR_RGB TO ENUSRE THAT THERE ARE NO REPEATS
-
 // NOTE THAT THE VERTICIES CONTAIN A DUPLICATE VALUE OF THE FIRST COORD INITIALLY PUT INTO THEM (just the way it is output from AZGAAR). IT WILL NOT BE USED IN RASTERIZATION because the DrawPolygon ignores duplicates (effectively)
+
 	std::cout << "\nCreating image";
 	std::random_device rd; // obtain random number from hardware
 	std::mt19937 gen(rd()); // seed generator

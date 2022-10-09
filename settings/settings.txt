@@ -1,0 +1,39 @@
+[]Customization: User should be able to have control over map generation{	
+>Graphical interface? Or text editor?
+> Choice list:
+* HRE EQUIVALENT? What country will be representing the HRE mechanics?
+HRE COUNTRY:
+* HRE BREAKDOWN? Breakdown that tag into single province tags with one or two largertags?
+HRE BREAKDOWN Y/N:
+* MANDATE OF HEAVEN? What country will be representing the Mandate of Heaven mechanics?
+MANDATE COUNTRY:
+* SHOUGNATE? What country will be representing the Shogun mechanics?
+SHOGUN COUNTRY:
+* SHOGUNATE BREAKDOWN? Breakdown that tag into single province tags
+SHOGUN BREAKDOWN Y/N:
+* BREAKDOWN TO NUMBER? Breakdown larger tags into smaller ones
+GENERAL BREAKDOWN NUMBER:
+* BREAKDOWN TO DEFINE? Breakdown specific tags into smaller ones
+GENERAL BREAKDOWN COUNTRIES:
+* START TIME? Convert to 1444 or use time from file
+START TIME:
+* BREAKDOWN: FIRST COUNTRY INTO SECOND DUCHY
+GENERAL BREAKDOWN LEVEL 1 Y/N:
+* BREAKDOWN: ALL VASSALS Y/N ?
+GENERAL BREAKDOWN LEVEL 1 INTO VASSALS Y/N:
+* BREAKDOWN: SECOND DUCHY INTO THIRD PROVINCE
+GENERAL BREAKDOWN LEVEL 2 Y/N:
+* BREAKDOWN: ALL VASSALS Y/N ?
+GENERAL BREAKDOWN LEVEL 2 INTO VASSALS Y/N:
+* DEVELOPMENT FROM POPULATION OR RANDOM?
+DEVELOPMENT POP/RDM:
+* RANDOM: TOP AND BOTTOM RANGE?
+RDM DEV TOP:
+RDM DEV BOTTOM:
+* POPULATION: WEIGHTS?
+POP DEV URBAN:
+POP DEV RURAL:
+POP DEV MILITIRIZATION:
+* RELIGION MAPPING? Take religions from Azgaar and map them to an EU4 religion (EX: Tlapla random Azgaar religion -> Nahuatl EU4 religion)
+RELIGION MAP:
+}

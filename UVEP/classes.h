@@ -148,12 +148,41 @@ EX:
 
 public:
 
+
+	/* ######################################################
+					BEHAVIOR TO EMULATE
+	LENGTH: 5, 12					DOUBLED: 
+	One, Ono, ona, Onan
+	=> Onone, Onono, Onone, Onan, Ona, Onona, Onone, 
+	
+	One, Ono, Onen
+	=> Onen, Onono, Onone, Ononen, Ononononononen
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	###################################################### */
+
+
 	std::string name;
+	int min_length;
+	int max_length;
+	std::string doubled_letters;
+	float multi_word_names;
 
 	std::vector<std::string> onsets;
 	std::vector<std::string> generic_coda;
 	std::unordered_map<std::string, std::vector<char>> coda_map;
 	std::unordered_map<std::string, std::vector<std::string>> dia_map;
+	std::unordered_map<char, std::vector<std::string>> five_letter_syllable_map;
 
 	std::unordered_set<std::string> unique_names;
 	std::vector<std::string> vec_names;
@@ -447,7 +476,8 @@ void fn_makeMarkov_VariableDepth ( std::vector<std::string> original_list, int d
 	void fn_makeMarkov(std::vector<std::string> original_list);
 
 	void fn_getDias(std::vector<std::string> original_list);
-
+	void fn_AzgaarNamebaseGeneration( std::vector<std::string> original_list );
+	std::string fn_MakeWordAzgaar( int min, int max, std::string dupl );
 	// The way AZGAAR does it:
 	// Here is an array of words. Break up each word into syllables (5 letters
 	//
@@ -501,7 +531,15 @@ public:
 
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
+void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase> &all_namebases );
 
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
 
 void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
+
+// std::vector<int> NeighborBlockColor (all_cells, center_cell_id, distance)// function should be able to take a central cell ID, go through its neighbors, find distance to central cell, compare distance, and approve? or disapprove? return list of cell ID's that are good to color / within distance
+
+// LinkRiverToMap
+// CreateArea
+// CreateRegion
+// CreateContinent

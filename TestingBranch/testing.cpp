@@ -32,6 +32,7 @@ DWORD WINAPI CheckEscape(LPVOID lpParam) {
 // https://stackoverflow.com/questions/2785612/c-what-does-the-colon-after-a-constructor-mean
 // https://stackoverflow.com/questions/15999123/const-before-parameter-vs-const-after-function-name-c
 */
+// https://softwareengineering.stackexchange.com/questions/329709/python-style-keyword-args-in-c-good-practice-or-bad-idea
 
 
 int main() {
@@ -40,6 +41,8 @@ int main() {
 	std::cout << "Program Start\n";
 	CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);
 
+
+	/* #########################################
 	const int width = 5632;
 	const int height = 2048;
 
@@ -65,16 +68,12 @@ int main() {
 	T2.points.push_back(BottomLeftMid);
 	T2.points.push_back(BottomRightMid);
 
-
-	
-
 	//IPixel cyan_pix(0,250,250);
-
 	
 	IPixel red_pix( 1.0f, 0.0f, 0.0f );
 
 	IPixel green_pix( 0x00FF00 );
-
+	######################################### */
 
 
 	//red_pix = cyan_pix;
@@ -82,24 +81,88 @@ int main() {
 	//RasterizeTriangle_rewrite(&TopMid, &BotLeft, &BotRight, temp, &red_pix);
 
 // TODO: Given a set of points on a convex polygon, order them based on distance to the next point. It does not matter which point starts
-
-	std::cout << "\nDrawing Polygon";
+		/* ######################################################
+				std::cout << "\nDrawing Polygon";
 	
-	DrawPolygon( &T1, &red_pix, temp );
-	//DrawPolygon( &T2, &green_pix, temp );
+				DrawPolygon( &T1, &red_pix, temp );
+				//DrawPolygon( &T2, &green_pix, temp );
 
-	//red_pix.b = 1.0f;
-	//red_pix.g = 1.0f;
-	//temp.RenderPixel(19, 19, &red_pix);
+				//red_pix.b = 1.0f;
+				//red_pix.g = 1.0f;
+				//temp.RenderPixel(19, 19, &red_pix);
 
-	//temp.SimpleView();
-	std::cout << "\nEmplacing in image";
-	image.MapRaster( temp );
+				//temp.SimpleView();
+				std::cout << "\nEmplacing in image";
+				image.MapRaster( temp );
 
-	std::cout << "\nCreating file...";
-	image.Export( "example_image.bmp" );
+				std::cout << "\nCreating file...";
+				image.Export( "example_image.bmp" );
 
-	std::cout << "Program Finish" << std::endl;
+		###################################################### */
+
+
+	EnsureDirectory( "AZGAAR" );
+	EnsureDirectory( "AZGAAR/PLACE_NAMEBASE_HERE" );
+	std::string wanted_file = "AZGAAR/PLACE_NAMEBASE_HERE/namebases.txt";
+	std::vector<std::string> all_lines;
+	try {
+		std::cout << "\nReading from file...";
+		all_lines = ReadFromLineByLine( wanted_file );
+	}
+	catch (std::runtime_error e) {
+		std::cerr << e.what();
+	}
+	catch (...) {
+	}
+	std::cout << "...File was read" << std::endl;
+	// For each item in all_lines
+
+	std::vector<culture_namebase> all_namebases;
+	NamebaseParse( all_lines, all_namebases );
+
+	std::vector<std::string> word_list = {
+		"John",
+		"Steve",
+		"Michael",
+		"Josh",
+		"Joana",
+		"Juan",
+		"Ezekiel",
+		"Mike"
+	};
+	VUCO( "name make", "Beginning to construct namebase..." );
+	culture_namebase Bible_Names;
+	Bible_Names.fn_AzgaarNamebaseGeneration( word_list );
+	std::cout << "\n Returned word: " << Bible_Names.fn_MakeWordAzgaar(5, 12, "");
+	std::cout << "\n Returned word: " << Bible_Names.fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << Bible_Names.fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << Bible_Names.fn_MakeWordAzgaar( 5, 12, "" );
+
+	std::cout << '\n' << all_namebases[0].name << std::endl;
+	std::cout << "\n Returned word: " << all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
+
+	std::cout << '\n' << all_namebases[2].name << std::endl;
+	std::cout << "\n Returned word: " << all_namebases[2].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[2].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[2].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[2].fn_MakeWordAzgaar( 5, 12, "" );
+
+	std::cout << '\n' << all_namebases[4].name << std::endl;
+	std::cout << "\n Returned word: " << all_namebases[4].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[4].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[4].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[4].fn_MakeWordAzgaar( 5, 12, "" );
+
+
+	std::cout << '\n' << all_namebases[6].name << std::endl;
+	std::cout << "\n Returned word: " << all_namebases[6].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[6].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[6].fn_MakeWordAzgaar( 5, 12, "" );
+	std::cout << "\n Returned word: " << all_namebases[6].fn_MakeWordAzgaar( 5, 12, "" );
+
 
 	//ScreenRaster holding(10, 10);
 
@@ -166,12 +229,15 @@ int main() {
 
 
 
+	// TGA CREATION: 128x128
+	// ARMORIA SETTINGS: HUGE GALLEY, 1.3 SCALE , SHIELD > SIMPLE > NO 
+	// -> Output is PNG file where each is about 128x128 from bottom left
+	// Ask user to make several batches and store somewhere, then iterate through all PNG and then convert to TGAs
+	// Try and assign TGA's to specific areas (like Batch1 could be for Europe
 
 
 
 
-
-
-
+	std::cout << "\nProgram Finish" << std::endl;
 	return 0;
 }
