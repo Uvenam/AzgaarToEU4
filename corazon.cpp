@@ -10,11 +10,10 @@
 #include <stdexcept>
 
 // commit all, then push
-#define		VERSION_STAMP	"V 0.380"
+#define		VERSION_STAMP	"V 0.385"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
-
 
 /*
 void make_uppercase(std::string& data)
@@ -73,15 +72,10 @@ for (auto&& ch : data)
 }
 */
 
-
 // namespace alias (aka can type this instead of full namespace path)
 namespace fs = std::filesystem; // possible to cutdown on the namespace extensions. using "fs" instead of "std::filesystme" works
 
-
 // CRTL M CRTL H to collapse section
-
-
-
 
 //static std::exception_ptr teptr = nullptr;
 // FOR ESC EXIT
@@ -97,7 +91,6 @@ exit(0);
 inline std::string AZGAAR_DIR = "AZGAAR";
 inline std::string EU4_DIR = "AZGAAR_CONVERTED";
 inline std::string COUNTRIES_DIR = "/countries";
-
 
 std::string dir_azgaar = "AZGAAR";
 std::string dir_cells;// dir_azgaar + "/" + "cell_geojson";
@@ -135,31 +128,27 @@ common
 	...
 */
 /* Structure: ANBENNAR
-
-
-
 */
 
 const std::string cell_file = "cell_map.geojson";
 const std::string cell_file_t = "cell_map_t.geojson";
 const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
-
-
 int main() {
 	
 CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
-/*####################################################################################################*/
+/*################################################################################################*/
+/*################################################################################################*/
 try {
-
-/*###############################################################################################*/
 std::vector<cell_info>	all_cells;					// holds all cell info
 std::string file_info;
 std::string CellNeighbor_str;
 std::fstream fileStream;
 //std::cout << VERSION_STAMP << std::endl;
 VUCO( "", VERSION_STAMP );
-/*###############################################################################################*/
+/*################################################################################################*/
+/*################################################################################################*/
+
 	// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
 	//std::cout << "\nAffirming AZGAAR directory...";
 	VUCO("", "Affirming AZGAAR directory..." );
@@ -200,8 +189,8 @@ VUCO( "", VERSION_STAMP );
 		// should also do this for every other possible file (e.g. States.csv, and so on. Issue is that their names will be long strings of info and end in states.csv or something similar)
 	//std::string wanted_file = dir_azgaar + "/" + cell_file;
 		// After ensuring directories exist, want to start with reading from AZGAAR cell info
+/*########################		 INFO GATHERING		 		   ###################################*/
 /*################################################################################################*/
-
 	ReadFromPlaceInto(cell_path, file_info);
 	//std::cout << "\nRead from " << cell_path;
 	{std::string vuco_temp = "Read from" + cell_path;
@@ -213,10 +202,10 @@ VUCO( "", VERSION_STAMP );
 	extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
 
 // Have all cell info, time to transform into EU4 shape/dimensions
-	
+
+/*######################	WORKING WITH THE MAP			######################################*/
 /*################################################################################################*/
 
-	
 	std::vector<burg_info> all_burgs;	// all burgs X and Y point, need to convert two decimal float to int
 	// Regex: [^,]*,
 	// C++ regex: \[^,\]*,
@@ -226,15 +215,9 @@ VUCO( "", VERSION_STAMP );
 	// all_burgs = BurgParse( burg_path );
 	// VUCO( "", all_burgs[0].capital );
 
-	
 	// get burgs, their population, then include/measure with cell_info
 
 	// burgs have an ID, a name, a province, province full name, state, state full name, culture, religion, population, latittude, longitude, elevation, capital, port, citadel, walls, plaza, temple, shanty town, and city generator link
-
-
-
-/*################################################################################################*/
-
 
 	TransformPoints( 5632, 2048, all_cells, extents );
 	
@@ -246,25 +229,12 @@ VUCO( "", VERSION_STAMP );
 		indexed_cells.emplace( all_cells[t_itr].id, all_cells[t_itr] );
 	}
 
-
-
-
-
-/*################################################################################################*/
-	// all states
-	std::vector<state_info> all_states;
-	all_states = StateParse( state_path );
-
-/*################################################################################################*/
-
-
+/*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
 
 	// all cultures
 	std::vector<culture> all_cultures;
 	all_cultures = CultureParse( culture_path );
-
-/*################################################################################################*/
 
 	// namebases
 	VUCO( "", "Getting Namesbases..." );
@@ -278,7 +248,7 @@ VUCO( "", VERSION_STAMP );
 		std::string vuco_temp = all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
 		VUCO( "", vuco_temp );
 	}
-
+/*####################		MAKING OF THE NAMEBASES		            ##############################*/
 /*################################################################################################*/
 
 	// create unordered map of namebase using name as key, enables cultures to use namebase easily
@@ -290,11 +260,18 @@ VUCO( "", VERSION_STAMP );
 
 	// ex
 
+/*###########################   WORKING WITH THE STATES   ########################################*/
+/*################################################################################################*/
+	// all states
+	std::vector<state_info> all_states;
+	all_states = StateParse( state_path );	// Copy operation?
 
+/*###########################   Breakdown section??      ########################################*/
+	
+	std::unordered_set<std::string> all_tags;
+	all_tags = TAGParse( all_states ); // Tag resolution
 
-
-
-
+/*################################################################################################*/
 /*################################################################################################*/
 // RETRIEVE EMBLEMS
 		// either read it via program and batch/series of files
@@ -353,9 +330,9 @@ VUCO( "", VERSION_STAMP );
 	// CREATING THE IMAGE
 	// FOLLOWING IS FOR EXAMPLE PURPOSES! FIRSTLY: PROVINCE ID NEEDS TO BE UNIQUELY MAPPED TO COLOR_RGB TO ENUSRE THAT THERE ARE NO REPEATS
 	// NOTE THAT THE VERTICIES CONTAIN A DUPLICATE VALUE OF THE FIRST COORD INITIALLY PUT INTO THEM (just the way it is output from AZGAAR). IT WILL NOT BE USED IN RASTERIZATION because the DrawPolygon ignores duplicates (effectively)
+
+/*###########################      CREATING THE IMAGE           ##################################*/
 /*################################################################################################*/
-/*################################################################################################*/
-	//std::cout << "\nCreating image";
 	VUCO( "", "Creating image" );
 	std::random_device rd; // obtain random number from hardware
 	std::mt19937 gen( rd() ); // seed generator
@@ -439,7 +416,6 @@ VUCO( "", VERSION_STAMP );
 	/*################################################################################################*/
 
 }
-/*####################################################################################################*/
 catch (std::runtime_error runtime) {		// managing file opening error
 	std::cerr << "Runtime Error:" << runtime.what() << std::endl;
 	std::cerr << "\nEARLY END";

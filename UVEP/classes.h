@@ -25,14 +25,19 @@ struct settings {
 	std::vector<std::string> SHOGUN_EQUIVALENT;
 	bool SHOGUN_BREAKDOWN = TRUE; // Assume only given 1. Will be to single province breakdown
 
+	std::vector<std::string> SPECIFIC_BREAKDOWNS;  // Provide list of countries you want specifically broken down 
+	bool GLOBAL_BREAKDOWN = FALSE;
+	bool GLOBAL_BREAKDOWN_TRUE_ORDERED_OR_FALSE_RANDOM = TRUE; // Either go from largest to smallest or randomly pick nations that have more than 1 province
+	int GLOBAL_BREAKDOWN_TO = 639;	// How many countries would you like to see at game start? Default is # EU4 has at game start. GLOBAL BREAKDOWN continues until this number is surpassed.
+
 	bool BREAKDOWN_KEEP_CLAIMS = TRUE;
-	bool BREAKDOWN_KEEP_CORES = FALSE;
-
-	int START_TIME = 1444;
-
+	bool BREAKDOWN_KEEP_CORES = FALSE; // Supersedes claims
+	bool BREAKDOWN_SUCCESSOR_STATES = FALSE; // All breakdown calculations occur, then remnant country is replaced. Disables vassalization-release methods if TRUE.
 	bool BREAKDOWN_TAG_TO_DUCHY_VASSAL = TRUE;
 	bool BREAKDOWN_DUCHY_TO_PROVINCE_VASSAL = TRUE;
 	bool BREAKDOWN_VASSAL_TIERED = TRUE;
+
+	int START_TIME = 1444;
 
 	bool DEVELOPMENT_TRUE_POP_OR_FALSE_RANDOM = TRUE;
 	int DEVELOPMENT_RANDOM_RANGE[2] = { 3,30 };	
@@ -118,8 +123,11 @@ struct state_info {
 	*/
 public:
 	// from azgaar states.csv
+	// Used for...Azgaar prolly
 	short ID;
+	// Proper name of state
 	std::string name;
+	// things
 	std::string form;
 //	int color;
 	std::string capital;
@@ -127,8 +135,8 @@ public:
 	std::string type;
 	float expansionism;
 
-	// eu4 to be made
-	std::string country_tag;
+	// EU4 name
+	std::string TAG;
 	// flag as TGA
 	// country idea groups
 	// color, RGB values
@@ -670,8 +678,11 @@ public:
 
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
+
 void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase> &all_namebases );
+// Takes file path, returns vector of states with info filled in
 std::vector<state_info> StateParse( std::string state_path );
+std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states );
 std::vector<culture> CultureParse(std::string culture_path);
 std::vector<burg_info> BurgParse( std::string burg_path );
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);

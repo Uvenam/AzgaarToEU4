@@ -1647,6 +1647,74 @@
         return std::vector<state_info>();
     }
 
+	std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states )
+	{
+		// Iterate through each state, take name and translate into a unique 3 char TAG and update each state
+		std::unordered_set<std::string> all_TAGS;
+		bool acto = TRUE;
+		for (auto& elem : all_states) {
+			VUCO( "full name is:", elem.name, acto );
+			std::string temporary_tag;
+			int while_count = 0;
+			char c = 'E';
+			do {
+				temporary_tag = "";
+				VUCO( "Temp Clear", temporary_tag, acto );
+				// Try to use just first three letters
+				if (while_count == 0) {
+					temporary_tag = elem.name.substr( 0, 3 );
+					if (temporary_tag.size() < 1) { temporary_tag += "A"; } // if name is 0 char (neutrals prolly)
+					if (temporary_tag.size() < 2) { temporary_tag += "0"; } // if name is 1 char
+					if (temporary_tag.size() < 3) { temporary_tag += "0"; } // if name is 2 char
+					// need 3 char in temporary_tag
+				}
+				// First try didn't work, try to use first, second, and last characters
+				if (while_count == 1) {
+					if (elem.name.size() < 3) {
+						while_count++; continue;
+					}
+					if (elem.name.size() >= 3) {
+						temporary_tag = elem.name.substr( 0, 1 ) + elem.name.substr( 1, 1 ) + elem.name.back();
+					}
+				}
+				// Second try didn't work, try to use first, third, last
+				if (while_count == 2) {
+					if (elem.name.size() < 4) {
+						while_count++; continue;
+					}
+					if (elem.name.size() >= 4) {
+						temporary_tag = elem.name.substr( 0, 1 ) + elem.name.substr( 2, 1 ) + elem.name.back();
+					}
+
+				}
+				// Just use E03,E04,E05 and so on.
+				if (while_count >= 3) {
+
+					if (while_count < 99) {
+						if (while_count >= 10) { temporary_tag = std::string( 1, c ) + std::to_string( while_count ); }
+						if (while_count < 10) { temporary_tag = std::string( 1, c ) + std::to_string( 0 ) + std::to_string( while_count ); }
+					}
+					if (while_count >= 99) {
+						c += 1; while_count = 3;
+						if (c >= 'Z') { throw std::runtime_error( "WAY too many TAGS!" ); break; }
+					}
+				}
+				transform( temporary_tag.begin(), temporary_tag.end(), temporary_tag.begin(), ::toupper );
+				VUCO( "Got temp tag", temporary_tag, acto );
+				// Check if its NAT, REB, or PIR. Can't be those
+				if (!(temporary_tag.compare( 0, 3, "NAT" )) || !(temporary_tag.compare( 0, 3, "PIR" )) || !(temporary_tag.compare( 0, 3, "REB" ))) {
+					VUCO( "", "GOT BAD TAG, TRY AGAIN", acto );
+					while_count++;
+					continue;
+				}
+				while_count++;
+			} while (!std::get<1>( all_TAGS.emplace( temporary_tag ) ));
+			elem.TAG = temporary_tag;
+		}
+
+		return all_TAGS;
+	}
+
 
 
 
