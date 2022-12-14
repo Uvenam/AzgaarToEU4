@@ -50,10 +50,10 @@
     <ClInclude Include="UVEP\ScreenImaging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UVEP\EU4_INFO.h">
+    <ClInclude Include="UVEP\RPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UVEP\RPoint.h">
+    <ClInclude Include="UVEP\VUCO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

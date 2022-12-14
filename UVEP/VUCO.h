@@ -27,3 +27,16 @@ void VUCO(std::string const& where_ele, ST& message, bool act)
 	// write message to log file
 #endif
 }
+template <class ST>
+void VUCO_WAN( ST& message )
+{
+#ifdef DEBUG
+	// write message to std::cerr
+
+		std::cout << message;
+
+
+#else
+	// write message to log file
+#endif
+}

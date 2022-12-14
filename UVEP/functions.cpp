@@ -73,9 +73,9 @@ void WriteToFile(const std::string&  message, const std::string& file_path) {
 	mutex.unlock();
 
 }// end of WriteToFile
-void YELL(const std::string& message) {
-	std::cout << '\n' << message << std::endl;
-}//end of YELL
+//void YELL(const std::string& message) {
+//	std::cout << '\n' << message << std::endl;
+//}//end of YELL
 int RenderIntFromStringTimes100(const std::string& message) {
 	float temp;
 	int remp;
@@ -128,11 +128,14 @@ void ReadFromPlaceInto(std::string wanted_file, std::string& file_info) {
 	std::fstream fileStream;
 	fileStream.open(wanted_file, std::ios::in);	// read contents (don't want to output to this file)
 	if (fileStream) {
-		std::cout << wanted_file << " opened" << std::endl;
+		//std::cout << wanted_file << " opened" << std::endl;
+		{std::string vuco_temp = wanted_file + " opened";
+		VUCO( "", vuco_temp );
+		}
 		// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
 		buffer << fileStream.rdbuf();	// read entire file content
 		file_info = buffer.str();		// stringify it, put it into string variable
-		YELL("\nFile info retrieved");
+		VUCO("","File info retrieved");
 		//YELL(file_info);
 
 	}//end of if for fileStream
@@ -179,7 +182,35 @@ std::vector<std::string> ReadFromLineByLine( std::string wanted_file ) {
 void EnsureDirectory(std::string desired_dir) {
 	if (std::filesystem::create_directory(desired_dir))	// returns false if it exists, true if it doesn't
 	{
-		std::cout << '\n' << desired_dir << " created successfully!" << std::endl;
+		//std::cout << '\n' << desired_dir << " created successfully!" << std::endl;
+		{std::string vuco_temp = desired_dir + " created successfully!";
+		VUCO( "", vuco_temp );
+		}
 	}
-	std::cout << '\n' << desired_dir << " directory exists" << std::endl;
-};
+	//std::cout << '\n' << desired_dir << " directory exists" << std::endl;
+	{std::string vuco_temp = desired_dir + " directory exists";
+	VUCO( "", vuco_temp );
+	}
+}
+std::string FindFileDirectory(std::string base_directory, std::regex filter )
+{
+	VUCO( "", "Retrieving File Path..." );
+	std::smatch matches;
+	std::string temp;
+	for (const auto& entry : std::filesystem::directory_iterator( base_directory )) {
+		temp = entry.path().string();
+		std::regex_search( temp, matches, filter );
+		if (matches.empty() == FALSE) {
+			break;
+		}
+	}
+	if (matches.empty() == TRUE) {
+		throw std::runtime_error( std::string("Couldn't find desired file in ") + base_directory);
+	}
+	{std::string vuco_temp = "File " + temp + " found";
+	VUCO_WAN( vuco_temp );
+	}
+
+    return temp;
+}
+;

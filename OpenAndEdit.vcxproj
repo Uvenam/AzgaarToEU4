@@ -142,12 +142,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UVEP\classes.h" />
-    <ClInclude Include="UVEP\EU4_INFO.h" />
     <ClInclude Include="UVEP\functions.h" />
     <ClInclude Include="UVEP\globals.h" />
     <ClInclude Include="UVEP\head.h" />
     <ClInclude Include="UVEP\RPoint.h" />
     <ClInclude Include="UVEP\ScreenImaging.h" />
+    <ClInclude Include="UVEP\VUCO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

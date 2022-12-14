@@ -7,7 +7,7 @@ int yn_isVowel(char possible_vowel);
 void make_lowercase_any(std::wstring& data);
 
 void WriteToFile(const std::string& message, const std::string& file_path);
-void YELL(const std::string& message);
+//void YELL(const std::string& message);
 int RenderIntFromStringTimes100(const std::string& message);
 short StringToShort(const std::string& message);
 
@@ -19,5 +19,7 @@ std::vector<std::string> ReadFromLineByLine( std::string wanted_file );
 // NOTE: CANNOT DO WITH SUB DIRECTORIES, HAVE TO DO IN ORDER!!!
 void EnsureDirectory(std::string desired_dir);
 
+// Returns the relative directory for a single file determined by filter
+std::string FindFileDirectory( std::string base_directory, std::regex filter );
 
 

@@ -623,7 +623,8 @@
 					{
 						if (onset_building.length() == 1)
 						{
-							std::cout << "\n" << "[ISSUE] ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED";
+							//std::cout << "\n" << "[ISSUE] ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED";
+							VUCO( "ISSUE", "ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED" );
 							this->generic_coda.push_back(onset_building.substr(1, 2));
 
 						}
@@ -1081,7 +1082,8 @@
 		}
 		// if the name is less than 2, name will be randomly picked from the original list
 		if (summ.length() < 2) {
-			std::cout << "\n[ERROR] Picking jimothy as name as name was too short";
+			//std::cout << "\n[ERROR] Picking jimothy as name as name was too short";
+			VUCO( "ERROR", "Picking jimothy as name, name was too short" );
 			summ = "jimothy";
 		}
 
@@ -1105,8 +1107,8 @@
 // Extra Functions working with relevant classes
 	std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data) {
 
-		std::cout << "\nParsing string, updating cells...";
-
+		//std::cout << "\nParsing string, updating cells...";
+		VUCO( "", "Parsing string, updating cells..." );
 		const std::string regex_cell_block
 			= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"Polygon\",\"coordinates\":.*?\\}\\}";	// should get ex:
 		/*
@@ -1186,7 +1188,7 @@
 
 				Xcoord = RenderIntFromStringTimes100(CellVertex_itr->str(0));
 				CellVertex_itr++;
-				// Commenting out the next 3 lines will work (presumably an error with regex finding an odd number of verticies when it should be finding an even number
+
 
 				Ycoord = RenderIntFromStringTimes100(CellVertex_itr->str(0));
 				all_cells[cell_index].add_coord(Xcoord, Ycoord);
@@ -1242,7 +1244,7 @@
 
 			CellData_itr++;
 		}// end of while(CellData_itr != sreg_end){
-
+		VUCO_WAN( "Cells updated" );
 		return std::make_tuple(left_most, right_most, top_most, bottom_most);
 
 
@@ -1301,11 +1303,262 @@
 		return;
     }
 
+	std::vector<state_info> StateParse( std::string state_path )
+	{
+		bool act = FALSE;
+		std::vector<state_info> all_states;
+		std::vector<std::string> state_strs;
+		state_strs = ReadFromLineByLine( state_path );
+		state_strs.erase( state_strs.begin() );
+		int all_states_size = state_strs.size();
+		if (all_states_size <= 1) { throw std::runtime_error( "# of states too small!" ); }
+		all_states.reserve( all_states_size );	// Rough estimate,
+		std::regex comma_separated( "\[^,\]+" );
+		std::sregex_iterator sreg_end;
+		for (int state_itr = 0; state_itr < all_states_size; state_itr++) {
+			std::sregex_iterator State_Track( state_strs[state_itr].cbegin(), state_strs[state_itr].cend(), comma_separated );
+			all_states.push_back( state_info() );
+			while (State_Track != sreg_end) {
+				// ID ####################################################################################
+				all_states[state_itr].ID = std::stoi( State_Track->str() );
+				VUCO( "", all_states[state_itr].ID, act );
+				if (all_states[state_itr].ID == 0) { break; } // neutrals have nothing
+				State_Track++;
+				// STATE #################################################################################
+				all_states[state_itr].name = (State_Track->str());
+				VUCO( "", all_states[state_itr].name, act );
+				State_Track++;
+				// FULL NAME #############################################################################
+				std::string vvtemp = State_Track->str();
+				VUCO( "", vvtemp, act );
+				State_Track++;
+				// FORM ##################################################################################
+				all_states[state_itr].form = State_Track->str();
+				State_Track++;
+				//COLOR ###################################################################################
+				std::string bbtemp = State_Track->str();
+				int hexified;
+				bbtemp.erase( bbtemp.begin() );
+				std::stringstream hexifier;
+				hexifier << std::hex << bbtemp;
+				hexifier >> hexified;
+				//all_states[state_itr].color = hexified;
+				all_states[state_itr].color_rgb[0] = static_cast<unsigned char>((hexified & 0xFF0000) >> 16);
+				all_states[state_itr].color_rgb[1] = static_cast<unsigned char>((hexified & 0x00FF00) >> 8);
+				all_states[state_itr].color_rgb[2] = static_cast<unsigned char>((hexified & 0x0000FF) >> 0);
+
+				State_Track++;
+				//CAPITAL ################################################################################
+				all_states[state_itr].capital = State_Track->str();
+				State_Track++;
+				//CULTURE ################################################################################
+				all_states[state_itr].culture = State_Track->str();
+				State_Track++;
+				//TYPE ###################################################################################
+				all_states[state_itr].type = State_Track->str();
+				State_Track++;
+				//EXPANSIONISM ###########################################################################
+				all_states[state_itr].expansionism = std::stof( State_Track->str() );
+				State_Track++;
+				//CELLS / cell count #####################################################################
+				State_Track++;
+				//BURGS / burg count #####################################################################
+				State_Track++;
+				// AREA MI2 ##############################################################################
+				State_Track++;
+				//TOTAL POPULATION #######################################################################
+				State_Track++;
+				// RURAL POPULATION ######################################################################
+				State_Track++;
+				//URBAN POPULATION #######################################################################
+				vvtemp = State_Track->str();
+				VUCO( "", vvtemp, act );
+				State_Track++;
+
+
+
+			}
+		}
+
+
+
+
+
+
+		return all_states;
+	}
+
+	std::vector<culture> CultureParse( std::string culture_path )
+	{
+		std::vector<culture> all_cultures;
+		bool act = FALSE;
+		std::vector<std::string> culture_strs;
+		culture_strs = ReadFromLineByLine( culture_path );
+		culture_strs.erase( culture_strs.begin() ); // gets rid of format example
+		int all_culture_size = culture_strs.size();
+		if (all_culture_size <= 1) { throw std::runtime_error( "# of cultures too small!" ); }
+		all_cultures.reserve( all_culture_size );	// Rough estimate,
+		std::regex comma_separated( "\[^,\]+" );
+		std::sregex_iterator sreg_end;
+		for (int culture_itr = 0; culture_itr < all_culture_size; culture_itr++) {
+			std::sregex_iterator Culture_Track( culture_strs[culture_itr].cbegin(), culture_strs[culture_itr].cend(), comma_separated );
+			all_cultures.push_back( culture() );
+			while (Culture_Track != sreg_end) {
+				// ID ####################################################################################
+				all_cultures[culture_itr].id = std::stoi( Culture_Track->str() );
+				VUCO( "", all_cultures[culture_itr].id, act );
+				if (all_cultures[culture_itr].id == 0)
+				{
+					Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++;
+					all_cultures[culture_itr].namesbase = Culture_Track->str();
+					break;
+				}	//neutrals mess it up, but keep namesbase
+				Culture_Track++;
+				// Name #################################################################################
+				all_cultures[culture_itr].name = Culture_Track->str();
+				Culture_Track++;
+				// Color #################################################################################
+				Culture_Track++;
+				// Cells #################################################################################
+				Culture_Track++;
+				// Expansion #################################################################################
+				Culture_Track++;
+				// Type #################################################################################
+				all_cultures[culture_itr].type = Culture_Track->str();
+				Culture_Track++;
+				// Area #################################################################################
+				Culture_Track++;
+				// Population #################################################################################
+				Culture_Track++;
+				// Namesbase #################################################################################
+				all_cultures[culture_itr].namesbase = Culture_Track->str();
+				Culture_Track++;
+				// Emblems #################################################################################
+				Culture_Track++;
+				// Origins #################################################################################
+				if (Culture_Track == sreg_end) { break; }	// origins sometimes empty
+				Culture_Track++;
+
+			}
+		}
+
+		return all_cultures;
+	}
+
+    std::vector<burg_info> BurgParse( std::string burg_path )
+	{
+		std::vector<burg_info> all_burgs;
+		bool act = FALSE;
+		std::vector<std::string> burg_strs;
+		burg_strs = ReadFromLineByLine( burg_path );
+		burg_strs.erase( burg_strs.begin() ); // gets rid of format example
+		int all_burg_size = burg_strs.size();
+		if (all_burg_size <= 1) { throw std::runtime_error( "# of burgs too small!" ); }
+		all_burgs.reserve( all_burg_size );	// Rough estimate,
+		std::regex comma_separated( "\[^,\]*," );
+		std::sregex_iterator sreg_end;
+		for (int burg_itr = 0; burg_itr < all_burg_size; burg_itr++) {
+			std::sregex_iterator burg_Track( burg_strs[burg_itr].cbegin(), burg_strs[burg_itr].cend(), comma_separated );
+			all_burgs.push_back( burg_info() );
+			while (burg_Track != sreg_end) {
+				// ID ####################################################################################
+				//all_burgs[burg_itr].id = std::stoi( burg_Track->str() );
+				//VUCO( "", all_burgs[burg_itr].id, act );
+				//if (all_burgs[burg_itr].id == 0)
+				//{
+				//	burg_Track++; burg_Track++; burg_Track++; burg_Track++; burg_Track++;
+				//	all_burgs[burg_itr].namesbase = burg_Track->str();
+				//	break;
+				//}	//neutrals mess it up, but keep namesbase
+				//burg_Track++;
+				//// Name #################################################################################
+				//all_burgs[burg_itr].name = burg_Track->str();
+				//burg_Track++;
+				//// Color #################################################################################
+				//burg_Track++;
+				//// Cells #################################################################################
+				//burg_Track++;
+				//// Expansion #################################################################################
+				//burg_Track++;
+				//// Type #################################################################################
+				//all_burgs[burg_itr].type = burg_Track->str();
+				//burg_Track++;
+				//// Area #################################################################################
+				//burg_Track++;
+				//// Population #################################################################################
+				//burg_Track++;
+				//// Namesbase #################################################################################
+				//all_burgs[burg_itr].namesbase = burg_Track->str();
+				//burg_Track++;
+				//// Emblems #################################################################################
+				//burg_Track++;
+				//// Origins #################################################################################
+				//if (burg_Track == sreg_end) { break; }	// origins sometimes empty
+				//burg_Track++;
+
+				// ID
+				all_burgs[burg_itr].id = std::stoi( burg_Track->str().substr(0, burg_Track->str().length()-1));
+				burg_Track++;
+				// BURG
+				all_burgs[burg_itr].name = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// PROVINCE FULL NAME
+				burg_Track++;
+				// STATE
+				burg_Track++;
+				// STATE FULL NAME
+				burg_Track++;
+				// CULTURE
+				all_burgs[burg_itr].culture = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// RELIGION
+				all_burgs[burg_itr].religion = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// POPULATION
+				all_burgs[burg_itr].pop = std::stoi( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) );
+				burg_Track++;
+				// LATITUDE
+				all_burgs[burg_itr].x_latitude = static_cast<int>(100*(std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
+				burg_Track++;
+				// LONGITUDE
+				all_burgs[burg_itr].y_longitude = static_cast<int>(100 * (std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
+				burg_Track++;
+				// ELEVATION(ft)
+				burg_Track++;
+				// CAPITAL
+				all_burgs[burg_itr].capital = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// PORT
+				all_burgs[burg_itr].port = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// CITADEL
+				all_burgs[burg_itr].citadel = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// WALLS
+				all_burgs[burg_itr].walls = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// PLAZA
+				all_burgs[burg_itr].plaza = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// TEMPLE
+				all_burgs[burg_itr].temple = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				// SHANTY TOWN
+				all_burgs[burg_itr].shanty = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+
+			}
+		}
+
+		return all_burgs;
+	}
+
 
 	void GenericOutput(std::vector<cell_info> all_cells, std::string output_file) {
 
 
-		std::cout << "\nOutputting to log.txt...";
+		//std::cout << "\nOutputting to log.txt...";
+		VUCO( "output_file", "Outputting..." );
 		std::ofstream outputLog(output_file);		// Whatever is written will be an overwrite eachtime program runs
 		if (outputLog) {
 
@@ -1344,7 +1597,7 @@
 			// Properties
 				// ID, height, biome, type, pop, country, sub_country, culture, religion, neighbors
 
-			YELL("\nwrite complete");
+			VUCO("","write complete");
 
 
 
@@ -1388,6 +1641,11 @@
 
 		}
 	}
+	
+    std::vector<state_info> Breakdown( state_info parent, int option ) 
+    {
+        return std::vector<state_info>();
+    }
 
 
 

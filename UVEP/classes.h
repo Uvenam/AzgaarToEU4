@@ -5,6 +5,58 @@
 #include "../UVEP/functions.h" // for definitions
 //#include "../UVEP/RScreenImage.h"
 
+struct settings {
+	// variables and default values
+	bool LARGE_WORLD = FALSE;
+	bool ONLY_REPLACE_NEW_WORLD = FALSE;
+	bool USE_RNW = FALSE;
+	bool UNINHABITED_NEW_WORLD = FALSE;
+
+	std::vector<std::string> TECH_EUROPEAN;
+	std::vector<std::string> TECH_ASIAN;
+	std::vector<std::string> TECH_AMERICAN;
+	// ...
+
+	std::vector<std::string> HRE_EQUIVALENT;
+	bool HRE_BREAKDOWN = FALSE; // If given 1 for HRE_EQUIVALENT, assume given multiple
+
+	std::string MANDATE_OF_HEAVEN_EQUIVALENT;
+
+	std::vector<std::string> SHOGUN_EQUIVALENT;
+	bool SHOGUN_BREAKDOWN = TRUE; // Assume only given 1. Will be to single province breakdown
+
+	bool BREAKDOWN_KEEP_CLAIMS = TRUE;
+	bool BREAKDOWN_KEEP_CORES = FALSE;
+
+	int START_TIME = 1444;
+
+	bool BREAKDOWN_TAG_TO_DUCHY_VASSAL = TRUE;
+	bool BREAKDOWN_DUCHY_TO_PROVINCE_VASSAL = TRUE;
+	bool BREAKDOWN_VASSAL_TIERED = TRUE;
+
+	bool DEVELOPMENT_TRUE_POP_OR_FALSE_RANDOM = TRUE;
+	int DEVELOPMENT_RANDOM_RANGE[2] = { 3,30 };	
+	float DEVELOPMENT_POP_WEIGHTS[3] = { 0.5, 0.5, 0.5 };
+
+	std::vector<std::string[2]> RELIGION_MAPPING;
+
+	bool USE_DIPLOMACY_CSV = FALSE;
+	bool USE_MILITARY_CSV = FALSE;
+	bool MILITARY_TRUE_NONE_OR_FALSE_ECONOMY = TRUE;
+	bool USE_BURGS_CSV_FOR_DEVELOPMENT = FALSE;
+	bool USE_BURGS_CSV_FOR_BUILDINGS = FALSE;
+
+
+
+
+
+
+	// function *declarations*, would need to define in FILENAME.cpp (currently class.cpp)
+
+
+
+};
+
 class progressBar {			//##################################################################################
 	// https://www.youtube.com/watch?v=ayfCxgVStdQ&ab_channel=JacobSorber
 public:
@@ -30,8 +82,7 @@ public:
 
 }; // end class				//##################################################################################
 
-
-class stateMaker {
+struct state_info {
 
 	//FORM for STATES from AZGAAR
 	/*
@@ -70,7 +121,7 @@ public:
 	short ID;
 	std::string name;
 	std::string form;
-	long color;
+//	int color;
 	std::string capital;
 	std::string culture;
 	std::string type;
@@ -81,7 +132,10 @@ public:
 	// flag as TGA
 	// country idea groups
 	// color, RGB values
+	unsigned char color_rgb[3];
 	// government
+	// std::vecotr<std::string> add_government_reform
+	// int government_rank
 	// technology_group
 	// religion
 	// primary_culture
@@ -89,10 +143,10 @@ public:
 	// fixed_capital as province ID
 
 	// Not sure if needed since these come with cell read in
-	short burg_count;
-	long area_mi2;
-	long rural_population;
-	long urban_population;
+	//short burg_count;
+	//long area_mi2;
+	//long rural_population;
+	//long urban_population;
 
 	void fnParseLine(std::string result_getLine_ele) {
 
@@ -116,9 +170,106 @@ struct cell_info {
 	std::vector<int> neighbors;
 	void add_coord(int x_coord, int y_coord);
 };
+struct burg_info {
+	// ID
+	int id;
+	// BURG
+	std::string name;
+	// PROVINCE FULL NAME
+	
+	// STATE
+	
+	// STATE FULL NAME
+	
+	// CULTURE
+	std::string culture;
+	// RELIGION
+	std::string religion;
+	// POPULATION
+	int pop;
+	// LATITUDE
+	int x_latitude;
+	// LONGITUDE
+	int y_longitude;
+	// ELEVATION(ft)
+	
+	// CAPITAL
+	std::string capital;
+	// PORT
+	std::string port;
+	// CITADEL
+	std::string citadel;
+	// WALLS
+	std::string walls;
+	// PLAZA
+	std::string plaza;
+	// TEMPLE
+	std::string temple;
+	// SHANTY TOWN
+	std::string shanty;
 
 
-class culture_namebase {	//##################################################################################
+
+
+
+
+};
+struct province_info {
+public:
+	std::vector<int> cell_ids;
+	short prov_id;
+	std::string name;
+	unsigned char color_rgb[3];
+	std::vector<std::string> cores;
+	std::string owner;
+	//std::string controller;
+	unsigned char base_dev[3]; //0 is base_tax, 1 is base_production, 2 is base_manpower
+	short height;
+	short biome;
+	std::string type;
+	bool hre;
+	bool is_city;
+	std::string culture;
+	std::string religion;
+	std::string trade_good;
+	std::string capital; // essentially name of province
+	std::vector <std::string> discovered_by;
+	short center_of_trade;
+	bool fort_15th; //theres fort
+	bool shipyard;
+	// Specific culture names?
+
+
+};
+struct culture {
+public:
+	int id;
+	unsigned char color_rgb[3];
+	// cell count
+	// expansionism
+	std::string type;
+	std::string namesbase;
+	std::vector<std::string> origins;
+
+
+
+
+	std::string name;
+	std::string primary;
+	std::vector<std::string> male_names;
+	std::vector<std::string> female_names;
+	std::vector<std::string> dynasty_names;
+	// country = { has_banners = 1}
+	// province = { local_has_banners = 1}
+
+};
+struct culture_union : public culture {
+public:
+	std::vector<culture> subcultures;
+	std::string graphical_culture;
+};
+
+struct culture_namebase {	//##################################################################################
 
 // NAMEBASE FORMAT
 /*
@@ -157,16 +308,6 @@ public:
 	
 	One, Ono, Onen
 	=> Onen, Onono, Onone, Ononen, Ononononononen
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	###################################################### */
@@ -518,9 +659,7 @@ void fn_makeMarkov_VariableDepth ( std::vector<std::string> original_list, int d
 
 
 }; // end class				//##################################################################################
-
-
-class symbol_data {
+struct symbol_data {
 	//##################################################################################
 
 public:
@@ -532,7 +671,9 @@ public:
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
 void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase> &all_namebases );
-
+std::vector<state_info> StateParse( std::string state_path );
+std::vector<culture> CultureParse(std::string culture_path);
+std::vector<burg_info> BurgParse( std::string burg_path );
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
 
 void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
@@ -540,6 +681,11 @@ void TransformPoints( int desired_width, int desired_height, std::vector<cell_in
 // std::vector<int> NeighborBlockColor (all_cells, center_cell_id, distance)// function should be able to take a central cell ID, go through its neighbors, find distance to central cell, compare distance, and approve? or disapprove? return list of cell ID's that are good to color / within distance
 
 // LinkRiverToMap
+
 // CreateArea
+
 // CreateRegion
+
 // CreateContinent
+// 0 is for generic, 1 is for state -> province
+std::vector<state_info> Breakdown(state_info parent, int option); 

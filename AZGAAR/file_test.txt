@@ -1,2 +1,0 @@
-{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-40.16,51.19],[-42.53,52.2],[-44.21,54.22],[-44.66,57.25],[-44.55,58.26],[-44.1,58.6],[-41.17,58.26],[-36.56,52.65],[-38.14,51.53],[-40.16,51.19]]]},"properties":{"id":1,"height":-29,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[11,10,9,7,0,2,12]}}
-	TRUE TRUE
