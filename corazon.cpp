@@ -9,8 +9,11 @@
 #include <exception>
 #include <stdexcept>
 
+#include "ocv.h"
+
+import opencv_personal;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.385"
+#define		VERSION_STAMP	"V 0.386"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
@@ -135,7 +138,6 @@ const std::string cell_file_t = "cell_map_t.geojson";
 const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
 int main() {
-	
 CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
 /*################################################################################################*/
 /*################################################################################################*/
@@ -148,9 +150,12 @@ std::fstream fileStream;
 VUCO( "", VERSION_STAMP );
 /*################################################################################################*/
 /*################################################################################################*/
+// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
+//std::cout << "\nAffirming AZGAAR directory...";
 
-	// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
-	//std::cout << "\nAffirming AZGAAR directory...";
+	VUCO( "", "Loading settings..." );
+	settings options;
+
 	VUCO("", "Affirming AZGAAR directory..." );
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
 
@@ -177,7 +182,6 @@ VUCO( "", VERSION_STAMP );
 	std::string state_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ States \[0-9^-\]+.csv" ) );
 	std::string burg_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Burgs \[0-9^-\]+.csv" ) );
 
-
 	VUCO( "", cell_path );
 	//cell_path = OpenFileReturnString( dir_cells ); // Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it																												
 	EnsureDirectory( dir_EU4 ); // EU4 top  folder directory										
@@ -197,7 +201,7 @@ VUCO( "", VERSION_STAMP );
 	VUCO( "", vuco_temp );
 	}
 
-		// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
+	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
 	std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
 	extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
 
@@ -236,21 +240,17 @@ VUCO( "", VERSION_STAMP );
 	std::vector<culture> all_cultures;
 	all_cultures = CultureParse( culture_path );
 
-	// namebases
+/*####################		MAKING OF THE NAMEBASES		            ##############################*/
 	VUCO( "", "Getting Namesbases..." );
 	std::vector<culture_namebase> all_namebases;
-	std::vector<std::string> namebase_file_lines;
 
+	std::vector<std::string> namebase_file_lines;
 	namebase_file_lines = ReadFromLineByLine( namesbase_path );
 	NamebaseParse( namebase_file_lines, all_namebases );
-
-	{
+	/*{
 		std::string vuco_temp = all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
 		VUCO( "", vuco_temp );
-	}
-/*####################		MAKING OF THE NAMEBASES		            ##############################*/
-/*################################################################################################*/
-
+	}*/
 	// create unordered map of namebase using name as key, enables cultures to use namebase easily
 	std::unordered_map <std::string, culture_namebase> all_namebase_map;
 	int all_namebases_size = all_namebases.size();
@@ -259,7 +259,6 @@ VUCO( "", VERSION_STAMP );
 	}
 
 	// ex
-
 /*###########################   WORKING WITH THE STATES   ########################################*/
 /*################################################################################################*/
 	// all states
@@ -278,9 +277,22 @@ VUCO( "", VERSION_STAMP );
 		// or ASK USER TO DOWNLOAD ALL STATE PNG AND RENAME TO STATE
 		// or ASK USER TO ADD EXTENSION TO DO THE RETRIEVAL AND RENAMING automatic
 		// Also ask user to get armoria and download flags from there
-// CREATION OF NAMEBASE
 	
 // CREATION OF FLAGS
+	// EU4 needs 128x128 TGA files with TAG.tga format
+	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale
+	// Export as PNG (?JPEG?)
+
+	/*
+	dontUseModulesInTheFuture();
+
+	cv::Mat single_image = openAndRead();
+	std::vector<cv::Mat>images = splitImage( single_image, 24, 12 );
+	showAnImage( images[0] );
+	showAnImage( images[1] );
+
+	*/
+
 	
 // CREATION OF COUNTRIES
 	
@@ -308,18 +320,8 @@ VUCO( "", VERSION_STAMP );
 	
 // CREATION OF COLONIAL REGIONS
 
-		
-
-
 // Information calculated, time to output into EU4 formats and such
 	GenericOutput(all_cells, "log2.txt");
-
-
-
-
-
-
-
 
 	// HAVE TO GENERATE SEABOARD (make grid of hexagons that span the world, write them first, have them "replace" the cells that they take up and their neighbors (so land cells that border ocean cells (i.e. have ocean cells as neighbors) will instead have this new cell as a neighbor (or not even a cell, maybe have it as a sea province)
 	// could have centers equally spaced through the map and make a new DrawHexagonCenteredHere()
@@ -341,10 +343,6 @@ VUCO( "", VERSION_STAMP );
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	VUCO( "", "" );
-
-
-
-
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
 	VUCO( "", "Generating polygonmap from all_cells..." );
@@ -421,10 +419,6 @@ catch (std::runtime_error runtime) {		// managing file opening error
 	std::cerr << "\nEARLY END";
 	return 0;
 }//end of catch for runtime error
-
-
-
-
 
 	std::cout << "\nEnd of Program";
 #ifdef DEBUG

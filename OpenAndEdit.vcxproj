@@ -106,12 +106,13 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Program Files\boost;$(SolutionDir)UVEP</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\O\opencv\build\include;C:\Program Files\boost;$(SolutionDir)UVEP</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world460d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\O\opencv\build\x64\vc15\lib;$(SolutionDir)UVEP</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -123,17 +124,20 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Program Files\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\O\opencv\build\include;C:\Program Files\boost</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\O\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world460.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="corazon.cpp" />
+    <ClCompile Include="opencv_personal.ixx" />
     <ClCompile Include="UVEP\classes.cpp" />
     <ClCompile Include="UVEP\functions.cpp" />
     <ClCompile Include="UVEP\globals.cpp" />
@@ -141,6 +145,7 @@
     <ClCompile Include="UVEP\ScreenImaging.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ocv.h" />
     <ClInclude Include="UVEP\classes.h" />
     <ClInclude Include="UVEP\functions.h" />
     <ClInclude Include="UVEP\globals.h" />

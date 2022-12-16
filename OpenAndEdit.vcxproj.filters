@@ -33,6 +33,9 @@
     <ClCompile Include="UVEP\RPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="opencv_personal.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UVEP\classes.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UVEP\VUCO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ocv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
