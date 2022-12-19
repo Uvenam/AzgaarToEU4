@@ -12,8 +12,9 @@
 #include "ocv.h"
 
 import opencv_personal;
+import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.386"
+#define		VERSION_STAMP	"V 0.390"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
@@ -182,7 +183,7 @@ VUCO( "", VERSION_STAMP );
 	std::string state_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ States \[0-9^-\]+.csv" ) );
 	std::string burg_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Burgs \[0-9^-\]+.csv" ) );
 
-	VUCO( "", cell_path );
+	//VUCO( "", cell_path );
 	//cell_path = OpenFileReturnString( dir_cells ); // Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it																												
 	EnsureDirectory( dir_EU4 ); // EU4 top  folder directory										
 	// HAVE IT OUTPUT FILES THAT ARE NEEDED
@@ -342,7 +343,7 @@ VUCO( "", VERSION_STAMP );
 	
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
-	VUCO( "", "" );
+	
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
 	VUCO( "", "Generating polygonmap from all_cells..." );
@@ -375,7 +376,33 @@ VUCO( "", VERSION_STAMP );
 	// GenerateCoastalPolygons
 	// GenerateSeaboardPolygons
 	// If we draw a hexagon grid
-	
+	ScreenRaster HEIGHTMAP = CreateHeightmap( all_cells );
+	HEIGHTMAP.Export( "heightmap.bmp" ,1);
+
+
+	//BMPImage heightmap_bmp;
+	//heightmap_bmp.readfile( "good_heightmap.bmp" );
+	//heightmap_bmp.writefile( "test_heightmap.bmp" );
+
+
+				/*
+				[struct_size]40
+				[width]5632
+				[height]2048
+				[planes]1
+				[bitcount]8
+				[compression]0
+				[image_size]0
+				[xpermeter]3780
+				[ypermeter]3780
+				[colors_used]156
+				[colors_important]156
+				*/
+
+
+
+
+	HEIGHTMAP.Export( "heightmap.bmp",1 );
 	Image EU4_MAP_BMP( 5632, 2048 );
 	//std::cout << "\nMapping polygons to EU4 Map...";
 	VUCO( "", "Mapping polygons to EU4 map...");
@@ -383,6 +410,10 @@ VUCO( "", VERSION_STAMP );
 	//std::cout << "\nCreating bmp...";
 	VUCO( "", "Creating bmp...");
 	EU4_MAP_BMP.Export( "eu4_map.bmp" );
+
+
+
+
 /*################################################################################################*/
 /*################################################################################################*/
 	// Anbennar map:

@@ -1651,7 +1651,7 @@
 	{
 		// Iterate through each state, take name and translate into a unique 3 char TAG and update each state
 		std::unordered_set<std::string> all_TAGS;
-		bool acto = TRUE;
+		bool acto = FALSE;
 		for (auto& elem : all_states) {
 			VUCO( "full name is:", elem.name, acto );
 			std::string temporary_tag;

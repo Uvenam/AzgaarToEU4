@@ -4,7 +4,7 @@
 class RPoint {
 	// https://www.tutorialspoint.com/cplusplus/cpp_inheritance.htm
 public:
-	int x_pos, y_pos;
+	unsigned int x_pos, y_pos;
 	RPoint();
 	RPoint( int x_value, int y_value );
 	friend bool operator == ( RPoint const& lhs, RPoint const& rhs );

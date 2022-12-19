@@ -225,13 +225,19 @@ struct burg_info {
 struct province_info {
 public:
 	std::vector<int> cell_ids;
+	// for complex borders and land fragmentation as seen on coasts
+	std::vector<RPoint> pixels;
 	short prov_id;
 	std::string name;
 	unsigned char color_rgb[3];
 	std::vector<std::string> cores;
 	std::string owner;
 	//std::string controller;
-	unsigned char base_dev[3]; //0 is base_tax, 1 is base_production, 2 is base_manpower
+	//0 is base_tax, 1 is base_production, 2 is base_manpower
+	unsigned char base_dev[3]; 
+	// Ranges from -3248ft to 22061ft (or 0 to 100 where ~20 is sealevel, but its saved as -3248 to 22061)
+	// Lowest is [0,0,0], sea level IS [94,94,94] (so values at 94 and below are "sea"), and [255,255,255] is highest. The heightmap.bmp file should be in Greyscale mode and saved as a 8-bit bitmap image file (.BMP).
+	// Normal: RGB, B is always 255. G for vertical changes (Max increase top to bottom:0, max decrease top to bottom: 255). R for horizontal changes (Max incease left to right: 0, max decrease left to right: 255). Increase: black to white, decrease: white to black
 	short height;
 	short biome;
 	std::string type;

@@ -1,0 +1,12 @@
+Id,Name,Color,Cells,Expansionism,Type,Area mi2,Population,Namesbase,Emblems Shape,Origins
+10,Astellian,#fccde5,667,3.3,Naval,5489010,6660751,Castillian,spanish,""
+2,Soumi,#b3de69,923,2.2,Nomadic,8971686,6392246,Finnic,pavise,""
+7,Luari,#bc80bd,470,2.1,Generic,3854916,5242972,French,french,""
+3,Angshire,#fdb462,343,1.6,Naval,3015495,3374675,English,wedged,""
+4,Elladan,#ffed6f,180,1.4,Generic,1467405,2196758,Greek,boeotian,""
+5,Shwazen,#ccebc5,173,1.3,Generic,1433610,2101748,German,swiss,""
+6,Slovan,#dababf,345,2.1,Nomadic,2972835,2052601,Ruthenian,polish,""
+0,Wildlands,,800,,,6925923,1923094,English,round,""
+1,Tallian,#fb8072,178,1.7,River,1360080,1181824,Italian,horsehead,""
+9,Portuzian,#c6b9c1,50,3.9,Nomadic,291276,547630,Portuguese,renaissance,""
+8,Norse,#80b1d3,48,3,Highland,367929,286195,Nordic,heater,""

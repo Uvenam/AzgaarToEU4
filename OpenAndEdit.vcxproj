@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="corazon.cpp" />
     <ClCompile Include="opencv_personal.ixx" />
+    <ClCompile Include="screens.ixx" />
     <ClCompile Include="UVEP\classes.cpp" />
     <ClCompile Include="UVEP\functions.cpp" />
     <ClCompile Include="UVEP\globals.cpp" />

@@ -57,24 +57,19 @@ IPixel::operator RPixel()
 /*##########################################################################################################*/
 /*##########################################################################################################*/
 // ScreenRaster Class
-ScreenRaster::ScreenRaster(int width_ele, int height_ele)
+ScreenRaster::		 ScreenRaster(int width_ele, int height_ele)
 	:height(height_ele), width(width_ele)
 {
 	std::vector<IPixel> column;
 	IPixel white_space(0.0f, 0.0f, 0.0f);
 	for (int x = 0; x < width; x++) {
 		grid.push_back(column);
-
-
-
 		for (int y = 0; y < height; y++) {
 			grid[x].push_back(white_space);
-
-
-
 		}
 	}
 };
+/* deprecated
 void ScreenRaster::RGB_ScreenRaster(int width_ele, int height_ele)
 
 {
@@ -90,20 +85,20 @@ void ScreenRaster::RGB_ScreenRaster(int width_ele, int height_ele)
 			grid[x].push_back(white_space);
 		}
 	}
-};
-void ScreenRaster::RenderPixel(int x_loc, int y_loc, const IPixel* px) {
+};*/
+void ScreenRaster::	 RenderPixel(int x_loc, int y_loc, const IPixel* px) {
 
 	grid[x_loc][y_loc].b = px->b;
 	grid[x_loc][y_loc].g = px->g;
 	grid[x_loc][y_loc].r = px->r;
 }
-void ScreenRaster::RenderPixel(const RPoint* pos, const IPixel* px) {
+void ScreenRaster::  RenderPixel(const RPoint* pos, const IPixel* px) {
 
 	grid[pos->x_pos][pos->y_pos].b = px->b;
 	grid[pos->x_pos][pos->y_pos].g = px->g;
 	grid[pos->x_pos][pos->y_pos].r = px->r;
 }
-void ScreenRaster::SimpleView() {
+void ScreenRaster::	 SimpleView() {
 	float ra;
 	float ba;
 	float ga;
@@ -145,23 +140,183 @@ void ScreenRaster::SimpleView() {
 
 
 }
+IPixel ScreenRaster::GetColor( int x, int y ) {
+	return grid[x][y];
+}
+void ScreenRaster::	 Export( const char* path , int bytes) {	// DOES NOT WORK FOR WHATEVER GODFORSAKEN REASON
+
+	std::ofstream f;
+	f.open( path, std::ios::out | std::ios::binary ); // outputting (out) in binary 
+
+	if (!f.is_open()) {
+		std::cout << "ERROR! FILE COULD NOT BE OPENED!\n";
+		return;
+	}
+
+
+	//std::vector<unsigned char>temporary(bytes);
+	//unsigned char* bmpPad = &temporary[0];
+	unsigned char* bmpPad{ new unsigned char[bytes] {} };
+	const int paddingAmount = ((4 - (width * bytes) % 4) % 4);
+	//const int paddingAmount = 0;
+
+	const int fileHeaderSize = 14;
+	const int informationHeaderSize = 40;
+	const int fileSize = fileHeaderSize + informationHeaderSize + width * height * bytes + paddingAmount * height + (256*4);
+
+	unsigned char fileHeader[fileHeaderSize];
+
+
+
+	// File type
+	fileHeader[0] = 'B';
+	fileHeader[1] = 'M';
+	// File Size ( >> is bit shift here )
+	fileHeader[2] = fileSize;
+	fileHeader[3] = fileSize >> 8;
+	fileHeader[4] = fileSize >> 16;
+	fileHeader[5] = fileSize >> 24;
+	// Reserved 1 (Not Used)
+	fileHeader[6] = 0;
+	fileHeader[7] = 0;
+	// Reserved 2 (Not Used)
+	fileHeader[8] = 0;
+	fileHeader[9] = 0;
+	// IPixel Data Offset
+	fileHeader[10] = (fileHeaderSize + informationHeaderSize + (256 * 4));
+	fileHeader[11] = (fileHeaderSize + informationHeaderSize + (256 * 4)) >>8;
+	fileHeader[12] = (fileHeaderSize + informationHeaderSize + (256 * 4)) >>16;
+	fileHeader[13] = (fileHeaderSize + informationHeaderSize + (256 * 4)) >>24;
+
+	unsigned char informatinHeader[informationHeaderSize];
+	int quick_itr = 0;
+	// Header Size
+	informatinHeader[quick_itr++] = informationHeaderSize;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	// Image Width
+	informatinHeader[quick_itr++] = width;
+	informatinHeader[quick_itr++] = width >> 8;
+	informatinHeader[quick_itr++] = width >> 16;
+	informatinHeader[quick_itr++] = width >> 24;
+	// Image Height
+	informatinHeader[quick_itr++] = height;
+	informatinHeader[quick_itr++] = height >> 8;
+	informatinHeader[quick_itr++] = height >> 16;
+	informatinHeader[quick_itr++] = height >> 24;
+	// Planes
+	informatinHeader[quick_itr++] = 1;
+	informatinHeader[quick_itr++] = 0;
+	// Bits per pixel RGB
+	informatinHeader[quick_itr++] = 8;
+	informatinHeader[quick_itr++] = 0;
+	// Compression (none)
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	// Image size (no compression)
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	// X Pixels per meter (not specified)
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	// Y Pixels per meter (not specified)
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	informatinHeader[quick_itr++] = 0;
+	// Total colors (defaults to 2^n)
+	informatinHeader[quick_itr++] = 256;
+	informatinHeader[quick_itr++] = 256 >> 8;
+	informatinHeader[quick_itr++] = 256 >> 16;
+	informatinHeader[quick_itr++] = 256 >> 24;
+	// Important colors (generally ignored)
+	informatinHeader[quick_itr++] = 256;
+	informatinHeader[quick_itr++] = 256 >> 8;
+	informatinHeader[quick_itr++] = 256 >> 16;
+	informatinHeader[quick_itr++] = 256 >> 24; // quick_itr is now 40
+
+	//std::vector<unsigned char> colorTable;	// https://www.codeproject.com/Articles/7124/Image-Bit-depth-conversion-from-32-Bit-to-8-Bit
+											// https://stackoverflow.com/questions/70086475/create-bmp-image-on-8-bits-per-pixel
+	
+
+
+	f.write( reinterpret_cast<char*>(fileHeader), fileHeaderSize );
+	f.write( reinterpret_cast<char*>(informatinHeader), informationHeaderSize );
+
+	for (int e = 0; e < 256; e++) {
+		//ABGR -> BGRA
+		uint8_t buf[4]{};
+		buf[0] = e;	//(e >> 16) & 0xff;
+		buf[1] = e;	//(e >> 8) & 0xff;
+		buf[2] = e;	//(e >> 0) & 0xff;
+		buf[3] = 0x00;	//(e >> 24) & 0xff;
+		f.write( (char*)buf, 4 );
+	}
+	//f.write(reinterpret_cast<char*>(colorTable),colorTableSize);
+
+
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			unsigned char b_ch = static_cast<unsigned char>(GetColor( x, y ).b);
+			//unsigned char g_ch = static_cast<unsigned char>(GetColor( x, y ).g);
+			//unsigned char r_ch = static_cast<unsigned char>(GetColor( x, y ).r);
+
+
+			unsigned char color[] = { b_ch };
+			//VUCO( "", "Outputting to .bmp..." );
+			f.write( reinterpret_cast<char*>(color), 1 );	
+		}
+		//VUCO( "", "Outputting line .bmp..." );
+		if (paddingAmount>0)
+			f.write( reinterpret_cast<char*>(bmpPad), paddingAmount );
+		
+
+	}
+
+
+	f.close();
+	VUCO( "", "File created" );
+	delete[] bmpPad;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // end ScreenRaster Class
 /*##########################################################################################################*/
 /*##########################################################################################################*/
 // Image Class
-Image::Image(int width, int height)
+Image::		  Image(int width, int height)
 	:m_width(width), m_height(height), m_colors(std::vector<IPixel>(width* height))
 {};
 IPixel Image::GetColor(int x, int y) const	// 1) const following ) only works for member functions, 2. the const following the ) means the implicit "this" pointer is const (i.e. this function WILL NOT BE ABLE TO CHANGE ANYTHING THAT IS NOT MUTABLE
 {
 	return m_colors[y * m_width + x];
 };
-void Image::SetColor(const IPixel& color, int x, int y) {
+void Image::  SetColor(const IPixel& color, int x, int y) {
 	m_colors[y * m_width + x] = color;
 	//m_colors[y * m_width + x].g = color.g;
 	//m_colors[y * m_width + x].b = color.b;
 }
-void Image::Export(const char* path) {
+void Image::  Export(const char* path) {
 	std::ofstream f;
 	f.open(path, std::ios::out | std::ios::binary); // outputting (out) in binary 
 
@@ -279,9 +434,9 @@ void Image::Export(const char* path) {
 
 
 	f.close();
-	std::cout << "File created\n";
+	VUCO("","File created");
 }
-void Image::MapRaster(ScreenRaster& screen) {
+void Image::  MapRaster(ScreenRaster& screen) {
 
 
 
@@ -299,8 +454,7 @@ void Image::MapRaster(ScreenRaster& screen) {
 /*##########################################################################################################*/
 // Relevant functions
 
-std::pair<float, float> MakeSlope
-(const RPoint* point_A, const RPoint* point_B, const int number_of_steps)
+std::pair<float, float> MakeSlope (const RPoint* point_A, const RPoint* point_B, const int number_of_steps)
 {
 	int begin_x = point_A->x_pos;
 	int end_x = point_B->x_pos;
@@ -309,9 +463,7 @@ std::pair<float, float> MakeSlope
 	return std::pair<float, float>{begin_x, (end_x - begin_x)* inv_step};
 
 }
-void DrawScanLine
-(int y, std::pair<float, float>& left, std::pair<float, float>& right,
-	ScreenRaster& screen, const IPixel* px)
+void					DrawScanLine (int y, std::pair<float, float>& left, std::pair<float, float>& right,ScreenRaster& screen, const IPixel* px)
 {
 	int x = left.first, endx = right.first;
 	for (; x < endx; ++x) {
@@ -322,9 +474,7 @@ void DrawScanLine
 	left.first += left.second;
 	right.first += right.second;
 }
-void RasterizeTriangle_rewrite
-(const RPoint* p0, const RPoint* p1, const RPoint* p2,
-	ScreenRaster& screen, const IPixel* px_color)
+void					RasterizeTriangle_rewrite(const RPoint* p0, const RPoint* p1, const RPoint* p2,ScreenRaster& screen, const IPixel* px_color)
 {
 	int x0 = p0->x_pos;
 	int y0 = p0->y_pos;
@@ -380,8 +530,7 @@ void RasterizeTriangle_rewrite
 
 
 }
-
-void DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
+void					DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
 {
 	int polysize = poly->points.size();
 	if (polysize == 0) {
@@ -423,6 +572,56 @@ void DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
 	}
 
 }
+ScreenRaster			CalculateNormal( ScreenRaster heightmap )
+{
+	int xt = heightmap.width;
+	int yt = heightmap.height;
+	ScreenRaster normal( xt, yt );
+	// horizontal_kernel
+	int Gx[3][3] =
+	{
+		{ -1,	0,	1	},
+		{ -2,	0,	2	},
+		{ -1,	0, -2	}
+	};
+	// vertical_kernel
+	int Gy[3][3] =
+	{
+		{	1,	2,	1	},
+		{	0,	0,	0	},
+		{  -1, -2, -1	}
+	};
+
+	int value_x = 0;
+	int value_y = 0;
+	// only need to use one channel since r=g=b
+	for (int X = 1; X < xt-1; X++) {
+		for (int Y = 1; Y < yt - 1; Y++) {
+			// find x value
+			value_x =
+			  heightmap.grid[X-1][Y-1].b *	Gx[0][0] + heightmap.grid[X][Y-1].b * Gx[0][1] + heightmap.grid[X+1][Y-1].b   *	Gx[0][2]
+			+ heightmap.grid[X - 1][Y].b *	Gx[1][0] + heightmap.grid[X][Y].b   * Gx[1][1] + heightmap.grid[X + 1][Y].b *	Gx[1][2]
+			+ heightmap.grid[X - 1][Y+1].b *Gx[2][0] + heightmap.grid[X][Y+1].b * Gx[2][1] + heightmap.grid[X + 1][Y+1].b * Gx[2][2];
+			// find y value
+			value_y =
+			  heightmap.grid[X - 1][Y - 1].b * Gy[0][0] + heightmap.grid[X][Y - 1].b * Gy[0][1] + heightmap.grid[X + 1][Y - 1].b * Gy[0][2]
+			+ heightmap.grid[X - 1][Y].b *	   Gy[1][0] + heightmap.grid[X][Y].b *     Gy[1][1] + heightmap.grid[X + 1][Y].b *     Gy[1][2]
+			+ heightmap.grid[X - 1][Y + 1].b * Gy[2][0] + heightmap.grid[X][Y + 1].b * Gy[2][1] + heightmap.grid[X + 1][Y + 1].b * Gy[2][2];
+			// constrain x and y to -128 to 128. Since max is 1020 and resting area of no change is 126, divide by 8 
+			value_x /= 8;
+			value_y /= 8;
+			//render pixel
+			normal.grid[X][Y] = IPixel( 127+value_x, 127+value_y, 255 );
+
+			value_x = 0;
+			value_y = 0;
+		}
+	}
+
+
+
+	return normal;
+}
 /*
 void DrawPolygon(
 	std::array<int, 2>p0,
@@ -458,3 +657,114 @@ void DrawPolygon(
 		);
 }
 */
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+BMPImage::BMPImage() :
+	isopen{ false }, fileheader{}, info{},
+	bitcount{}, width{}, height{}, width_in_bytes{}
+{
+}
+
+bool BMPImage::readfile( const char* filename )
+{
+	std::ifstream fin( filename, std::ios::binary );
+	if (!fin) { std::cout << "open failed " << filename << '\n'; return false; }
+
+	fin.read( fileheader.type, 2 );
+	if (strncmp( fileheader.type, "BM", 2 ) != 0) return false;
+	readint( fin, fileheader.size );
+	readint( fin, fileheader.reserved );
+	readint( fin, fileheader.offset );
+
+	readint( fin, info.struct_size );
+	readint( fin, info.width );
+	readint( fin, info.height );
+	readint( fin, info.planes );
+	readint( fin, info.bitcount );
+	readint( fin, info.compression );
+	readint( fin, info.image_size );
+	readint( fin, info.xpermeter );
+	readint( fin, info.ypermeter );
+	readint( fin, info.colors_used );
+	readint( fin, info.colors_important );
+
+	width = info.width;
+	height = info.height;
+	bitcount = info.bitcount;
+
+	if (info.struct_size != 40)
+	{
+		printf( "wrong structure size %d\n", info.struct_size );
+		return false;
+	}
+
+	std::vector<uint16_t> bitcheck{ 1,4,8,24,32 };
+	if (std::find( bitcheck.begin(), bitcheck.end(), bitcount ) == bitcheck.end())
+	{
+		printf( "cannot handle this bitcount %d\n", bitcount );
+		return false;
+	}
+
+	int palette_size = (bitcount > 8) ? 0 : (1 << bitcount);
+	palette.resize( palette_size );
+	for (auto& e : palette)
+	{
+		//BGRA -> ABGR
+		uint8_t buf[4]{};
+		fin.read( (char*)buf, 4 );
+		e = buf[2] | (buf[1] << 8) | (buf[0] << 16) | (buf[3] << 24);
+	}
+
+	if (fin.tellg() != fileheader.offset)
+	{
+		printf( "error reading image\n" ); return false;
+	}
+
+	width_in_bytes = ((width * info.bitcount + 31) / 32) * 4;
+	image.resize( width_in_bytes * height );
+	fin.read( (char*)image.data(), image.size() );
+	isopen = true;
+	return true;
+}
+bool BMPImage::writefile( const char* filename )
+{
+	if (!isopen) return false;
+	std::ofstream fout( filename, std::ios::binary );
+	if (!fout) { std::cout << "open failed " << filename << '\n'; return false; }
+
+	fout.write( (char*)fileheader.type, 2 );
+	writeint( fout, fileheader.size );
+	writeint( fout, fileheader.reserved );
+	writeint( fout, fileheader.offset );
+	writeint( fout, info.struct_size );
+	writeint( fout, info.width );
+	writeint( fout, info.height );
+	writeint( fout, info.planes );
+	writeint( fout, info.bitcount );
+	writeint( fout, info.compression );
+	writeint( fout, info.image_size );
+	writeint( fout, info.xpermeter );
+	writeint( fout, info.ypermeter );
+	writeint( fout, info.colors_used );
+	writeint( fout, info.colors_important );
+
+	for (auto& e : palette)
+	{
+		//ABGR -> BGRA
+		uint8_t buf[4]{};
+		buf[0] = (e >> 16) & 0xff;
+		buf[1] = (e >> 8) & 0xff;
+		buf[2] = (e >> 0) & 0xff;
+		buf[3] = (e >> 24) & 0xff;
+		fout.write( (char*)buf, 4 );
+	}
+
+	fout.write( (char*)image.data(), image.size() );
+
+	return true;
+}

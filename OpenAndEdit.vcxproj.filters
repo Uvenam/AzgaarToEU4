@@ -36,6 +36,9 @@
     <ClCompile Include="opencv_personal.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="screens.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UVEP\classes.h">
