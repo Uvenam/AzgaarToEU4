@@ -98,6 +98,15 @@ void ScreenRaster::  RenderPixel(const RPoint* pos, const IPixel* px) {
 	grid[pos->x_pos][pos->y_pos].g = px->g;
 	grid[pos->x_pos][pos->y_pos].r = px->r;
 }
+void ScreenRaster::RenderPixels( std::vector<std::pair<RPoint, IPixel>> area )
+{
+	for (auto& pt : area) {
+		grid[pt.first.x_pos][pt.first.y_pos].b = pt.second.b;
+		grid[pt.first.x_pos][pt.first.y_pos].g = pt.second.g;
+		grid[pt.first.x_pos][pt.first.y_pos].r = pt.second.r;
+	}
+
+}
 void ScreenRaster::	 SimpleView() {
 	float ra;
 	float ba;
@@ -143,7 +152,7 @@ void ScreenRaster::	 SimpleView() {
 IPixel ScreenRaster::GetColor( int x, int y ) {
 	return grid[x][y];
 }
-void ScreenRaster::	 Export( const char* path , int bytes) {	// DOES NOT WORK FOR WHATEVER GODFORSAKEN REASON
+void ScreenRaster::	 Export8( const char* path , int bytes) {	
 
 	std::ofstream f;
 	f.open( path, std::ios::out | std::ios::binary ); // outputting (out) in binary 
@@ -286,20 +295,6 @@ void ScreenRaster::	 Export( const char* path , int bytes) {	// DOES NOT WORK FO
 	delete[] bmpPad;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // end ScreenRaster Class
 /*##########################################################################################################*/
 /*##########################################################################################################*/
@@ -316,7 +311,7 @@ void Image::  SetColor(const IPixel& color, int x, int y) {
 	//m_colors[y * m_width + x].g = color.g;
 	//m_colors[y * m_width + x].b = color.b;
 }
-void Image::  Export(const char* path) {
+void Image::  Export24(const char* path) {
 	std::ofstream f;
 	f.open(path, std::ios::out | std::ios::binary); // outputting (out) in binary 
 
@@ -437,7 +432,6 @@ void Image::  Export(const char* path) {
 	VUCO("","File created");
 }
 void Image::  MapRaster(ScreenRaster& screen) {
-
 
 
 	for (int x = 0; x < screen.width; x++) {
@@ -628,6 +622,57 @@ ScreenRaster			CalculateNormal( ScreenRaster heightmap )
 
 
 	return normal;
+}
+std::vector<std::pair<RPoint, IPixel>> BindTogether( std::vector<RPoint> points, std::vector<IPixel> pixels )
+{
+	std::vector<std::pair<RPoint, IPixel>> area;
+
+	int points_size = points.size();
+	if (points_size != pixels.size()) {
+		throw std::runtime_error( "Called BindTogether with differing vector sizes!" );
+		return;
+	}
+	for (int x = 0; x < points_size;x++) {
+		area.push_back( std::pair( points[x], pixels[x]));
+	}
+
+	return area;
+}
+std::vector<std::pair<RPoint, IPixel>> AddHeightNoise(std::vector<std::pair<RPoint, IPixel>> area, float intensity )
+{
+	auto new_area = area;
+	// Define random generator with Gaussian distribution
+	const double mean = 0.0;
+	const double stddev = 0.1;
+	std::default_random_engine generator;
+	auto dist = std::bind( std::normal_distribution<double>{mean, stddev},
+		std::mt19937( std::random_device{}() ) );
+	int value;
+	// Add Gaussian noise
+	for (auto& x : new_area) {
+			value = x.second.b + intensity*255*(dist( generator ));
+			value = (value > 255) ? 255 : value;	// ceiling on value
+			x.second.b = value;
+	}
+	return new_area;
+}
+std::vector<std::pair<RPoint, IPixel>> AddCostalEtching( RPoint start, RPoint centroid, RPoint end, IPixel land, IPixel water )
+{
+	// NOTE: Have to render ALL pixels changed
+	std::vector<std::pair<RPoint, IPixel>>area;
+	// Generate list of RPoints on line between start and end
+	// Calculate max application distance between start/end midpoint and centroid
+		// calculate midpoint
+
+	// Apply shape
+
+
+	// Apply coastal dotting
+
+
+
+
+	return area;
 }
 /*
 void DrawPolygon(

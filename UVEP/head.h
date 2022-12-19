@@ -31,4 +31,7 @@
 #include <clocale>
 #include <codecvt>
 
+#include <functional>
+#include <iterator>
+
 

@@ -32,7 +32,6 @@ public:
 	// X Dimension
 	int width = 0;
 	// screen.grid [X] [Y]
-	std::vector<uint32_t> palette;
 	std::vector<std::vector<IPixel>> grid;
 	// Initializes blackscreen with given dimensions
 	ScreenRaster(int width_ele, int height_ele);
@@ -43,10 +42,11 @@ public:
 
 	void RenderPixel(const RPoint* pos, const IPixel* px);
 
+	void RenderPixels(std::vector<std::pair<RPoint,IPixel>>area);
+
 	void SimpleView();
 		
-	void Export (const char* path, int bytes);	// FRUSTRATINGLY DOES NOT WORK
-
+	void Export8 (const char* path, int bytes);	
 
 	IPixel GetColor( int x, int y );
 
@@ -60,7 +60,7 @@ public:
 	Image(int width, int height);
 	IPixel GetColor(int x, int y) const;
 	void SetColor(const IPixel& color, int x, int y);
-	void Export(const char* path);
+	void Export24(const char* path);
 	void MapRaster(ScreenRaster& screen);
 };
 
@@ -171,16 +171,11 @@ public:
 
 
 
-std::pair<float, float> MakeSlope
-(const RPoint* point_A, const RPoint* point_B, const int number_of_steps);
-void DrawScanLine
-(int y, std::pair<float, float>& left, std::pair<float, float>& right,
-	ScreenRaster& screen, const IPixel* px);
-void RasterizeTriangle_rewrite
-(const RPoint* p0, const RPoint* p1, const RPoint* p2,
-	ScreenRaster& screen, const IPixel* px_color);
+std::pair<float, float> MakeSlope (const RPoint* point_A, const RPoint* point_B, const int number_of_steps);
+void					DrawScanLine (int y, std::pair<float, float>& left, std::pair<float, float>& right, ScreenRaster& screen, const IPixel* px);
+void					RasterizeTriangle_rewrite (const RPoint* p0, const RPoint* p1, const RPoint* p2, ScreenRaster& screen, const IPixel* px_color);
 // Go through list of verticies and rasterize them on screen
-void DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen);
+void					DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen);
 /*
 void DrawPolygon(
 	std::array<int, 2>p0,
@@ -217,5 +212,11 @@ void DrawPolygon(
 }
 */
 
-ScreenRaster CalculateNormal(ScreenRaster heightmap);
+ScreenRaster			CalculateNormal(ScreenRaster heightmap);
+// NEEDS TESTED
+std::vector<std::pair<RPoint, IPixel>> BindTogether( std::vector<RPoint>points, std::vector<IPixel>pixels );
+// NEEDS TESTED
+std::vector<std::pair<RPoint,IPixel>> AddHeightNoise( std::vector<std::pair<RPoint, IPixel>> area, float intensity);
+// NEEDS TESTED
+std::vector<std::pair<RPoint,IPixel>> AddCostalEtching( RPoint start, RPoint centroid, RPoint end, IPixel land, IPixel water);	// cant go inwards more than centroid? ?Be careful about making lakes?
 

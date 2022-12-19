@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.390"
+#define		VERSION_STAMP	"V 0.395"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
@@ -282,7 +282,7 @@ VUCO( "", VERSION_STAMP );
 // CREATION OF FLAGS
 	// EU4 needs 128x128 TGA files with TAG.tga format
 	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale
-	// Export as PNG (?JPEG?)
+	// Export24 as PNG (?JPEG?)
 
 	/*
 	dontUseModulesInTheFuture();
@@ -343,8 +343,6 @@ VUCO( "", VERSION_STAMP );
 	
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
-	
-
 	//std::cout << "\nGenerating polygonmap from all_cells...";
 	VUCO( "", "Generating polygonmap from all_cells..." );
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
@@ -377,11 +375,11 @@ VUCO( "", VERSION_STAMP );
 	// GenerateSeaboardPolygons
 	// If we draw a hexagon grid
 	ScreenRaster heightmap_bmp = CreateHeightmap( all_cells );
-	heightmap_bmp.Export( "heightmap.bmp" ,1);
+	heightmap_bmp.Export8( "heightmap.bmp" ,1);
 	ScreenRaster normal_bmp = CalculateNormal(heightmap_bmp);
 	Image normal_export( normal_bmp.width, normal_bmp.height );
 	normal_export.MapRaster( normal_bmp );
-	normal_export.Export("normal.bmp");
+	normal_export.Export24("normal.bmp");
 	
 	Image EU4_MAP_BMP( 5632, 2048 );
 	//std::cout << "\nMapping polygons to EU4 Map...";
@@ -389,7 +387,7 @@ VUCO( "", VERSION_STAMP );
 	EU4_MAP_BMP.MapRaster( EU4_MAP );
 	//std::cout << "\nCreating bmp...";
 	VUCO( "", "Creating bmp...");
-	EU4_MAP_BMP.Export( "eu4_map.bmp" );
+	EU4_MAP_BMP.Export24( "eu4_map.bmp" );
 
 
 
