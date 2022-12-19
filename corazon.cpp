@@ -376,33 +376,13 @@ VUCO( "", VERSION_STAMP );
 	// GenerateCoastalPolygons
 	// GenerateSeaboardPolygons
 	// If we draw a hexagon grid
-	ScreenRaster HEIGHTMAP = CreateHeightmap( all_cells );
-	HEIGHTMAP.Export( "heightmap.bmp" ,1);
-
-
-	//BMPImage heightmap_bmp;
-	//heightmap_bmp.readfile( "good_heightmap.bmp" );
-	//heightmap_bmp.writefile( "test_heightmap.bmp" );
-
-
-				/*
-				[struct_size]40
-				[width]5632
-				[height]2048
-				[planes]1
-				[bitcount]8
-				[compression]0
-				[image_size]0
-				[xpermeter]3780
-				[ypermeter]3780
-				[colors_used]156
-				[colors_important]156
-				*/
-
-
-
-
-	HEIGHTMAP.Export( "heightmap.bmp",1 );
+	ScreenRaster heightmap_bmp = CreateHeightmap( all_cells );
+	heightmap_bmp.Export( "heightmap.bmp" ,1);
+	ScreenRaster normal_bmp = CalculateNormal(heightmap_bmp);
+	Image normal_export( normal_bmp.width, normal_bmp.height );
+	normal_export.MapRaster( normal_bmp );
+	normal_export.Export("normal.bmp");
+	
 	Image EU4_MAP_BMP( 5632, 2048 );
 	//std::cout << "\nMapping polygons to EU4 Map...";
 	VUCO( "", "Mapping polygons to EU4 map...");

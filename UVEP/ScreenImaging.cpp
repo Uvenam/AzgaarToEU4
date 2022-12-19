@@ -582,7 +582,7 @@ ScreenRaster			CalculateNormal( ScreenRaster heightmap )
 	{
 		{ -1,	0,	1	},
 		{ -2,	0,	2	},
-		{ -1,	0, -2	}
+		{ -1,	0,	1	}
 	};
 	// vertical_kernel
 	int Gy[3][3] =
@@ -608,13 +608,20 @@ ScreenRaster			CalculateNormal( ScreenRaster heightmap )
 			+ heightmap.grid[X - 1][Y].b *	   Gy[1][0] + heightmap.grid[X][Y].b *     Gy[1][1] + heightmap.grid[X + 1][Y].b *     Gy[1][2]
 			+ heightmap.grid[X - 1][Y + 1].b * Gy[2][0] + heightmap.grid[X][Y + 1].b * Gy[2][1] + heightmap.grid[X + 1][Y + 1].b * Gy[2][2];
 			// constrain x and y to -128 to 128. Since max is 1020 and resting area of no change is 126, divide by 8 
+		
 			value_x /= 8;
 			value_y /= 8;
+
+			
+
+			static_cast<signed char>(value_x);
+			static_cast<signed char>(value_y);
+
 			//render pixel
 			normal.grid[X][Y] = IPixel( 127+value_x, 127+value_y, 255 );
 
-			value_x = 0;
-			value_y = 0;
+			//value_x = 0;
+			//value_y = 0;
 		}
 	}
 
