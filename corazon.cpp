@@ -302,6 +302,8 @@ VUCO( "", VERSION_STAMP );
 // CREATION OF COUNTRIES
 /*################################################################################################*/
 
+// check C:\Program Files (x86)\Steam\steamapps\workshop\content\236850\2325242514\
+
 	//Country File / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
 	/*
 	graphical_culture = westerngfx
@@ -372,11 +374,20 @@ VUCO( "", VERSION_STAMP );
 		// add_government_reform = celestial_empire
 		// government_rank = 3
 
+		// EUIV / events / ChineseFactions.txt
+		// EUIV / events / ChineseEmpire.txt
+
 	// SHOGUN MECHANICS
+	
 		// EUIV / history / diplomacy / [Shogunate].txt
+		// EUIV / events / Japan.txt
+		// EUIV / events / flavorJAP.txt
+		// EUIV / events / flavorDaimyo.txt
 
 	// HRE MECHANICS
+		
 		// EUIV / history / diplomacy / [holy_roman_empire].txt
+
 
 	// EUIV / common / country_tags / 00_countries.txt
 	// EUIV / common / country_tags / [phrase_mod].txt
@@ -533,6 +544,8 @@ VUCO( "", VERSION_STAMP );
 	// EUIV / common / ages / 00_default.txt
 
 	// EUIV / events
+
+	// EUIV / decisions
 
 	// EUIV / history / wars
 
