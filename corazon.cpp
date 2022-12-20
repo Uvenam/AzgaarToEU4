@@ -280,9 +280,13 @@ VUCO( "", VERSION_STAMP );
 		// Also ask user to get armoria and download flags from there
 	
 // CREATION OF FLAGS
-	// EU4 needs 128x128 TGA files with TAG.tga format
+/*################################################################################################*/
+
+// EU4 needs 128x128 TGA files with TAG.tga format
 	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale
 	// Export24 as PNG (?JPEG?)
+
+	// Europa Universalis IV / gfx / flags
 
 	/*
 	dontUseModulesInTheFuture();
@@ -296,33 +300,251 @@ VUCO( "", VERSION_STAMP );
 
 	
 // CREATION OF COUNTRIES
+/*################################################################################################*/
+
+	//Country File / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
+	/*
+	graphical_culture = westerngfx
+	color = { 157  51  167 }
+	historical_idea_groups = {
+	defensive_ideas
+	offensive_ideas
+	religious_ideas
+	economic_ideas
+	diplomatic_ideas
+	innovativeness_ideas
+	spy_ideas
+	trade_ideas
+	}
+	historical_units = {
+	western_medieval_infantry
+	western_medieval_knights
+	western_men_at_arms
+	swiss_landsknechten
+	dutch_maurician
+	austrian_tercio
+	austrian_grenzer
+	austrian_hussar
+	austrian_white_coat
+	prussian_uhlan
+	austrian_jaeger
+	mixed_order_infantry
+	open_order_cavalry
+	napoleonic_square
+	napoleonic_lancers
+	}
+	monarch_names = {
+	"Leopold #1" = 100
+	"Femalia #1" = -1
+	}
+	leader_names = {
+	Leman
+	}
+	ship_names = {
+	"Comte de Smet de Nayer"
+	}
+	army_names = {
+	"Armee von $PROVINCE$"
+	}
+	fleet_names = {
+	"Stadtflotte"
+	}
+	*/
+
+	//Country History / Europa Universalis IV / history / countries / [TAG] - [COUNTRY_FULLNAME].txt
+	/*
+				government = absolute_monarchy	
+				add_government_reform =			// Special reforms?
+				overnment_rank =				// Empire? Kingdom? Duchy?
+				mercantilism = 10
+				technology_group = western
+				religion = catholic
+				primary_culture = flemish
+				add_accepted_culture =
+				capital = 90	# Antwerp
+				// fixed_capital = 90 # Antwerp // can't move away from this province, no cost to move to this province
+
+	*/
+
+
+	// CHINA MECHANICS
+
+		// add_government_reform = celestial_empire
+		// government_rank = 3
+
+	// SHOGUN MECHANICS
+		// EUIV / history / diplomacy / [Shogunate].txt
+
+	// HRE MECHANICS
+		// EUIV / history / diplomacy / [holy_roman_empire].txt
+
+	// EUIV / common / country_tags / 00_countries.txt
+	// EUIV / common / country_tags / [phrase_mod].txt
+	// EUIV / common / country_colors / 00_country_colors.txt
+
+	/*
+	A01	= "countries/Lorent.txt"
+	A02	= "countries/Deranne.txt"
+	A03	= "countries/Redglades.txt"
+	A04	= "countries/Wesdam.txt"
+	[TAG] = "countries/[COUNTRY_NAME].txt"
+	...
+	*/
+
+
+// DIPLOMACY
+/*################################################################################################*/
+
+	// EUIV / history / diplomacy / [A phrase, mainly for personal reference].txt
 	
 // CREATION OF MAIN CULTURES
+/*################################################################################################*/
+
+	// Europa Universalis IV / commmon / cultures / 00_cultures.txt
+	/*
+	custom_culture_group = {
+			graphical_culture = westerngfx
+			custom_culture_1 = {			// This serves to provicde unique names for culture in gorup
+				primary = CUT
+				male_names = {
+					MaleName1 MaleName2 MaleName3
+					"Male Name 1" "Male Name 2" "Male Name 3"
+				}
+				female_names = {
+					FemaleName1 FemaleName2 FemaleName3
+					"Female Name 1" "Female Name 2" "Female Name 3"
+				}
+				dynasty_names = {
+					DynastyName1 DynastyName2 DynastyName3
+					"Dynasty Name 1" "Dynasty Name 2" "Dynasty Name 3"
+				}
+			}
+			custom_culture_2 = {
+				primary = CUC
+				male_names = {
+					MaleName4 MaleName5 MaleName6
+					"Male Name 4" "Male Name 5" "Male Name 6"
+				}
+				female_names = {
+					FemaleName4 FemaleName5 FemaleName6
+					"Female Name 4" "Female Name 5" "Female Name 6"
+				}
+				dynasty_names = {
+					DynastyName4 DynastyName5 DynastyName6
+					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
+				}
+			}
+			custom_culture_3 = {
+				primary = CUL
+				male_names = {
+					MaleName4 MaleName5 MaleName6
+					"Male Name 4" "Male Name 5" "Male Name 6"
+				}
+				female_names = {
+					FemaleName4 FemaleName5 FemaleName6
+					"Female Name 4" "Female Name 5" "Female Name 6"
+				}
+				dynasty_names = {
+					DynastyName4 DynastyName5 DynastyName6
+					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
+				}
+			}
+		}
+	}
+	*/
 	
 // CREAITON OF RELIGIONS https://eu4.paradoxwikis.com/Religion_modding
+/*################################################################################################*/
+	// EUIV / common / religious_conversions / 00_religious_conversions.txt
+	// EUIV / common / religions / 00_religions.txt
 	
-// CREATION OF PROVINCES / SEA REGIONS (AND UNIQUE COLOR FOR EACH)
-	
+
+
 // ASSIGN DEVELOPMENT TO PROVINCES
+/*################################################################################################*/
+
+// ASSIGNMENT OF CULTURE(AND NAME)/STATE/RELIGION/CORES TO PROVINCES
+/*################################################################################################*/
+
+// CREATION OF PROVINCES / SEA REGIONS (AND UNIQUE COLOR FOR EACH)
+/*################################################################################################*/
+
+	// Europa Universalis IV / history / provinces / [PROV_ID] - [PROVINCE_NAME].txt
+
+	/*
+	owner = SWE
+	controller = SWE
+	add_core = SWE
+	add_core = FIN
+	culture = finnish
+	religion = catholic
+	hre = no
+	base_tax = 1
+	base_production = 1
+	trade_goods = fur
+	base_manpower = 1
+	capital = "Tavastehus"
+	is_city = yes
+	#fort_15th = yes
+	discovered_by = western
+	discovered_by = eastern
+	*/
 	
-// CHINA MECHANICS
 	
-// SHOGUN MECHANICS
-	
-// HRE MECHANICS
 	
 // factions? https://eu4.paradoxwikis.com/Faction_modding
 	
 // government modding?
 	
-// ASSIGNMENT OF CULTURE(AND NAME)/STATE/RELIGION/CORES TO PROVINCES
+
 	
 // CREATION OF TRADE ZONES
+/*################################################################################################*/
+
+	// EUIV / common / tradenodes / 00_tradenodes.txt
+	// EUIV / common / trade_companies / 00_trade_companies.txt
 	
 // CREATION OF COLONIAL REGIONS
+/*################################################################################################*/
+
+
+	// EUIV / common / colonial_regions / 00_colonial_regions.txt
+
+// FIXING
+/*################################################################################################*/
+
+	// EUIV / common / triggered_modifiers / 00_triggered_modifiers.txt
+	// EUIV / common / scripted_triggers/	00_scripted_triggers.txt
+	// EUIV / common / scripted_triggers/	00_scripted_triggers_startup_screen.txt
+	// EUIV / common / scripted_triggers/	01_scripted_triggers_province_modifiers.txt
+	// EUIV / common / scripted_effects/	01_scripted_effects_for_on_actions.txt
+	// EUIV / common / revolt_triggers / 00_revolt_triggers.txt
+
+	// EUIV / common / rebel_types
+	// EUIV / common / province_triggered_modifiers / 00_modifiers.txt
+	// ? province_names?
+	// EUIV / common / on_actions / 00_on_actions.txt
+	// EUIV / common / natives / 00_natives.txt
+	// EUIV / common / mercenary_companies / 00_mercenaries.txt
+	// EUIV / common / insults / 00_insults.txt
+	// EUIV / common / institutions / 00_Core.txt
+	// EUIV / common / holy_orders / 00_holy_orders.txt
+	// EUIV / common / defender_of_faith / 00_defender_of_faith.txt
+	// EUIV / common / ages / 00_default.txt
+
+	// EUIV / events
+
+	// EUIV / history / wars
+
+	// EUIV / missions
+
+	// EUIV / localisation
+
 
 // Information calculated, time to output into EU4 formats and such
-	GenericOutput(all_cells, "log2.txt");
+	
+
+//GenericOutput(all_cells, "log2.txt");
 
 	// HAVE TO GENERATE SEABOARD (make grid of hexagons that span the world, write them first, have them "replace" the cells that they take up and their neighbors (so land cells that border ocean cells (i.e. have ocean cells as neighbors) will instead have this new cell as a neighbor (or not even a cell, maybe have it as a sea province)
 	// could have centers equally spaced through the map and make a new DrawHexagonCenteredHere()
@@ -334,19 +556,49 @@ VUCO( "", VERSION_STAMP );
 	// FOLLOWING IS FOR EXAMPLE PURPOSES! FIRSTLY: PROVINCE ID NEEDS TO BE UNIQUELY MAPPED TO COLOR_RGB TO ENUSRE THAT THERE ARE NO REPEATS
 	// NOTE THAT THE VERTICIES CONTAIN A DUPLICATE VALUE OF THE FIRST COORD INITIALLY PUT INTO THEM (just the way it is output from AZGAAR). IT WILL NOT BE USED IN RASTERIZATION because the DrawPolygon ignores duplicates (effectively)
 
-/*###########################      CREATING THE IMAGE           ##################################*/
+/*###########################      CREATING THE IMAGES          ##################################*/
 /*################################################################################################*/
-	VUCO( "", "Creating image" );
-	std::random_device rd; // obtain random number from hardware
-	std::mt19937 gen( rd() ); // seed generator
-	std::uniform_int_distribution<> distrib( 0, 255 ); //define the range // distrib(gen)
+	//VUCO( "", "Creating image" );
+	//std::random_device rd; // obtain random number from hardware
+	//std::mt19937 gen( rd() ); // seed generator
+	//std::uniform_int_distribution<> distrib( 0, 255 ); //define the range // distrib(gen)
+
+
+// EUIV / map
+
+// CREATE area.txt
+// CREATE climate.txt
+// CREATE continent.txt
+// CREATE default.map (text file)
+// CREATE definition.csv
+// CREATE positions.txt
+// CREATE region.txt
+// CREATE superregion.txt
+// CREATE rivers.bmp
+// CREATE terrain.bmp
+// CREATE terrain.txt
+// CREATE trees.bmp
+// CREATE world_normal.bmp
+// CREATE heightmap.bmp
+// CREATE province.bmp
+
+// CREATE colormap_[SEASON].dds in EUIV / map / terrain
+// CREATE colormap_water.dds
+
+// CREATE colormap_[SEASON].dds in EUIV / map / random
+
+
+
+// CREATE lakes.txt in EUIV / map / lakes / 00_lakes.txt
+
 	
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
 	VUCO( "", "Generating polygonmap from all_cells..." );
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
-		IPixel color_rgb( distrib( gen ), distrib( gen ), distrib( gen ) );
+		int height_col = (3248+all_cells[dp_itr].height)/99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
+		IPixel color_rgb( height_col, height_col, height_col );
 
 		//IPixel land( 0xFFFFFF );
 		//IPixel water( 0x000FFF );
@@ -389,6 +641,75 @@ VUCO( "", VERSION_STAMP );
 	VUCO( "", "Creating bmp...");
 	EU4_MAP_BMP.Export24( "eu4_map.bmp" );
 
+
+
+	/*###########################      BOOKMARK CREATION			##################################*/
+	/*################################################################################################*/
+
+	// EUIV / common / bookmarks / [a_phrase].txt
+
+	/*
+	bookmark =
+{
+	name = "LILACWARS_NAME"
+	desc = "LILACWARS_DESC"
+	date = 1444.11.11
+	
+	center = 8
+	default = yes
+	
+	country = A01	#Lorent
+	country = A02	#Deranne
+	
+	country = A04	#Wesdam
+	country = A11	#Pearlsedge
+	
+	country = A12	#Beepeck
+	country = A13	#Gawed
+	
+	country = A46	#Arbaran
+	country = A25	#Damescrown
+	country = A62	#Telgeir
+	
+	country = A85	#Magisterium
+	country = A45	#Istralore
+	country = A30	#Wex
+	country = A72	#Arannen
+	
+	country = A33	#Verne
+	country = A29	#Busilar
+
+	easy_country = A04	#Wesdam
+	easy_country = A11	#Pearlsedge
+	easy_country = A13	#Gawed
+	easy_country = A45	#Istralore
+	easy_country = A72	#Arannen
+	easy_country = A33	#Verne
+
+}
+	*/
+
+	/*###########################      .mod FILE CREATION			##################################*/
+	/*################################################################################################*/
+
+	/*
+	replace_path = "common/bookmarks"
+	replace_path="common/province_names"
+	replace_path="common/government_names"
+	replace_path="common/disasters"
+	replace_path="common/rebel_types"
+	replace_path="common/countries"
+	replace_path="common/mercenary_companies"
+	replace_path="events"
+	replace_path="missions"
+	replace_path="decisions"
+	replace_path="history/diplomacy"
+	replace_path="history/countries"
+	replace_path="history/wars"
+	replace_path="history/provinces"
+	replace_path="history/advisors"
+	replace_path="gfx/loadingscreens"
+	*/
 
 
 
