@@ -471,14 +471,23 @@ VUCO( "", VERSION_STAMP );
 	
 
 
+// BURG LOCATION AND TYING TO PROVINCES
+/*################################################################################################*/
+
 // ASSIGN DEVELOPMENT TO PROVINCES
 /*################################################################################################*/
 
 // ASSIGNMENT OF CULTURE(AND NAME)/STATE/RELIGION/CORES TO PROVINCES
 /*################################################################################################*/
 
+// ASSIGNMENT OF NAMES TO PROVINCES
+/*################################################################################################*/
+
 // CREATION OF PROVINCES / SEA REGIONS (AND UNIQUE COLOR FOR EACH)
 /*################################################################################################*/
+
+
+	// https://eu4.paradoxwikis.com/Geographical_list_of_provinces
 
 	// Europa Universalis IV / history / provinces / [PROV_ID] - [PROVINCE_NAME].txt
 
@@ -499,6 +508,23 @@ VUCO( "", VERSION_STAMP );
 	#fort_15th = yes
 	discovered_by = western
 	discovered_by = eastern
+	*/
+
+	/*
+	for( auto &cell : all_cells){
+	// Create file in directory
+	std::string target;
+	// target = MOD_PATH_DIR + FORMATTED_INFO + ".txt"	// should look like "Baierbia/history/provinces/50 - Spannor.txt"
+	std::ofstream out(target);
+
+
+	}
+
+
+
+
+
+
 	*/
 	
 	
@@ -579,24 +605,50 @@ VUCO( "", VERSION_STAMP );
 
 // EUIV / map
 
-// CREATE area.txt
-// CREATE climate.txt
+
+
 // CREATE continent.txt
+
 // CREATE default.map (text file)
+
 // CREATE definition.csv
+
 // CREATE positions.txt
+
 // CREATE region.txt
+
 // CREATE superregion.txt
+
 // CREATE rivers.bmp
+
 // CREATE terrain.bmp
+
 // CREATE terrain.txt
-// CREATE trees.bmp
-// CREATE world_normal.bmp
+
+// CREATE world_normal.bmp	// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
+
 // CREATE heightmap.bmp
+// Issue: Heightmap is not working correctly
+// Cause : You have an gradient that is too extreme.Don’t go from 100 to 200 without steps in between.
+
 // CREATE province.bmp
 
+// CREATE area.txt
+
+
+
+// .dds -> 8.8.8.8 ARGB 32bpp (or bit) profile with no mipmaps.
+// or maybe 8.8.8.8 16 bit ARGB with mipmaps. according to https://www.reddit.com/r/hoi4modding/comments/bk8umn/proper_way_to_save_dds_files/, needs verified
+// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
+// must use Nearest Neighbour to maintain pixel-perfect accuracy.
+
+// CREATE colormap_water.dds	// land is like RGB 19,216,216; coast is 14,97,110; deep ocean is 5,18,36; ocean is 8,54,60
+
+// CREATE climate.txt
+
+// CREATE trees.bmp
+
 // CREATE colormap_[SEASON].dds in EUIV / map / terrain
-// CREATE colormap_water.dds
 
 // CREATE colormap_[SEASON].dds in EUIV / map / random
 
