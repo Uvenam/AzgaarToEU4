@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.395"
+#define		VERSION_STAMP	"V 0.400"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 #define		DEBUG	// for VUCO logging and for ending pause
@@ -206,6 +206,8 @@ VUCO( "", VERSION_STAMP );
 	std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
 	extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
 
+
+
 // Have all cell info, time to transform into EU4 shape/dimensions
 
 /*######################	WORKING WITH THE MAP			######################################*/
@@ -216,15 +218,17 @@ VUCO( "", VERSION_STAMP );
 	// C++ regex: \[^,\]*,
 	// note that all will have comma at end
 
-	// ISSUE!!! WITH BURGPARSE
-	// all_burgs = BurgParse( burg_path );
-	// VUCO( "", all_burgs[0].capital );
+	
+	all_burgs = BurgParse( burg_path );
+	//VUCO( "", all_burgs[0].capital );
 
 	// get burgs, their population, then include/measure with cell_info
 
 	// burgs have an ID, a name, a province, province full name, state, state full name, culture, religion, population, latittude, longitude, elevation, capital, port, citadel, walls, plaza, temple, shanty town, and city generator link
 
-	TransformPoints( 5632, 2048, all_cells, extents );
+	TransformPoints( 5632, 2048, all_burgs, all_cells, extents );
+	//TransformPoints_NoStretch ( all_burgs, all_cells, extents );
+	//TransformPoints ( 5632, 2048, all_burgs, extents );
 	
 	// Create Map using ID of all_cell element and correspond it to the cell_info
 	// New Array where the index matches ID of cell (done using map)
@@ -233,6 +237,49 @@ VUCO( "", VERSION_STAMP );
 	for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
 		indexed_cells.emplace( all_cells[t_itr].id, all_cells[t_itr] );
 	}
+
+	std::unordered_map <int, burg_info> indexed_burgs;
+	int all_burgs_size = all_burgs.size ();
+	for (int t_itr = 0; t_itr < all_burgs_size; t_itr++) {
+		indexed_burgs.emplace ( all_burgs[t_itr].id, all_burgs[t_itr] );
+	}
+	
+
+
+	// Map each burg to a cell ID
+	
+//	auto all_burgs_copy = all_burgs;
+
+
+
+	/*
+	//################################################################################################//
+										ISSUE
+		Transform Points
+		? What if map provided is an island? So the map could be like 5000 x 2000, but the cells only
+		exist within (2500,1000), (2500,1500), (2000,1000), (2000,1500)
+
+		? Is there a need for stretching? Or even, how do you know you should stretch the points?
+
+	//################################################################################################//
+
+	Not all burgs are getting mapped to a cell
+
+	*/
+
+
+	std::vector<int> index_list_of_cells_with_burgs = AssignBurgsToCells (all_burgs,all_cells);
+
+
+
+
+
+	// burg ID corresponds to location within all_burgs -1 (so burg id of 1 is at all_burgs[0])
+	
+
+
+	std::vector<province_info> all_provinces = CreateProvinces ( all_cells );
+
 
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
@@ -268,8 +315,16 @@ VUCO( "", VERSION_STAMP );
 
 /*###########################   Breakdown section??      ########################################*/
 	
+	// Get unique TAGS
 	std::unordered_set<std::string> all_tags;
-	all_tags = TAGParse( all_states ); // Tag resolution
+	all_tags = TAGParse( all_states ); // Tag resolution. States are also assigned state.TAG
+
+	// Map state ID from AZGAAR to EU4 TAG
+	std::unordered_map<short, std::string> ID_to_TAG;
+	for (auto& state_itr : all_states) {
+		ID_to_TAG.emplace ( state_itr.ID, state_itr.TAG );
+	
+	}
 
 /*################################################################################################*/
 /*################################################################################################*/
@@ -303,6 +358,31 @@ VUCO( "", VERSION_STAMP );
 /*################################################################################################*/
 
 // check C:\Program Files (x86)\Steam\steamapps\workshop\content\236850\2325242514\
+
+	for (auto& each_state : all_states) {
+		// Create file > / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
+		// Resolve graphical_culture
+		// Resolve Color
+		// Resolve historical_idea_groups
+		// Resolve historical_units
+		// Generate some Monarch Names
+		// Generate some Leader names
+		// Generate some ship names
+		// Generate Army names
+		// Generate Fleet names
+	
+	
+		// Create File > / Europa Universalis IV / history / countries / [TAG] - [COUNTRY_FULLNAME].txt
+		// Resolve Government
+		// Resolve adding government reforms
+		// Resolve government rank (is optional)
+		// Resolve mercantilism (is optional)
+		// Resolve technology_group
+		// Resolve religion
+		// Resolve primary culture
+		// Resolve adding accepted cultures
+		// Resolve capital province ID
+	}
 
 	//Country File / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
 	/*
@@ -357,7 +437,7 @@ VUCO( "", VERSION_STAMP );
 	/*
 				government = absolute_monarchy	
 				add_government_reform =			// Special reforms?
-				overnment_rank =				// Empire? Kingdom? Duchy?
+				government_rank =				// Empire? Kingdom? Duchy?
 				mercantilism = 10
 				technology_group = western
 				religion = catholic
@@ -393,7 +473,7 @@ VUCO( "", VERSION_STAMP );
 	// EUIV / common / country_tags / [phrase_mod].txt
 	// EUIV / common / country_colors / 00_country_colors.txt
 
-	/*
+	/* EX from ANBENNAR
 	A01	= "countries/Lorent.txt"
 	A02	= "countries/Deranne.txt"
 	A03	= "countries/Redglades.txt"
@@ -632,6 +712,7 @@ VUCO( "", VERSION_STAMP );
 // Cause : You have an gradient that is too extreme.Don’t go from 100 to 200 without steps in between.
 
 // CREATE province.bmp
+// province colors HAVE TO BE UNIQUE! Just like TAGS
 
 // CREATE area.txt
 
@@ -643,13 +724,14 @@ VUCO( "", VERSION_STAMP );
 // must use Nearest Neighbour to maintain pixel-perfect accuracy.
 
 // CREATE colormap_water.dds	// land is like RGB 19,216,216; coast is 14,97,110; deep ocean is 5,18,36; ocean is 8,54,60
+VUCO( "DDS", "FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET" );
 
 // CREATE climate.txt
 
 // CREATE trees.bmp
-
+VUCO( "DDS", "FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET" );
 // CREATE colormap_[SEASON].dds in EUIV / map / terrain
-
+VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" );
 // CREATE colormap_[SEASON].dds in EUIV / map / random
 
 
@@ -692,7 +774,16 @@ VUCO( "", VERSION_STAMP );
 	// GenerateSeaboardPolygons
 	// If we draw a hexagon grid
 	ScreenRaster heightmap_bmp = CreateHeightmap( all_cells );
+	// Draw gradient on heightmap? Blur?
+	// Add texture to heightmap? For land/mountain areas, then for ocean, then for coastal?
 	heightmap_bmp.Export8( "heightmap.bmp" ,1);
+	heightmap_bmp.grid_vector = VectorizeGrid ( heightmap_bmp.grid );
+	AddHeightNoise (heightmap_bmp.grid_vector,0,95,0,95,1);
+	AddHeightNoise ( heightmap_bmp.grid_vector, 95, 255, 95, 255, 1 );
+	heightmap_bmp.RenderPixels ( heightmap_bmp.grid_vector );
+	heightmap_bmp.Export8 ( "heightmap_randomized.bmp", 1 );
+
+
 	ScreenRaster normal_bmp = CalculateNormal(heightmap_bmp);
 	Image normal_export( normal_bmp.width, normal_bmp.height );
 	normal_export.MapRaster( normal_bmp );

@@ -33,6 +33,8 @@ public:
 	int width = 0;
 	// screen.grid [X] [Y]
 	std::vector<std::vector<IPixel>> grid;
+	std::vector<std::pair<RPoint, IPixel>> grid_vector;
+	
 	// Initializes blackscreen with given dimensions
 	ScreenRaster(int width_ele, int height_ele);
 
@@ -43,6 +45,7 @@ public:
 	void RenderPixel(const RPoint* pos, const IPixel* px);
 
 	void RenderPixels(std::vector<std::pair<RPoint,IPixel>>area);
+	void RenderPixels( std::vector<RPoint>area,const IPixel* color );
 
 	void SimpleView();
 		
@@ -173,9 +176,12 @@ public:
 
 std::pair<float, float> MakeSlope (const RPoint* point_A, const RPoint* point_B, const int number_of_steps);
 void					DrawScanLine (int y, std::pair<float, float>& left, std::pair<float, float>& right, ScreenRaster& screen, const IPixel* px);
+std::vector<RPoint>		DrawScanLine_TrackArea( int y, std::pair<float, float>& left, std::pair<float, float>& right, ScreenRaster& screen, const IPixel* px );
+std::vector<std::vector<RPoint>> RasterizeTriangle_TrackArea( const RPoint* p0, const RPoint* p1, const RPoint* p2, ScreenRaster& screen, const IPixel* px_color );
 void					RasterizeTriangle_rewrite (const RPoint* p0, const RPoint* p1, const RPoint* p2, ScreenRaster& screen, const IPixel* px_color);
 // Go through list of verticies and rasterize them on screen
 void					DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen);
+std::vector<RPoint>		DrawPolygon_TrackAreas( RPoly* poly, const IPixel* color, ScreenRaster& screen );
 /*
 void DrawPolygon(
 	std::array<int, 2>p0,
@@ -211,12 +217,14 @@ void DrawPolygon(
 		);
 }
 */
-
+template <class T>
+std::vector<T>		SimplifyVectorsToOne(std::vector<std::vector<std::vector<T>>>complex);
 ScreenRaster			CalculateNormal(ScreenRaster heightmap);
 // NEEDS TESTED
-std::vector<std::pair<RPoint, IPixel>> BindTogether( std::vector<RPoint>points, std::vector<IPixel>pixels );
+std::vector<std::pair<RPoint, IPixel>> BindTogether ( std::vector<RPoint>points, std::vector<IPixel>pixels );
+std::vector<std::pair<RPoint, IPixel>> VectorizeGrid ( std::vector<std::vector<IPixel>>grid );
 // NEEDS TESTED
-std::vector<std::pair<RPoint,IPixel>> AddHeightNoise( std::vector<std::pair<RPoint, IPixel>> area, float intensity);
+void								   AddHeightNoise ( std::vector<std::pair<RPoint, IPixel>> &area, int applying_floor, int applying_ceiling, int result_floor, int result_ceiling, float intensity );
 // NEEDS TESTED
 std::vector<std::pair<RPoint,IPixel>> AddCostalEtching( RPoint start, RPoint centroid, RPoint end, IPixel land, IPixel water);	// cant go inwards more than centroid? ?Be careful about making lakes?
 

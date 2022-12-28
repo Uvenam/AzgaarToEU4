@@ -8,7 +8,7 @@ void VUCO(std::string const& where_ele, ST& message)
 {
 #ifdef DEBUG
 	// write message to std::cerr
-	std::cout << '\n' << '[' << where_ele << ']' << message;
+	std::cout << '\n' << "[ " << where_ele << " ] " << message;
 #else
 	// write message to log file
 #endif
@@ -20,7 +20,7 @@ void VUCO(std::string const& where_ele, ST& message, bool act)
 	// write message to std::cerr
 	if (act == TRUE)
 	{
-		std::cout << '\n' << '[' << where_ele << "] " << message;
+		std::cout << '\n' << "[ " << where_ele << " ] " << message;
 	}
 
 #else

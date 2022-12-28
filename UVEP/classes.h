@@ -176,6 +176,9 @@ struct cell_info {
 	short culture;
 	short religion;
 	std::vector<int> neighbors;
+
+	short burg_id;	// 1 burg per cell
+
 	void add_coord(int x_coord, int y_coord);
 };
 struct burg_info {
@@ -196,9 +199,9 @@ struct burg_info {
 	// POPULATION
 	int pop;
 	// LATITUDE
-	int x_latitude;
+	int y_latitude;
 	// LONGITUDE
-	int y_longitude;
+	int x_longitude;
 	// ELEVATION(ft)
 	
 	// CAPITAL
@@ -693,7 +696,10 @@ std::vector<culture> CultureParse(std::string culture_path);
 std::vector<burg_info> BurgParse( std::string burg_path );
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
 
-void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
+void TransformPoints( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
+void TransformPoints_NoStretch ( std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents );
+std::vector<int> AssignBurgsToCells ( std::vector<burg_info>all_burgs, std::vector<cell_info> & all_cells );
+std::vector<province_info> CreateProvinces (std::vector<cell_info> all_cells);
 
 // std::vector<int> NeighborBlockColor (all_cells, center_cell_id, distance)// function should be able to take a central cell ID, go through its neighbors, find distance to central cell, compare distance, and approve? or disapprove? return list of cell ID's that are good to color / within distance
 

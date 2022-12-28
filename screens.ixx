@@ -4,10 +4,12 @@
 export module screens;
 
 export ScreenRaster CreateHeightmap( std::vector<cell_info> all_cells) {
+	//std::cout << "[CreateHeightmap] " << "" << std::endl;
 	ScreenRaster EU4_MAP( 5632, 2048 );
 	int height = 0;
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
 		height = all_cells[dp_itr].height;	// -	// Ranges from -3248ft to 22061ft (or 0 to 100 where ~20 is sealevel, but its saved as -3248 to 22061)
+		//std::cout << "[CreateHeightmap] " << "Got" << height << std::endl;
 	// Lowest is [0,0,0], sea level IS [94,94,94] (so values at 94 and below are "sea"), and [255,255,255] is highest. The heightmap.bmp file should be in Greyscale mode and saved as a 8-bit bitmap image file (.BMP).
 		height += 3248;	// place into purely positive range of 0 to 25309
 		height /= 99;	// place into purely positive range of 0 to 255.646, truncates

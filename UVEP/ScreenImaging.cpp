@@ -98,6 +98,15 @@ void ScreenRaster::  RenderPixel(const RPoint* pos, const IPixel* px) {
 	grid[pos->x_pos][pos->y_pos].g = px->g;
 	grid[pos->x_pos][pos->y_pos].r = px->r;
 }
+void ScreenRaster::  RenderPixels( std::vector<RPoint>area, const IPixel* color )
+{
+	for (auto& pt : area) {
+		grid[pt.x_pos][pt.y_pos].b = color->b;
+		grid[pt.x_pos][pt.y_pos].g = color->g;
+		grid[pt.x_pos][pt.y_pos].r = color->r;
+	}
+
+}
 void ScreenRaster::RenderPixels( std::vector<std::pair<RPoint, IPixel>> area )
 {
 	for (auto& pt : area) {
@@ -291,7 +300,7 @@ void ScreenRaster::	 Export8( const char* path , int bytes) {
 
 
 	f.close();
-	VUCO( "", "File created" );
+	VUCO( path, "File created");
 	delete[] bmpPad;
 }
 
@@ -429,7 +438,7 @@ void Image::  Export24(const char* path) {
 
 
 	f.close();
-	VUCO("","File created");
+	VUCO(path,"File created");
 }
 void Image::  MapRaster(ScreenRaster& screen) {
 
@@ -467,6 +476,20 @@ void					DrawScanLine (int y, std::pair<float, float>& left, std::pair<float, fl
 	// after scnaline is drawn, update X coord on both sides
 	left.first += left.second;
 	right.first += right.second;
+}
+std::vector<RPoint>		DrawScanLine_TrackArea( int y, std::pair<float, float>& left, std::pair<float, float>& right, ScreenRaster& screen, const IPixel* px )
+{
+	std::vector<RPoint> tracked_area;
+	int x = left.first, endx = right.first;
+	for (; x < endx; ++x) {
+		//Render_Pixel(x, y);		// Render each pixel
+		screen.RenderPixel( x, y, px );
+		tracked_area.push_back( RPoint( x, y ) );
+	}
+	// after scnaline is drawn, update X coord on both sides
+	left.first += left.second;
+	right.first += right.second;
+	return tracked_area;
 }
 void					RasterizeTriangle_rewrite(const RPoint* p0, const RPoint* p1, const RPoint* p2,ScreenRaster& screen, const IPixel* px_color)
 {
@@ -524,12 +547,67 @@ void					RasterizeTriangle_rewrite(const RPoint* p0, const RPoint* p1, const RPo
 
 
 }
-void					DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
+std::vector<std::vector<RPoint>> RasterizeTriangle_TrackArea( const RPoint* p0, const RPoint* p1, const RPoint* p2, ScreenRaster& screen, const IPixel* px_color )
 {
+	std::vector<std::vector<RPoint>> tracked_areas;
+	int x0 = p0->x_pos;
+	int y0 = p0->y_pos;
+
+	int x1 = p1->x_pos;
+	int y1 = p1->y_pos;
+
+	int x2 = p2->x_pos;
+	int y2 = p2->y_pos;
+
+	// Order sort points by Y coord, putting topmost point first
+	// When the Y coordinates are equal, order by X coordinates
+	// Using 3-input sorting network
+	if (std::tie( y1, x1 ) < std::tie( y0, x0 )) { std::swap( x0, x1 ); std::swap( y0, y1 ); std::swap( p0, p1 ); }
+	if (std::tie( y2, x2 ) < std::tie( y0, x0 )) { std::swap( x0, x2 ); std::swap( y0, y2 ); std::swap( p0, p2 ); }
+	if (std::tie( y2, x2 ) < std::tie( y1, x1 )) { std::swap( x1, x2 ); std::swap( y1, y2 ); std::swap( p1, p2 ); }
+
+	// Early return if there is nothing to draw (triangle has no area)
+	if (y0 == y2) { throw std::runtime_error ("ASKED TO DRAW TRIANGLE WITH NO AREA!"); return tracked_areas; }
+
+	// Determine whether the short side is on left or right
+	bool shortside = (y1 - y0) * (x2 - x0) < (x1 - x0) * (y2 - y0);
+
+	// Make two slopes. p0-p1 short and p0-p2 long
+	// One of these is left, one of these is right
+	// At y = y1, the p0-p1 slope will be replaced with p1-p2 slope
+	std::pair<float, float> sides[2];
+
+	// At this point, y2-y0 cannot be zero.
+	sides[!shortside] = MakeSlope( p0, p2, y2 - y0 ); // slope for long side
+
+	for (int y = y0, endy = y0; ; ++y) {
+		if (y >= endy) {
+			// if y of p2 is reached, the triangle is complete.
+			if (y >= y2) break;
+			// Recalculate sloep for shrot side. The number of lines cannot be zero.
+			// sides[shortside] = std::apply(MakeSlope, (y < y1) ? std::tuple(p0, p1, (endy = y1) - y0)
+			//	: std::tuple(p1, p2, (endy = y2) - y1));
+			if (y < y1) {
+				sides[shortside] = MakeSlope( p0, p1, (endy = y1) - y0 );
+			}
+			else {
+				sides[shortside] = MakeSlope( p1, p2, (endy = y2) - y1 );
+			}
+
+		}
+		// On single scanline, go from left X coord to right X coord
+		tracked_areas.push_back(DrawScanLine_TrackArea( y, sides[0], sides[1], screen, px_color ));
+
+	}
+	return tracked_areas;
+}
+std::vector<RPoint>		DrawPolygon_TrackAreas( RPoly* poly, const IPixel* color, ScreenRaster& screen )
+{
+	std::vector<std::vector<std::vector<RPoint>>> tracked_areas;
 	int polysize = poly->points.size();
 	if (polysize == 0) {
-		VUCO("DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO",1);
-		return;
+		VUCO( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
+		return std::vector<RPoint>();
 	}
 	int pt_track = 0;
 
@@ -554,17 +632,60 @@ void					DrawPolygon(RPoly* poly, const IPixel* color, ScreenRaster& screen)
 
 
 
-	RasterizeTriangle_rewrite(anchor, temp_A, temp_B, screen, color);
+	tracked_areas.push_back( RasterizeTriangle_TrackArea( anchor, temp_A, temp_B, screen, color ) );
 	// Update point A to be point B, and point B to be value in next poly.points array
 	for (; pt_track < polysize; pt_track++) {
 		temp_A = temp_B;
 		temp_B = &(poly->points[pt_track]);
 		//&color3[pt_track-2]
-		RasterizeTriangle_rewrite(anchor, temp_A, temp_B, screen, color);
+		tracked_areas.push_back( RasterizeTriangle_TrackArea( anchor, temp_A, temp_B, screen, color ) );
 
 
 	}
+	return SimplifyVectorsToOne(tracked_areas);
+}
+void					DrawPolygon( RPoly * poly, const IPixel * color, ScreenRaster & screen )
+{
+		int polysize = poly->points.size();
+		if (polysize == 0) {
+			VUCO( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
+			return;
+		}
+		int pt_track = 0;
 
+		// INPUT POLYGON SORT HERE
+
+
+		// Start at first point, treat as "anchor"
+		const RPoint* anchor = &(poly->points[pt_track++]);
+		// Draw triangle using next two points, point A and point B
+		RPoint* temp_A;
+		RPoint* temp_B;
+
+
+		temp_A = &(poly->points[pt_track++]);
+		temp_B = &(poly->points[pt_track++]);
+
+
+		//std::vector<IPixel> color3;
+		//color3.push_back(IPixel(1.0f,0.0f,1.0f));
+		//color3.push_back(IPixel(0.0f, 1.0f, 1.0f));
+		//color3.push_back(IPixel(1.0f, 1.0f, 0.0f));
+
+
+
+		RasterizeTriangle_rewrite( anchor, temp_A, temp_B, screen, color );
+		// Update point A to be point B, and point B to be value in next poly.points array
+		for (; pt_track < polysize; pt_track++) {
+			temp_A = temp_B;
+			temp_B = &(poly->points[pt_track]);
+			//&color3[pt_track-2]
+			RasterizeTriangle_rewrite( anchor, temp_A, temp_B, screen, color );
+
+
+		}
+
+	
 }
 ScreenRaster			CalculateNormal( ScreenRaster heightmap )
 {
@@ -630,7 +751,7 @@ std::vector<std::pair<RPoint, IPixel>> BindTogether( std::vector<RPoint> points,
 	int points_size = points.size();
 	if (points_size != pixels.size()) {
 		throw std::runtime_error( "Called BindTogether with differing vector sizes!" );
-		return;
+		return area;
 	}
 	for (int x = 0; x < points_size;x++) {
 		area.push_back( std::pair( points[x], pixels[x]));
@@ -638,23 +759,39 @@ std::vector<std::pair<RPoint, IPixel>> BindTogether( std::vector<RPoint> points,
 
 	return area;
 }
-std::vector<std::pair<RPoint, IPixel>> AddHeightNoise(std::vector<std::pair<RPoint, IPixel>> area, float intensity )
+std::vector<std::pair<RPoint, IPixel>> VectorizeGrid ( std::vector<std::vector<IPixel>> grid )
 {
-	auto new_area = area;
+	std::vector<std::pair<RPoint, IPixel>> grid_vector;
+
+	// grid [X][Y]
+	int X_extent = grid.size ();
+	for (int X = 0; X < X_extent; X++) {
+		int Y_extent = grid[X].size ();
+		for (int Y = 0; Y < Y_extent;Y++) {
+			grid_vector.push_back ( std::make_pair ( RPoint ( X, Y ), grid[X][Y] ) );
+		}
+	}
+
+	return grid_vector;
+}
+void					AddHeightNoise ( std::vector<std::pair<RPoint, IPixel>>& area, int applying_floor, int applying_ceiling,int result_floor, int result_ceiling, float intensity )
+{
 	// Define random generator with Gaussian distribution
 	const double mean = 0.0;
 	const double stddev = 0.1;
 	std::default_random_engine generator;
-	auto dist = std::bind( std::normal_distribution<double>{mean, stddev},
-		std::mt19937( std::random_device{}() ) );
+	auto dist = std::bind ( std::normal_distribution<double>{mean, stddev},
+		std::mt19937 ( std::random_device{}() ) );
 	int value;
 	// Add Gaussian noise
-	for (auto& x : new_area) {
-			value = x.second.b + intensity*255*(dist( generator ));
-			value = (value > 255) ? 255 : value;	// ceiling on value
-			x.second.b = value;
+	for (auto& x : area) {
+		if (x.second.b > applying_ceiling || x.second.b < applying_floor) { continue; }		// apply changes only if current value within desired applying range, else cotninue on
+		value = x.second.b + (		intensity * result_ceiling * (dist ( generator ))	);	// apply randomized value
+		value = (value > result_ceiling) ? result_ceiling : value;	// ceiling on value
+		value = (value < result_floor) ? result_floor : value;	// floor on value
+		x.second.b = value;
 	}
-	return new_area;
+	
 }
 std::vector<std::pair<RPoint, IPixel>> AddCostalEtching( RPoint start, RPoint centroid, RPoint end, IPixel land, IPixel water )
 {
@@ -712,8 +849,18 @@ void DrawPolygon(
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+template <class T>
+std::vector<T>		SimplifyVectorsToOne( std::vector<std::vector<std::vector<T>>> complex) {
+	std::vector<RPoint> simplified;
+	for (auto& z : complex) {
+		for (auto& y : z) {
+			for (auto& x : y) {
+				simplified.push_back( x );
+			}
+		}
+	}
+	return simplified;
+}
 
 
 BMPImage::BMPImage() :

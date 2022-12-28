@@ -1447,8 +1447,10 @@
 
     std::vector<burg_info> BurgParse( std::string burg_path )
 	{
+		VUCO ("","Parsing burgs...", TRUE );
 		std::vector<burg_info> all_burgs;
 		bool act = FALSE;
+		std::string fn = "BurgParse";
 		std::vector<std::string> burg_strs;
 		burg_strs = ReadFromLineByLine( burg_path );
 		burg_strs.erase( burg_strs.begin() ); // gets rid of format example
@@ -1497,10 +1499,15 @@
 				//burg_Track++;
 
 				// ID
-				all_burgs[burg_itr].id = std::stoi( burg_Track->str().substr(0, burg_Track->str().length()-1));
+				//VUCO ( fn, "Parsing...", act );
+				all_burgs[burg_itr].id = std::stoi ( burg_Track->str ().substr ( 0, burg_Track->str ().length () - 1 ) );
 				burg_Track++;
+				VUCO ( "ID", all_burgs[burg_itr].id, act );
 				// BURG
 				all_burgs[burg_itr].name = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
+				burg_Track++;
+				VUCO ( "NAME", all_burgs[burg_itr].name, act );
+				// PROVINCE
 				burg_Track++;
 				// PROVINCE FULL NAME
 				burg_Track++;
@@ -1511,18 +1518,23 @@
 				// CULTURE
 				all_burgs[burg_itr].culture = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
 				burg_Track++;
+				//VUCO ( "CULTURE", all_burgs[burg_itr].culture, act );
 				// RELIGION
 				all_burgs[burg_itr].religion = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
 				burg_Track++;
+				//VUCO ( "RELIGION", all_burgs[burg_itr].religion, act );
 				// POPULATION
 				all_burgs[burg_itr].pop = std::stoi( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) );
 				burg_Track++;
+				//VUCO ( "POP", all_burgs[burg_itr].pop, act );
 				// LATITUDE
-				all_burgs[burg_itr].x_latitude = static_cast<int>(100*(std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
+				all_burgs[burg_itr].y_latitude = static_cast<int>(100*(std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
 				burg_Track++;
+				VUCO ( "LATITUDE", all_burgs[burg_itr].y_latitude, act );
 				// LONGITUDE
-				all_burgs[burg_itr].y_longitude = static_cast<int>(100 * (std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
+				all_burgs[burg_itr].x_longitude = static_cast<int>(100 * (std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
 				burg_Track++;
+				VUCO ( "LONG", all_burgs[burg_itr].x_longitude, act );
 				// ELEVATION(ft)
 				burg_Track++;
 				// CAPITAL
@@ -1549,7 +1561,7 @@
 
 			}
 		}
-
+		VUCO_WAN ( "Burgs parsed" );
 		return all_burgs;
 	}
 
@@ -1609,8 +1621,31 @@
 
 	}
 
-	void TransformPoints( int desired_width, int desired_height, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents )
+	void TransformPoints ( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents )
 	{
+
+		/*
+		//################################################################################################//
+											ISSUE - TEMPORARY FIXED, so don't worry
+			Transform Points
+			? What if map provided is an island? So the map could be like 5000 x 2000, but the cells only
+			exist within (2500,1000), (2500,1500), (2000,1000), (2000,1500)
+
+			? Is there a need for stretching? Or even, how do you know you should stretch the points?
+			Would like to store +- DD.DD floats to unsigned int (or even unsigned short)
+
+
+
+		//################################################################################################//
+
+		Not all burgs are getting mapped to a cell
+
+		*/
+		VUCO ("","Transforming points...", TRUE );
+
+		bool act = FALSE;
+		std::string fn = "TransformPoints";
+
 		int tp_cell_count;
 		int tp_vertex_amount;
 		int tp_vertex_itr;
@@ -1628,18 +1663,188 @@
 		for (int tp_itr = 0; tp_itr < tp_cell_count; tp_itr++) {
 			tp_vertex_amount = all_cells[tp_itr].verticies.size();
 			for (tp_vertex_itr = 0; tp_vertex_itr < tp_vertex_amount; tp_vertex_itr++) {
+
 				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos += horiz_shift_addend;
 				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos *= horiz_stretch_factor;
 				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos += vertical_shift_addend;
 				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos *= vertical_stretch_factor;
 
 			}
+		}
+		for (auto& each_burg : all_burgs) {
+			VUCO ( fn, "Was:", act );
+			VUCO ( "Y", each_burg.y_latitude, act );
+			VUCO ( "X", each_burg.x_longitude, act );
 
+			each_burg.x_longitude += horiz_shift_addend;
+			each_burg.x_longitude *= horiz_stretch_factor;
+			each_burg.y_latitude += vertical_shift_addend;
+			each_burg.y_latitude *= vertical_stretch_factor;
 
+			VUCO ( fn, "Now:", act );
+			VUCO ( "Y", each_burg.y_latitude, act );
+			VUCO ( "X", each_burg.x_longitude, act );
+			if (each_burg.y_latitude < 0 || each_burg.x_longitude < 0) {
 
+				throw std::runtime_error ( "IMPROPER MAPPING OF BURG AND CELLS!" );
+			}
 
 
 		}
+
+
+		
+	}
+
+	void TransformPoints_NoStretch ( std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents )
+	{
+
+		/*
+		//################################################################################################//
+											ISSUE - Use other
+			Transform Points
+			? What if map provided is an island? So the map could be like 5000 x 2000, but the cells only
+			exist within (2500,1000), (2500,1500), (2000,1000), (2000,1500)
+
+			? Is there a need for stretching? Or even, how do you know you should stretch the points?
+			Would like to store +- DD.DD floats to unsigned int (or even unsigned short)
+
+		//################################################################################################//
+
+		Not all burgs are getting mapped to a cell
+
+		*/
+
+
+		bool act = TRUE;
+		std::string fn = "TransformPoints";
+
+		int tp_cell_count;
+		int tp_vertex_amount;
+		int tp_vertex_itr;
+		tp_cell_count = all_cells.size ();
+
+		VUCO ( "", "Extents are", act );
+		VUCO ( "Left", std::get<0> ( extents ), act );
+		VUCO ( "Right", std::get<1> ( extents ), act );
+		VUCO ( "Top", std::get<2> ( extents ), act );
+		VUCO ( "Bottom", std::get<3> ( extents ), act );
+
+		int horiz_shift_addend = std::abs ( std::get<0> ( extents ) );
+		int vertical_shift_addend = std::abs ( std::get<3> ( extents ) );
+
+		VUCO ( "Horiz_shift", horiz_shift_addend, act );
+		VUCO ( "Vertical_shift", vertical_shift_addend, act );
+
+		//double horiz_stretch_factor = static_cast<double>(desired_width) / (horiz_shift_addend + std::get<1> ( extents ));
+		//double vertical_stretch_factor = static_cast<double>(desired_height) / (vertical_shift_addend + std::get<2> ( extents ));
+
+
+		for (int tp_itr = 0; tp_itr < tp_cell_count; tp_itr++) {
+			tp_vertex_amount = all_cells[tp_itr].verticies.size ();
+			for (tp_vertex_itr = 0; tp_vertex_itr < tp_vertex_amount; tp_vertex_itr++) {
+
+				all_cells[tp_itr].verticies[tp_vertex_itr].x_pos += horiz_shift_addend;
+				//all_cells[tp_itr].verticies[tp_vertex_itr].x_pos *= horiz_stretch_factor;
+				all_cells[tp_itr].verticies[tp_vertex_itr].y_pos += vertical_shift_addend;
+				//all_cells[tp_itr].verticies[tp_vertex_itr].y_pos *= vertical_stretch_factor;
+
+				if (all_cells[tp_itr].verticies[tp_vertex_itr].x_pos > 100000 || all_cells[tp_itr].verticies[tp_vertex_itr].y_pos > 100000) {
+
+					throw std::runtime_error ( "IMPROPER MAPPING OF BURG AND CELLS!" );
+				}
+
+			}
+		}
+		for (auto& each_burg : all_burgs) {
+			VUCO ( fn, "Was:", act );
+			VUCO ( "Y", each_burg.y_latitude, act );
+			VUCO ( "X", each_burg.x_longitude, act );
+
+			each_burg.x_longitude += horiz_shift_addend;
+			
+			each_burg.y_latitude += vertical_shift_addend;
+			
+
+			VUCO ( fn, "Now:", act );
+			VUCO ( "Y", each_burg.y_latitude, act );
+			VUCO ( "X", each_burg.x_longitude, act );
+			if (each_burg.y_latitude < 0 || each_burg.x_longitude < 0) {
+
+				throw std::runtime_error ( "IMPROPER MAPPING OF BURG AND CELLS!" );
+			}
+
+
+		}
+	}
+
+	std::vector<int> AssignBurgsToCells ( std::vector<burg_info> all_burgs, std::vector<cell_info> & all_cells )
+	{
+		std::vector<burg_info> all_burgs_copy = all_burgs;
+		std::vector<int> index_list;
+		int index = -1;
+		//int total_burg_count = all_burgs_copy.size ();
+		bool FNACT = FALSE;
+		std::string fname = "AssignBurgToCells";
+		VUCO ( fname, "Getting all_cells...", FNACT );
+		int total_burg_count = all_burgs_copy.size ();
+		VUCO ( "Have this many burgs:", total_burg_count, FNACT );
+		int temp_burg_size = all_burgs_copy.size ();
+		for (auto& each_cell : all_cells) {
+			index++;
+			// Don't care about water cells
+			if (each_cell.biome == 0) { continue; }
+			// Find cell X-min, X-max, Y-min, Y-max
+			int Xmin, Xmax, Ymin, Ymax;
+			Xmin = each_cell.verticies[0].x_pos;
+			Xmax = each_cell.verticies[1].x_pos;
+			Ymin = each_cell.verticies[0].y_pos;
+			Ymax = each_cell.verticies[1].y_pos;
+			for (auto& each_vertex : each_cell.verticies) {
+				Xmax = (each_vertex.x_pos > Xmax) ? each_vertex.x_pos : Xmax;
+				Xmin = (each_vertex.x_pos < Xmin) ? each_vertex.x_pos : Xmin;
+
+				Ymax = (each_vertex.y_pos > Ymax) ? each_vertex.y_pos : Ymax;
+				Ymin = (each_vertex.y_pos < Ymin) ? each_vertex.y_pos : Ymin;
+			}
+			//VUCO ( fname, "Extents are", FNACT );
+			//VUCO ( "Xmin", Xmin, FNACT );
+			//VUCO ( "Xmax", Xmax, FNACT );
+			//VUCO ( "Ymin", Ymin, FNACT );
+			//VUCO ( "Ymax", Ymax, FNACT );
+			temp_burg_size = all_burgs_copy.size ();
+			VUCO ( "Have X Burgs left", temp_burg_size, FNACT );
+			if (temp_burg_size == 0) { VUCO ( fname, "No more burgs!", FNACT ); break; }
+			//VUCO ( fname, "Checking burg...", FNACT );
+			for (int i = 0; i < temp_burg_size; i++) {
+				// Is this burg within the confines of the cell?
+				// If yes, add burg ID to cell ID
+				//VUCO ( fname, "Burg is at", FNACT );
+				//VUCO ( "X", all_burgs_copy[i].x_longitude );
+				//VUCO ( "Y", all_burgs_copy[i].y_latitude );
+				//VUCO_WAN ( all_burgs_copy[i].y_latitude); VUCO_WAN (all_burgs_copy[i].x_longitude);
+				if ((all_burgs_copy[i].y_latitude >= Ymin && all_burgs_copy[i].y_latitude <= Ymax) && (all_burgs_copy[i].x_longitude >= Xmin && all_burgs_copy[i].x_longitude <= Xmax)) {
+					VUCO ( fname, "Burg assigned!", FNACT );
+					VUCO ( all_burgs_copy[i].name, each_cell.id, FNACT );
+					each_cell.burg_id = all_burgs_copy[i].id;
+					index_list.push_back ( index );
+					all_burgs_copy.erase ( all_burgs_copy.begin () + i );
+					break;
+				}
+			}
+
+		}
+		if (temp_burg_size != 0) {
+			for (auto& each_burg : all_burgs_copy) {
+				std::string temp_name = std::to_string ( each_burg.id );
+				VUCO ( temp_name, each_burg.name, FNACT );
+				VUCO ( temp_name, each_burg.x_longitude, FNACT );
+				VUCO ( temp_name, each_burg.y_latitude, FNACT );
+			}
+
+			throw std::runtime_error ( "UNASSIGNED BURGS!" );
+		}
+		return index_list;
 	}
 	
     std::vector<state_info> Breakdown( state_info parent, int option ) 
@@ -1713,6 +1918,22 @@
 		}
 
 		return all_TAGS;
+	}
+
+	std::vector<province_info> CreateProvinces ( std::vector<cell_info> all_cells )
+	{
+		std::vector<province_info> all_provinces;
+		short prov_id_itr = 1;
+		for (auto& each_cell : all_cells) {
+			if (each_cell.biome == 0) { continue; }	// If biome = 0, then type is either ocean or lake. That should be handled elsewhere
+			province_info new_province;
+			new_province.prov_id = prov_id_itr++;
+			new_province.cell_ids.push_back ( each_cell.id );
+
+			all_provinces.push_back ( new_province );
+		}
+
+		return all_provinces;
 	}
 
 
