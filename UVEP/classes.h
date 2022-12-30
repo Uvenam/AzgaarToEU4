@@ -12,6 +12,9 @@ struct settings {
 	bool USE_RNW = FALSE;
 	bool UNINHABITED_NEW_WORLD = FALSE;
 
+	bool UNIQUE_GOVERNMENT_USAGE = TRUE;	
+
+	// Azgaar stores info of landmasses as continent (3) and islands (seemingly random #, probably based on generation order). EX: Af-Eur-Asia : Continent (3), NA : Island (9), SA : Island (34), Aus : Island (43), Jap : Island (28)
 	std::vector<std::string> TECH_EUROPEAN;
 	std::vector<std::string> TECH_ASIAN;
 	std::vector<std::string> TECH_AMERICAN;
@@ -25,10 +28,12 @@ struct settings {
 	std::vector<std::string> SHOGUN_EQUIVALENT;
 	bool SHOGUN_BREAKDOWN = TRUE; // Assume only given 1. Will be to single province breakdown
 
+
+
 	std::vector<std::string> SPECIFIC_BREAKDOWNS;  // Provide list of countries you want specifically broken down 
 	bool GLOBAL_BREAKDOWN = FALSE;
 	bool GLOBAL_BREAKDOWN_TRUE_ORDERED_OR_FALSE_RANDOM = TRUE; // Either go from largest to smallest or randomly pick nations that have more than 1 province
-	int GLOBAL_BREAKDOWN_TO = 639;	// How many countries would you like to see at game start? Default is # EU4 has at game start. GLOBAL BREAKDOWN continues until this number is surpassed.
+	int  GLOBAL_BREAKDOWN_TO = 639;	// How many countries would you like to see at game start? Default is # EU4 has at game start. GLOBAL BREAKDOWN continues until this number is surpassed.
 
 	bool BREAKDOWN_KEEP_CLAIMS = TRUE;
 	bool BREAKDOWN_KEEP_CORES = FALSE; // Supersedes claims
@@ -38,27 +43,35 @@ struct settings {
 	bool BREAKDOWN_VASSAL_TIERED = TRUE;
 
 	int START_TIME = 1444;
+	int END_TIME = 1821;
+	bool SCALE_TIME = FALSE;
 
 	bool DEVELOPMENT_TRUE_POP_OR_FALSE_RANDOM = TRUE;
-	int DEVELOPMENT_RANDOM_RANGE[2] = { 3,30 };	
+	int DEVELOPMENT_POP_CAP[3] = { 5,5,5 };
+	bool DEVELOPMENT_ADD_RANDOM = TRUE;				
+	int	 DEVELOPMENT_RANDOM_RANGE[2] = { 3,30 };	
 	float DEVELOPMENT_POP_WEIGHTS[3] = { 0.5, 0.5, 0.5 };
+	// DEVELOPMENT_BUILDING_VALUES
+	int DBV[7][3] =					
+	{
+		{2,2,2},	// Capital
+		{0,2,0},	// Port
+		{0,0,2},	// Citadel
+		{0,0,1},	// Walls
+		{0,1,0},	// Plaza
+		{2,0,0},	// Temple
+		{1,1,0}		// Shanty
+	};
 
-	std::vector<std::string[2]> RELIGION_MAPPING;
+	std::vector<std::string[2]> RELIGION_MAPPING;	// std::vector<std::pair<std::string,std::string>> ?
 
 	bool USE_DIPLOMACY_CSV = FALSE;
 	bool USE_MILITARY_CSV = FALSE;
 	bool MILITARY_TRUE_NONE_OR_FALSE_ECONOMY = TRUE;
-	bool USE_BURGS_CSV_FOR_DEVELOPMENT = FALSE;
-	bool USE_BURGS_CSV_FOR_BUILDINGS = FALSE;
+	bool USE_BURGS_CSV_FOR_DEVELOPMENT = FALSE;	
+	bool USE_BURGS_CSV_FOR_BUILDINGS = FALSE;		/// ? What if its mid-game? So there would realistically be chapels and workshops built?
 
-
-
-
-
-
-	// function *declarations*, would need to define in FILENAME.cpp (currently class.cpp)
-
-
+	
 
 };
 

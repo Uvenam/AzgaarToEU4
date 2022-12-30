@@ -14,10 +14,10 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.400"
+#define		VERSION_STAMP	"V 0.405"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
-#define		DEBUG	// for VUCO logging and for ending pause
+
 
 /*
 void make_uppercase(std::string& data)
@@ -148,6 +148,7 @@ std::string file_info;
 std::string CellNeighbor_str;
 std::fstream fileStream;
 //std::cout << VERSION_STAMP << std::endl;
+
 VUCO( "", VERSION_STAMP );
 /*################################################################################################*/
 /*################################################################################################*/
@@ -159,7 +160,6 @@ VUCO( "", VERSION_STAMP );
 
 	VUCO("", "Affirming AZGAAR directory..." );
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
-
 	//std::cout << "\Retrieving Cell path...";
 	/*
 	VUCO( "", "Retrieving Cell Path...");
@@ -182,7 +182,6 @@ VUCO( "", VERSION_STAMP );
 	std::string religions_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Religions \[0-9^-\]+.csv" ) );
 	std::string state_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ States \[0-9^-\]+.csv" ) );
 	std::string burg_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Burgs \[0-9^-\]+.csv" ) );
-
 	//VUCO( "", cell_path );
 	//cell_path = OpenFileReturnString( dir_cells ); // Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it																												
 	EnsureDirectory( dir_EU4 ); // EU4 top  folder directory										
@@ -221,7 +220,14 @@ VUCO( "", VERSION_STAMP );
 	
 	all_burgs = BurgParse( burg_path );
 	//VUCO( "", all_burgs[0].capital );
-
+	{
+		std::string capital = "capital";
+		VUCO ( "Capital?", all_burgs[0].capital, TRUE );
+		int value = capital.compare ( all_burgs[0].capital );
+		VUCO ( "COMPARE RESULTS", value, TRUE);
+	
+	
+	}
 	// get burgs, their population, then include/measure with cell_info
 
 	// burgs have an ID, a name, a province, province full name, state, state full name, culture, religion, population, latittude, longitude, elevation, capital, port, citadel, walls, plaza, temple, shanty town, and city generator link
@@ -243,14 +249,10 @@ VUCO( "", VERSION_STAMP );
 	for (int t_itr = 0; t_itr < all_burgs_size; t_itr++) {
 		indexed_burgs.emplace ( all_burgs[t_itr].id, all_burgs[t_itr] );
 	}
-	
-
 
 	// Map each burg to a cell ID
 	
 //	auto all_burgs_copy = all_burgs;
-
-
 
 	/*
 	//################################################################################################//
@@ -263,23 +265,14 @@ VUCO( "", VERSION_STAMP );
 
 	//################################################################################################//
 
-	Not all burgs are getting mapped to a cell
 
 	*/
 
-
 	std::vector<int> index_list_of_cells_with_burgs = AssignBurgsToCells (all_burgs,all_cells);
 
-
-
-
-
 	// burg ID corresponds to location within all_burgs -1 (so burg id of 1 is at all_burgs[0])
-	
-
 
 	std::vector<province_info> all_provinces = CreateProvinces ( all_cells );
-
 
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
@@ -306,6 +299,13 @@ VUCO( "", VERSION_STAMP );
 		all_namebase_map.emplace( all_namebases[t_itr].name, all_namebases[t_itr] );
 	}
 
+/*####################	CALCULATE RELATED CULTURES BASED ON ORIGINS ##############################*/
+
+/*####################	?? MAP TECH GROUPS BASED ON ORIGINS??		##############################*/
+
+/*####################	CULTURE DIVISION BASED ON STATE+PROVINCE DIVISION			##############################*/
+/*####################	?? MAP TECH GROUPS BASED ON CULTURE DIVISION, USING ROOT CULTURE AS DICTATING??		##############################*/
+
 	// ex
 /*###########################   WORKING WITH THE STATES   ########################################*/
 /*################################################################################################*/
@@ -326,9 +326,11 @@ VUCO( "", VERSION_STAMP );
 	
 	}
 
-/*################################################################################################*/
-/*################################################################################################*/
+
 // RETRIEVE EMBLEMS
+/*################################################################################################*/
+	VUCO ( "FLAGS", "Flags should be generated in square format", TRUE );
+	VUCO ( "FLAGS", "Unfortunately, retrieving and rendering .svg files is out of the scope of this application", TRUE );
 		// either read it via program and batch/series of files
 		// or ASK USER TO DOWNLOAD ALL STATE PNG AND RENAME TO STATE
 		// or ASK USER TO ADD EXTENSION TO DO THE RETRIEVAL AND RENAMING automatic
@@ -336,6 +338,11 @@ VUCO( "", VERSION_STAMP );
 	
 // CREATION OF FLAGS
 /*################################################################################################*/
+
+	VUCO ( "FLAGS", "Use external resource ARMORIA to generate flags", TRUE );
+	VUCO ( "FLAGS", "Generate at least 700 flags of size 128x128", TRUE );
+	VUCO ( "FLAGS", "Recommended settings: 1920x1080 screen, GIANT gallery, NO SIMPLE shield, NO gradient, black border of thickness 1, scale 1.6", TRUE );
+	VUCO ( "FLAGS", "Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files", TRUE );
 
 // EU4 needs 128x128 TGA files with TAG.tga format
 	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale
@@ -352,14 +359,219 @@ VUCO( "", VERSION_STAMP );
 	showAnImage( images[1] );
 
 	*/
+// CREATION OF MAIN CULTURES
+/*################################################################################################*/
 
+	// Europa Universalis IV / commmon / cultures / 00_cultures.txt
+	/*
+	custom_culture_group = {
+			graphical_culture = westerngfx
+			custom_culture_1 = {			// This serves to provicde unique names for culture in gorup
+				primary = CUT
+				male_names = {
+					MaleName1 MaleName2 MaleName3
+					"Male Name 1" "Male Name 2" "Male Name 3"
+				}
+				female_names = {
+					FemaleName1 FemaleName2 FemaleName3
+					"Female Name 1" "Female Name 2" "Female Name 3"
+				}
+				dynasty_names = {
+					DynastyName1 DynastyName2 DynastyName3
+					"Dynasty Name 1" "Dynasty Name 2" "Dynasty Name 3"
+				}
+			}
+			custom_culture_2 = {
+				primary = CUC
+				male_names = {
+					MaleName4 MaleName5 MaleName6
+					"Male Name 4" "Male Name 5" "Male Name 6"
+				}
+				female_names = {
+					FemaleName4 FemaleName5 FemaleName6
+					"Female Name 4" "Female Name 5" "Female Name 6"
+				}
+				dynasty_names = {
+					DynastyName4 DynastyName5 DynastyName6
+					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
+				}
+			}
+			custom_culture_3 = {
+				primary = CUL
+				male_names = {
+					MaleName4 MaleName5 MaleName6
+					"Male Name 4" "Male Name 5" "Male Name 6"
+				}
+				female_names = {
+					FemaleName4 FemaleName5 FemaleName6
+					"Female Name 4" "Female Name 5" "Female Name 6"
+				}
+				dynasty_names = {
+					DynastyName4 DynastyName5 DynastyName6
+					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
+				}
+			}
+		}
+	}
+	*/
+
+// BURG LOCATION AND TYING TO PROVINCES
+/*################################################################################################*/
+
+// ASSIGN DEVELOPMENT TO PROVINCES
+/*################################################################################################*/
+	if (options.DEVELOPMENT_TRUE_POP_OR_FALSE_RANDOM == TRUE) 
+	{ 
+		// DEVELOPMENT will be based off pop-weights and population
+		for (auto& each_province : all_provinces) {
+			int total_population = 0;
+			int burg_population = 0;
+			int rural_population = 0;
+			for (auto& each_cell : each_province.cell_ids) {
+				total_population += indexed_cells[each_cell].pop;
+				burg_population += indexed_burgs[indexed_cells[each_cell].burg_id].pop;
+			}
+			rural_population = total_population - burg_population;
+
+			each_province.base_dev[0] = 1+static_cast<unsigned char>(total_population * options.DEVELOPMENT_POP_WEIGHTS[0]);
+			each_province.base_dev[1] = 1+static_cast<unsigned char>(burg_population * options.DEVELOPMENT_POP_WEIGHTS[1]);
+			each_province.base_dev[2] = 1+static_cast<unsigned char>(rural_population * options.DEVELOPMENT_POP_WEIGHTS[2]);
+		
+		
+		
+		
+		}
+
+	}
+	else /* if DEVELOPMENT_TRUE_POP_OR_FALSE_RANDOM == FALSE */
+	{
+	
+	}
+
+	if (options.USE_BURGS_CSV_FOR_DEVELOPMENT == TRUE) {
+
+		// ? Is it possible to just see if the variable is empty instead of comparing the strings?
+		// ? Would it be possible to just do this for provinces that have cells that have cities? index_list_cells_with_burgs ?
+
+		std::string capital = "capital";
+		std::string port = "port";
+		std::string citadel = "citadel";
+		std::string walls = "walls";
+		std::string plaza = "plaza";
+		std::string temple = "temple";
+		std::string shanty = "shanty";
+
+		for (auto& each_province : all_provinces) {
+			int adm = 0;
+			int dip = 0;
+			int mil= 0;
+
+			for (auto& each_cell : each_province.cell_ids) {
+			
+				if (capital.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].capital ) == 0)	{	adm += options.DBV[0][0];	dip += options.DBV[0][1];	mil += options.DBV[0][2]; }
+				if (port.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].port ) == 0)			{	adm += options.DBV[1][0];	dip += options.DBV[1][1];	mil += options.DBV[0][2]; }
+				if (citadel.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].citadel ) == 0)	{	adm += options.DBV[2][0];	dip += options.DBV[2][1];	mil += options.DBV[0][2]; }
+				if (walls.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].walls ) == 0)		{	adm += options.DBV[3][0];	dip += options.DBV[3][1];	mil += options.DBV[0][2]; }
+				if (plaza.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].plaza ) == 0)		{	adm += options.DBV[4][0];	dip += options.DBV[4][1];	mil += options.DBV[0][2]; }
+				if (temple.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].temple ) == 0)		{	adm += options.DBV[5][0];	dip += options.DBV[5][1];	mil += options.DBV[0][2]; }
+				if (shanty.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].shanty ) == 0)		{	adm += options.DBV[6][0];	dip += options.DBV[6][1];	mil += options.DBV[0][2]; }
+
+			}
+
+
+			each_province.base_dev[0] += adm;
+			each_province.base_dev[1] += dip;
+			each_province.base_dev[2] += mil;
+		}
+	
+	}
+
+	if (options.USE_BURGS_CSV_FOR_BUILDINGS == TRUE) {
+	
+		std::string capital = "capital";
+		std::string port = "port";
+		std::string citadel = "citadel";
+		std::string walls = "walls";
+		std::string plaza = "plaza";
+		std::string temple = "temple";
+		std::string shanty = "shanty";
+
+		for (auto& each_province : all_provinces) {
+			int adm = 0;
+			int dip = 0;
+			int mil= 0;
+
+			for (auto& each_cell : each_province.cell_ids) {
+			
+				//if (capital.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].capital ) == 0)	{	adm += 2;	dip += 2;	mil += 2;	}
+				if (port.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].port ) == 0)			{ each_province.shipyard = TRUE; }
+				if (citadel.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].citadel ) == 0)	{ each_province.fort_15th = TRUE; }
+				if (walls.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].walls ) == 0)		{ each_province.fort_15th = TRUE; }
+				if (plaza.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].plaza ) == 0)		{ each_province.center_of_trade = 1; }
+				//if (temple.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].temple ) == 0)		{	adm += 2;							}
+				//if (shanty.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].shanty ) == 0)		{	adm += 1;	dip += 1;				}
+
+			}
+		}
+	}
+
+// ASSIGNMENT OF CULTURE(AND NAME)/STATE/RELIGION/CORES TO PROVINCES
+/*################################################################################################*/
+
+// ASSIGNMENT OF NAMES TO PROVINCES
+/*################################################################################################*/
+
+// CREATION OF PROVINCES / SEA REGIONS (AND UNIQUE COLOR FOR EACH)
+/*################################################################################################*/
+
+
+	// https://eu4.paradoxwikis.com/Geographical_list_of_provinces
+
+	// Europa Universalis IV / history / provinces / [PROV_ID] - [PROVINCE_NAME].txt
+
+	/*
+	owner = SWE
+	controller = SWE
+	add_core = SWE
+	add_core = FIN
+	culture = finnish
+	religion = catholic
+	hre = no
+	base_tax = 1
+	base_production = 1
+	trade_goods = fur
+	base_manpower = 1
+	capital = "Tavastehus"
+	is_city = yes
+	#fort_15th = yes
+	discovered_by = western
+	discovered_by = eastern
+	*/
+
+	/*
+	for( auto &cell : all_cells){
+	// Create file in directory
+	std::string target;
+	// target = MOD_PATH_DIR + FORMATTED_INFO + ".txt"	// should look like "Baierbia/history/provinces/50 - Spannor.txt"
+	std::ofstream out(target);
+
+
+	}
+
+
+
+
+
+
+	*/
+	
 	
 // CREATION OF COUNTRIES
 /*################################################################################################*/
 
 // check C:\Program Files (x86)\Steam\steamapps\workshop\content\236850\2325242514\
 
-	for (auto& each_state : all_states) {
+	//for (auto& each_state : all_states) {
 		// Create file > / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
 		// Resolve graphical_culture
 		// Resolve Color
@@ -382,7 +594,7 @@ VUCO( "", VERSION_STAMP );
 		// Resolve primary culture
 		// Resolve adding accepted cultures
 		// Resolve capital province ID
-	}
+	//}
 
 	//Country File / Europa Universalis IV / common / countries / [COUNTRY_FULLNAME].txt
 	/*
@@ -488,132 +700,14 @@ VUCO( "", VERSION_STAMP );
 
 	// EUIV / history / diplomacy / [A phrase, mainly for personal reference].txt
 	
-// CREATION OF MAIN CULTURES
-/*################################################################################################*/
-
-	// Europa Universalis IV / commmon / cultures / 00_cultures.txt
-	/*
-	custom_culture_group = {
-			graphical_culture = westerngfx
-			custom_culture_1 = {			// This serves to provicde unique names for culture in gorup
-				primary = CUT
-				male_names = {
-					MaleName1 MaleName2 MaleName3
-					"Male Name 1" "Male Name 2" "Male Name 3"
-				}
-				female_names = {
-					FemaleName1 FemaleName2 FemaleName3
-					"Female Name 1" "Female Name 2" "Female Name 3"
-				}
-				dynasty_names = {
-					DynastyName1 DynastyName2 DynastyName3
-					"Dynasty Name 1" "Dynasty Name 2" "Dynasty Name 3"
-				}
-			}
-			custom_culture_2 = {
-				primary = CUC
-				male_names = {
-					MaleName4 MaleName5 MaleName6
-					"Male Name 4" "Male Name 5" "Male Name 6"
-				}
-				female_names = {
-					FemaleName4 FemaleName5 FemaleName6
-					"Female Name 4" "Female Name 5" "Female Name 6"
-				}
-				dynasty_names = {
-					DynastyName4 DynastyName5 DynastyName6
-					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
-				}
-			}
-			custom_culture_3 = {
-				primary = CUL
-				male_names = {
-					MaleName4 MaleName5 MaleName6
-					"Male Name 4" "Male Name 5" "Male Name 6"
-				}
-				female_names = {
-					FemaleName4 FemaleName5 FemaleName6
-					"Female Name 4" "Female Name 5" "Female Name 6"
-				}
-				dynasty_names = {
-					DynastyName4 DynastyName5 DynastyName6
-					"Dynasty Name 4" "Dynasty Name 5" "Dynasty Name 6"
-				}
-			}
-		}
-	}
-	*/
-	
 // CREAITON OF RELIGIONS https://eu4.paradoxwikis.com/Religion_modding
 /*################################################################################################*/
 	// EUIV / common / religious_conversions / 00_religious_conversions.txt
 	// EUIV / common / religions / 00_religions.txt
 	
-
-
-// BURG LOCATION AND TYING TO PROVINCES
-/*################################################################################################*/
-
-// ASSIGN DEVELOPMENT TO PROVINCES
-/*################################################################################################*/
-
-// ASSIGNMENT OF CULTURE(AND NAME)/STATE/RELIGION/CORES TO PROVINCES
-/*################################################################################################*/
-
-// ASSIGNMENT OF NAMES TO PROVINCES
-/*################################################################################################*/
-
-// CREATION OF PROVINCES / SEA REGIONS (AND UNIQUE COLOR FOR EACH)
-/*################################################################################################*/
-
-
-	// https://eu4.paradoxwikis.com/Geographical_list_of_provinces
-
-	// Europa Universalis IV / history / provinces / [PROV_ID] - [PROVINCE_NAME].txt
-
-	/*
-	owner = SWE
-	controller = SWE
-	add_core = SWE
-	add_core = FIN
-	culture = finnish
-	religion = catholic
-	hre = no
-	base_tax = 1
-	base_production = 1
-	trade_goods = fur
-	base_manpower = 1
-	capital = "Tavastehus"
-	is_city = yes
-	#fort_15th = yes
-	discovered_by = western
-	discovered_by = eastern
-	*/
-
-	/*
-	for( auto &cell : all_cells){
-	// Create file in directory
-	std::string target;
-	// target = MOD_PATH_DIR + FORMATTED_INFO + ".txt"	// should look like "Baierbia/history/provinces/50 - Spannor.txt"
-	std::ofstream out(target);
-
-
-	}
-
-
-
-
-
-
-	*/
-	
-	
-	
 // factions? https://eu4.paradoxwikis.com/Faction_modding
 	
 // government modding?
-	
-
 	
 // CREATION OF TRADE ZONES
 /*################################################################################################*/
@@ -623,7 +717,6 @@ VUCO( "", VERSION_STAMP );
 	
 // CREATION OF COLONIAL REGIONS
 /*################################################################################################*/
-
 
 	// EUIV / common / colonial_regions / 00_colonial_regions.txt
 
@@ -685,8 +778,6 @@ VUCO( "", VERSION_STAMP );
 
 // EUIV / map
 
-
-
 // CREATE continent.txt
 
 // CREATE default.map (text file)
@@ -716,8 +807,6 @@ VUCO( "", VERSION_STAMP );
 
 // CREATE area.txt
 
-
-
 // .dds -> 8.8.8.8 ARGB 32bpp (or bit) profile with no mipmaps.
 // or maybe 8.8.8.8 16 bit ARGB with mipmaps. according to https://www.reddit.com/r/hoi4modding/comments/bk8umn/proper_way_to_save_dds_files/, needs verified
 // needs to be 1/2 of dimensions of full scale map [2816 x 1024]
@@ -734,11 +823,8 @@ VUCO( "DDS", "FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET" );
 VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" );
 // CREATE colormap_[SEASON].dds in EUIV / map / random
 
-
-
 // CREATE lakes.txt in EUIV / map / lakes / 00_lakes.txt
 
-	
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
@@ -783,7 +869,6 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	heightmap_bmp.RenderPixels ( heightmap_bmp.grid_vector );
 	heightmap_bmp.Export8 ( "heightmap_randomized.bmp", 1 );
 
-
 	ScreenRaster normal_bmp = CalculateNormal(heightmap_bmp);
 	Image normal_export( normal_bmp.width, normal_bmp.height );
 	normal_export.MapRaster( normal_bmp );
@@ -797,10 +882,8 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	VUCO( "", "Creating bmp...");
 	EU4_MAP_BMP.Export24( "eu4_map.bmp" );
 
-
-
-	/*###########################      BOOKMARK CREATION			##################################*/
-	/*################################################################################################*/
+/*###########################      BOOKMARK CREATION			##################################*/
+/*################################################################################################*/
 
 	// EUIV / common / bookmarks / [a_phrase].txt
 
@@ -845,8 +928,8 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 }
 	*/
 
-	/*###########################      .mod FILE CREATION			##################################*/
-	/*################################################################################################*/
+/*###########################      .mod FILE CREATION			##################################*/
+/*################################################################################################*/
 
 	/*
 	replace_path = "common/bookmarks"
@@ -866,7 +949,6 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	replace_path="history/advisors"
 	replace_path="gfx/loadingscreens"
 	*/
-
 
 
 /*################################################################################################*/
@@ -897,17 +979,18 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	// province needs to have specific RGB, this has to be unique and tied to its ID
 	// province id's need to be iterative (so grouping up cells to merge them into a single province, where would the id's go? couldn't use the cell id's as province ids)
 	//
-	/*################################################################################################*/
+/*################################################################################################*/
 
 }
 catch (std::runtime_error runtime) {		// managing file opening error
 	std::cerr << "Runtime Error:" << runtime.what() << std::endl;
 	std::cerr << "\nEARLY END";
+	system ( "pause>0" );
 	return 0;
 }//end of catch for runtime error
 
-	std::cout << "\nEnd of Program";
-#ifdef DEBUG
+std::cout << "\n[ ] Program End. Enjoy!" << std::endl;
+#ifdef _DEBUG
 	system("pause>0");
 #else
 #endif

@@ -1305,6 +1305,7 @@
 
 	std::vector<state_info> StateParse( std::string state_path )
 	{
+		VUCO ( "", "Parsing states..." );
 		bool act = FALSE;
 		std::vector<state_info> all_states;
 		std::vector<std::string> state_strs;
@@ -1379,17 +1380,14 @@
 
 			}
 		}
-
-
-
-
-
+		VUCO_WAN ( "States parsed." );
 
 		return all_states;
 	}
 
 	std::vector<culture> CultureParse( std::string culture_path )
 	{
+		VUCO ( "", "Parsing cultures..." );
 		std::vector<culture> all_cultures;
 		bool act = FALSE;
 		std::vector<std::string> culture_strs;
@@ -1441,7 +1439,7 @@
 
 			}
 		}
-
+		VUCO_WAN ( "Cultures parsed." );
 		return all_cultures;
 	}
 
@@ -1854,6 +1852,7 @@
 
 	std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states )
 	{
+		VUCO ( "", "Parsing tags..." );
 		// Iterate through each state, take name and translate into a unique 3 char TAG and update each state
 		std::unordered_set<std::string> all_TAGS;
 		bool acto = FALSE;
@@ -1916,12 +1915,13 @@
 			} while (!std::get<1>( all_TAGS.emplace( temporary_tag ) ));
 			elem.TAG = temporary_tag;
 		}
-
+		VUCO_WAN ( "Tags parsed." );
 		return all_TAGS;
 	}
 
 	std::vector<province_info> CreateProvinces ( std::vector<cell_info> all_cells )
 	{
+		VUCO ( "", "Creating provinces..." );
 		std::vector<province_info> all_provinces;
 		short prov_id_itr = 1;
 		for (auto& each_cell : all_cells) {
@@ -1932,7 +1932,7 @@
 
 			all_provinces.push_back ( new_province );
 		}
-
+		VUCO_WAN ( "Created provinces." );
 		return all_provinces;
 	}
 
