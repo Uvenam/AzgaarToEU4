@@ -14,6 +14,10 @@ struct settings {
 
 	bool UNIQUE_GOVERNMENT_USAGE = TRUE;	
 
+	bool CULTURE_BREAKDOWN_STATES = TRUE;
+	// Can only be true if CULTURE_BREAKDOWN_STATES is true
+	bool CULTURE_BREAKDOWN_PROVINCES = TRUE;
+
 	// Azgaar stores info of landmasses as continent (3) and islands (seemingly random #, probably based on generation order). EX: Af-Eur-Asia : Continent (3), NA : Island (9), SA : Island (34), Aus : Island (43), Jap : Island (28)
 	std::vector<std::string> TECH_EUROPEAN;
 	std::vector<std::string> TECH_ASIAN;

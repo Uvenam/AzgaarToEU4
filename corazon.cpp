@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.405"
+#define		VERSION_STAMP	"V 0.410"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -280,6 +280,11 @@ VUCO( "", VERSION_STAMP );
 	// all cultures
 	std::vector<culture> all_cultures;
 	all_cultures = CultureParse( culture_path );
+	std::unordered_map <int, culture> all_cultures_map;
+	int all_cultures_size = all_cultures.size ();
+	for (int t_itr = 0; t_itr < all_cultures_size; t_itr++) {
+		all_cultures_map.emplace ( all_cultures[t_itr].id, all_cultures[t_itr] );
+	}
 
 /*####################		MAKING OF THE NAMEBASES		            ##############################*/
 	VUCO( "", "Getting Namesbases..." );
@@ -300,6 +305,74 @@ VUCO( "", VERSION_STAMP );
 	}
 
 /*####################	CALCULATE RELATED CULTURES BASED ON ORIGINS ##############################*/
+
+	if (options.CULTURE_BREAKDOWN_STATES == TRUE && options.CULTURE_BREAKDOWN_PROVINCES == TRUE) {
+	
+		// Take culture from all_cultures, make it the culture group
+		std::unordered_map<int,culture_union> all_culture_unions;
+
+		std::vector<culture> additional_cultures;
+		int new_culture_ids = all_cultures.size ();	// start new culture id with size of all_cultures
+		for (auto& each_culture : all_cultures) {
+			culture_union new_culture_union;
+			
+			new_culture_union.id			=	each_culture.id;
+			new_culture_union.color_rgb[0]	=	each_culture.color_rgb[0];
+			new_culture_union.color_rgb[1]	=	each_culture.color_rgb[1];
+			new_culture_union.color_rgb[2]	=	each_culture.color_rgb[2];
+			new_culture_union.type			=	each_culture.type;
+			new_culture_union.namesbase		=	each_culture.namesbase;
+			new_culture_union.origins		=	each_culture.origins;
+			new_culture_union.name			=	each_culture.name;
+			//new_culture_union.primary		=	each_culture.primary;
+		
+			all_culture_unions.emplace ( each_culture.id, new_culture_union );
+		}
+		// Having made each culture group, make a new subculture based on each province/state pairing that the culture is present at
+		// Construct a list of unique cell_info.country and cell_info.subcountry pairings and the culture 
+		// country,subcountry,culture
+		std::unordered_map<std::string, short>	unique_cultures;
+		std::unordered_map<std::string, short> unique_state_province_and_new_culture;
+		for (auto& each_cell : all_cells) {
+			std::string string_country = std::to_string ( each_cell.country );
+			std::string string_subcountry = std::to_string ( each_cell.sub_country );
+			std::string temp_key = string_country + string_subcountry;
+
+			if(		(unique_cultures.emplace ( temp_key, each_cell.culture ).second)	) { // if emplacement successful
+
+				culture new_culture;
+
+				new_culture = all_cultures_map[each_cell.culture];
+				new_culture.id = new_culture_ids;
+				unique_state_province_and_new_culture.emplace ( temp_key, new_culture.id );
+				
+				additional_cultures.push_back ( new_culture );
+				all_culture_unions[each_cell.culture].subcultures.push_back ( new_culture );
+
+				each_cell.culture = new_culture_ids;
+				new_culture_ids++;
+			}
+			else {	// Can't emplace, thus exists already and cell culture needs updated
+				each_cell.culture = unique_state_province_and_new_culture[temp_key];
+			}
+			
+		}
+		// Now all cells have cultures dependendent on state,province, and original culture
+		// Update culture mapping to only include additional cultures (all_culture = additional_culture);
+		all_cultures.clear ();
+		all_cultures = additional_cultures;
+
+		all_cultures_map.clear();
+		all_cultures_size = all_cultures.size ();
+		for (int t_itr = 0; t_itr < all_cultures_size; t_itr++) {
+			all_cultures_map.emplace ( all_cultures[t_itr].id, all_cultures[t_itr] );
+		}
+		
+		// Need to generate name lists for each unique culture (now all_cultures)
+
+	
+	
+	}
 
 /*####################	?? MAP TECH GROUPS BASED ON ORIGINS??		##############################*/
 
@@ -329,6 +402,10 @@ VUCO( "", VERSION_STAMP );
 
 // RETRIEVE EMBLEMS
 /*################################################################################################*/
+
+	// https://armoria.herokuapp.com/?format=png&size=147&shield=square	// Need to trim transparent edge off
+	//https://github.com/Azgaar/armoria-api#readme
+
 	VUCO ( "FLAGS", "Flags should be generated in square format", TRUE );
 	VUCO ( "FLAGS", "Unfortunately, retrieving and rendering .svg files is out of the scope of this application", TRUE );
 		// either read it via program and batch/series of files
