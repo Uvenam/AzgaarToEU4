@@ -352,6 +352,7 @@ public:
 	int max_length;
 	std::string doubled_letters;
 	float multi_word_names;
+	std::vector<std::string> source_list;
 
 	std::vector<std::string> onsets;
 	std::vector<std::string> generic_coda;
@@ -382,13 +383,14 @@ public:
 	std::unordered_map<char, std::vector<char>> char_map;
 
 	// Syllable, tracks previous "phoneme" and frequency
+	//DEPRECATED
 	void fn_makeWord(int length_ele, int depth_ele);
-
+	//DEPRECATED
 	void fn_makeWord_VCVC(int length_ele, int min_ele);
 
-
+	//DEPRECATED
 	std::string getName();
-
+	//DEPRECATED
 	void fn_make_vector_of_unique_names();
 
 	// old and deprecated
@@ -704,7 +706,7 @@ public:
 
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
-
+// Also calls namebase generation function
 void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase> &all_namebases );
 // Takes file path, returns vector of states with info filled in
 std::vector<state_info> StateParse( std::string state_path );

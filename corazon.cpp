@@ -297,6 +297,11 @@ VUCO( "", VERSION_STAMP );
 		std::string vuco_temp = all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
 		VUCO( "", vuco_temp );
 	}*/
+
+
+
+
+
 	// create unordered map of namebase using name as key, enables cultures to use namebase easily
 	std::unordered_map <std::string, culture_namebase> all_namebase_map;
 	int all_namebases_size = all_namebases.size();
@@ -369,7 +374,27 @@ VUCO( "", VERSION_STAMP );
 		}
 		
 		// Need to generate name lists for each unique culture (now all_cultures)
+		for (auto& each_culture : all_cultures) {
 
+			std::string doubles = all_namebase_map[each_culture.namesbase].doubled_letters;
+			int letters_min = all_namebase_map[each_culture.namesbase].min_length;
+			int letters_max = all_namebase_map[each_culture.namesbase].max_length;
+
+			for (int x = 0; x <= 20;x++) {
+			
+				each_culture.male_names.push_back (		all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
+				each_culture.female_names.push_back (	all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
+
+			}
+			for (int x = 0; x <= 15; x++) {
+				
+				each_culture.dynasty_names.push_back (	all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
+			
+			
+			}
+		
+		
+		}
 	
 	
 	}

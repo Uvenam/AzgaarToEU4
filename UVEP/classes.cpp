@@ -82,6 +82,7 @@
 /*############################################################################################################*/
 	void culture_namebase::fn_makeWord(int length_ele, int depth_ele)
 	{
+		// DEPRECATED
 		std::string word_str = "";
 		if (this->onsets.size() == 0)
 		{
@@ -198,6 +199,7 @@
 	}
 	void culture_namebase::fn_makeWord_VCVC(int length_ele, int min_ele)
 	{
+		//DEPRECATED
 		bool act = TRUE;
 		std::string nm = "makeWord_CVCV";
 
@@ -314,11 +316,13 @@
 	}
 	std::string culture_namebase::getName()
 	{
+		//DEPRECATED
 		std::unordered_set<std::string> ::iterator going_through = this->unique_names.begin();
 		return *going_through;
 	}
 	void culture_namebase::fn_make_vector_of_unique_names()
 	{
+		//DEPRECATED
 		std::unordered_set<std::string> ::iterator ending = this->unique_names.end();
 
 		for (std::unordered_set<std::string> ::iterator going_through = this->unique_names.begin();
@@ -948,6 +952,7 @@
 
 	std::string culture_namebase::fn_MakeWordAzgaar( int min, int max, std::string dupl )
 	{
+		// The one that works, using it as such
 		// if five_letter_syllables_map is empty, thow error
 
 		// ISSUE: Created word oana, zekike, oananan, and ikekiel. None of these used null key
@@ -1084,7 +1089,13 @@
 		if (summ.length() < 2) {
 			//std::cout << "\n[ERROR] Picking jimothy as name as name was too short";
 			VUCO( "ERROR", "Picking jimothy as name, name was too short" );
-			summ = "jimothy";
+
+			int source_list_size = source_list.size ();
+			int pick = distrib ( gen ) % source_list_size;
+
+
+
+			summ = source_list[pick];
 		}
 
 		VUCO( fnn, "Summ is: ", act );
@@ -1299,6 +1310,7 @@
 				namebase_strings_itr++;
 			}
 			all_namebases[namebase_tracker].fn_AzgaarNamebaseGeneration( word_list );
+			all_namebases[namebase_tracker].source_list = word_list;
 		}
 		return;
     }
