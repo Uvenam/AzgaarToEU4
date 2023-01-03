@@ -274,6 +274,25 @@ VUCO( "", VERSION_STAMP );
 
 	std::vector<province_info> all_provinces = CreateProvinces ( all_cells );
 
+/*##########################     ASSIGN UNIQUE COLORS TO PROV    #################################*/
+
+	std::unordered_set<unsigned char[3]> unique_prov_colors;
+	int rgbt = 65793;	// 1 + 2^8 + 2^16
+	for (auto& each_province : all_provinces) {
+		unsigned char rt = static_cast<unsigned char>(	(rgbt 	& 0x000000FF)	>> 0		);
+		unsigned char gt = static_cast<unsigned char>(	(rgbt 	& 0x0000FF00)	>> 8		);
+		unsigned char bt = static_cast<unsigned char>(	(rgbt 	& 0x00FF0000)	>> 16		);
+	
+		each_province.color_rgb[0] = rt;
+		each_province.color_rgb[1] = gt;
+		each_province.color_rgb[2] = bt;
+
+		rgbt++;
+	
+	
+	}
+
+
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
 
@@ -298,10 +317,6 @@ VUCO( "", VERSION_STAMP );
 		VUCO( "", vuco_temp );
 	}*/
 
-
-
-
-
 	// create unordered map of namebase using name as key, enables cultures to use namebase easily
 	std::unordered_map <std::string, culture_namebase> all_namebase_map;
 	int all_namebases_size = all_namebases.size();
@@ -311,17 +326,19 @@ VUCO( "", VERSION_STAMP );
 
 /*####################	CALCULATE RELATED CULTURES BASED ON ORIGINS ##############################*/
 
-	if (options.CULTURE_BREAKDOWN_STATES == TRUE && options.CULTURE_BREAKDOWN_PROVINCES == TRUE) {
+	/// How to iterate through unordered_map ? Or rather, how to take unordered_map and make regular map ?
+	/// Or rather, how to have unordered_map be between KEY and POINTER rather than KEY and OBJECT (since we have duplicates that and thus have to update twice)
 
+	// Take culture from all_cultures, make it the culture group
+	std::unordered_map<int, culture_union> all_culture_unions;
+	
+	if (options.CULTURE_BREAKDOWN_STATES == TRUE && options.CULTURE_BREAKDOWN_PROVINCES == TRUE) {
 
 		// https://forum.paradoxplaza.com/forum/threads/georgia-changes-for-flavour-and-accuracy.1037138/page-7#post-23356223
 		// https://www.reddit.com/r/eu4/comments/74ctuq/how_does_eu4_generate_names/
-	
-		// Take culture from all_cultures, make it the culture group
-		std::unordered_map<int,culture_union> all_culture_unions;
-
 		std::vector<culture> additional_cultures;
 		int new_culture_ids = all_cultures.size ();	// start new culture id with size of all_cultures
+		// fill culture union with info from old cultures (old cultures are the new culture union/group)
 		for (auto& each_culture : all_cultures) {
 			culture_union new_culture_union;
 			
@@ -343,16 +360,18 @@ VUCO( "", VERSION_STAMP );
 		}
 		// Having made each culture group, make a new subculture based on each province/state pairing that the culture is present at
 		// Construct a list of unique cell_info.country and cell_info.subcountry pairings and the culture 
+		
 		// country,subcountry,culture
 		std::unordered_map<std::string, short>	unique_cultures;
 		std::unordered_map<std::string, short> unique_state_province_and_new_culture;
+		// Calculate unique cultures, assign newly made cultures to each cell
 		for (auto& each_cell : all_cells) {
 			VUCO ( "Cell ID", each_cell.id );
 			std::string string_country = std::to_string ( each_cell.country );
 			std::string string_subcountry = std::to_string ( each_cell.sub_country );
 			std::string temp_key = string_country + string_subcountry;
 			VUCO ( "Concattenated country subcountry", temp_key );
-
+			// Find and make unique cultures
 			if(		(unique_cultures.emplace ( temp_key, each_cell.culture ).second)	) { // if emplacement successful
 				VUCO ( "", "New Culture!" );
 				culture new_culture;
@@ -378,6 +397,7 @@ VUCO( "", VERSION_STAMP );
 		all_cultures.clear ();
 		all_cultures = additional_cultures;
 		
+		// Anytime a change is made to base vector, map needs updated...
 		all_cell_map.clear();
 		all_cells_size = all_cells.size ();
 		for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
@@ -416,55 +436,59 @@ VUCO( "", VERSION_STAMP );
 		
 		}
 	
+		// Anytime a change is made to the base vector, the map needs updated...
 		all_cultures_map.clear ();
 		all_cultures_size = all_cultures.size ();
 		for (int t_itr = 0; t_itr < all_cultures_size; t_itr++) {
 			all_cultures_map.emplace ( all_cultures[t_itr].id, all_cultures[t_itr] );
 		}
 
-		for (auto& each_province : all_provinces) {
-			int pop_max = 0;
-			int cell_id_with_max_pop;
-			for (auto& each_cell : each_province.cell_ids) {
-				if (all_cell_map[each_cell].pop >= pop_max) {
-					cell_id_with_max_pop = each_cell;
-					pop_max = all_cell_map[each_cell].pop;
-				
-				}
-			
-			
-			}
-			VUCO ( "Got cell ID", cell_id_with_max_pop, TRUE );
-			VUCO ( "Got culture", all_cell_map[cell_id_with_max_pop].culture, TRUE );	// Getting 7 and not getting a namebase?
-			VUCO ( "Got namebase", all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase, TRUE );
-			int letters_max = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].max_length;
-			int letters_min = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].min_length;
-			std::string doubles = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].doubled_letters;
-			//VUCO ( "Province assignment", all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].name , TRUE);
-			
-			each_province.name =	all_namebase_map[    all_cultures_map[  all_cell_map[ cell_id_with_max_pop ].culture  ].namesbase    ].fn_MakeWordAzgaar(letters_min,letters_max,doubles);
 
-			//std::string prov_culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
-			//prov_culture[0] = tolower ( prov_culture[0] );
-			each_province.culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
-			VUCO ( "Province Name", each_province.name );
-			VUCO ( "Assign culture", each_province.culture );
-		
-		
-		}
+		// all_cultures, all_culture_maps, all_cells, all_cell_map, all_provinces are affected
+	
+	}
+	if (options.CULTURE_BREAKDOWN_STATES == TRUE && options.CULTURE_BREAKDOWN_PROVINCES == FALSE) {
+	// Similar to previous option, but instead of STATE-PROVINCE : CULTURE, it would be STATE : CULTURE
+	
+	}
+	
+	if (options.CULTURE_BREAKDOWN_STATES == FALSE && options.CULTURE_BREAKDOWN_PROVINCES == TRUE) {
+	// Similar to previos option, but instead of STATE-PROVINCE : CULTURE or STATE : CULTURE, it would be PROVINCE : CULTURE
+	}
+	if (options.CULTURE_BREAKDOWN_STATES == FALSE && options.CULTURE_BREAKDOWN_PROVINCES == FALSE) {
+	// Probably don't need to do anything? Still need to assign provinces their names
 	
 	}
 
+	// Update Province culture and give it a name
+	for (auto& each_province : all_provinces) {
+		int pop_max = 0;
+		int cell_id_with_max_pop;
+		for (auto& each_cell : each_province.cell_ids) {
+			if (all_cell_map[each_cell].pop >= pop_max) {
+				cell_id_with_max_pop = each_cell;
+				pop_max = all_cell_map[each_cell].pop;
 
-
-
-
-
-
-
+			}
+		}
+		//VUCO ( "Got cell ID", cell_id_with_max_pop, TRUE );
+		//VUCO ( "Got culture", all_cell_map[cell_id_with_max_pop].culture, TRUE );	// Getting 7 and not getting a namebase?
+		//VUCO ( "Got namebase", all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase, TRUE );
+		int letters_max = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].max_length;
+		int letters_min = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].min_length;
+		std::string doubles = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].doubled_letters;
+		//VUCO ( "Province assignment", all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].name , TRUE);
+		each_province.name = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles );
+		//std::string prov_culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
+		//prov_culture[0] = tolower ( prov_culture[0] );
+		each_province.culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
+		//VUCO ( "Province Name", each_province.name );
+		//VUCO ( "Assign culture", each_province.culture );
+	}
 
 
 /*####################	?? MAP TECH GROUPS BASED ON ORIGINS??		##############################*/
+/*####################	?? MAP TECH GROUPS BASED ON TYPE (Nomadic, river, hunting,etc.)??		##############################*/
 
 /*####################	CULTURE DIVISION BASED ON STATE+PROVINCE DIVISION			##############################*/
 /*####################	?? MAP TECH GROUPS BASED ON CULTURE DIVISION, USING ROOT CULTURE AS DICTATING??		##############################*/
