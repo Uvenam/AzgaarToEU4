@@ -960,17 +960,27 @@
 		bool act = FALSE;
 		std::string fnn = "MWA";
 
-		VUCO( fnn, "Begin Making word and creating", act );
+		//VUCO( fnn, "Begin Making word and creating", act );
+		VUCO ( "Using this namebase", name,act );
 		
 
 		std::vector<std::string> v;
 		
 		v = this->five_letter_syllable_map['\0'];
-		VUCO( fnn, "Generating Randomness...", act );
+
+		if (v.size () == 0) {
+			throw std::runtime_error ( "fn_MakeWordAzgaar somehow have v size of 0! " );
+		
+		}
+
+
+
+
+		//VUCO( fnn, "Generating Randomness...", act );
 		std::random_device rd;
 		std::mt19937 gen( rd() );
 		std::uniform_int_distribution<> distrib( 0, 7829 );	// 7829 is a prime number (assuming there will be 4000 provinces with unique names and potentially 100 states -> 500 potential names per state?)
-		VUCO( fnn, "Getting random onset syllable", act );
+		//VUCO( fnn, "Getting random onset syllable", act );
 		std::string cur = v[distrib( gen ) % v.size()];
 		//std::cout << "\n\tGot: " << cur << std::endl;
 		std::string w = "";
@@ -1088,7 +1098,7 @@
 		// if the name is less than 2, name will be randomly picked from the original list
 		if (summ.length() < 2) {
 			//std::cout << "\n[ERROR] Picking jimothy as name as name was too short";
-			VUCO( "ERROR", "Picking jimothy as name, name was too short" );
+			VUCO( "ERROR", "Picking random name from OG list as name, name was too short",TRUE );
 
 			int source_list_size = source_list.size ();
 			int pick = distrib ( gen ) % source_list_size;
@@ -1098,12 +1108,12 @@
 			summ = source_list[pick];
 		}
 
-		VUCO( fnn, "Summ is: ", act );
+		//VUCO( fnn, "Summ is: ", act );
 		//std::cout << "\n\t" << summ << std::endl;
 		// first char is made upper case
 		summ[0] = toupper( summ[0] );
-		VUCO( fnn, "Capitalized word", act );
-
+		//VUCO( fnn, "Capitalized word", act );
+		VUCO ( "RESULT", summ, act );
 
 		return summ;
 	}

@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.410"
+#define		VERSION_STAMP	"V 0.415"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -222,9 +222,9 @@ VUCO( "", VERSION_STAMP );
 	//VUCO( "", all_burgs[0].capital );
 	{
 		std::string capital = "capital";
-		VUCO ( "Capital?", all_burgs[0].capital, TRUE );
+		//VUCO ( "Capital?", all_burgs[0].capital, TRUE );
 		int value = capital.compare ( all_burgs[0].capital );
-		VUCO ( "COMPARE RESULTS", value, TRUE);
+		//VUCO ( "COMPARE RESULTS", value, TRUE);
 	
 	
 	}
@@ -238,10 +238,10 @@ VUCO( "", VERSION_STAMP );
 	
 	// Create Map using ID of all_cell element and correspond it to the cell_info
 	// New Array where the index matches ID of cell (done using map)
-	std::unordered_map <int, cell_info> indexed_cells;
+	std::unordered_map <int, cell_info> all_cell_map;
 	int all_cells_size = all_cells.size();
 	for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
-		indexed_cells.emplace( all_cells[t_itr].id, all_cells[t_itr] );
+		all_cell_map.emplace( all_cells[t_itr].id, all_cells[t_itr] );
 	}
 
 	std::unordered_map <int, burg_info> indexed_burgs;
@@ -312,6 +312,10 @@ VUCO( "", VERSION_STAMP );
 /*####################	CALCULATE RELATED CULTURES BASED ON ORIGINS ##############################*/
 
 	if (options.CULTURE_BREAKDOWN_STATES == TRUE && options.CULTURE_BREAKDOWN_PROVINCES == TRUE) {
+
+
+		// https://forum.paradoxplaza.com/forum/threads/georgia-changes-for-flavour-and-accuracy.1037138/page-7#post-23356223
+		// https://www.reddit.com/r/eu4/comments/74ctuq/how_does_eu4_generate_names/
 	
 		// Take culture from all_cultures, make it the culture group
 		std::unordered_map<int,culture_union> all_culture_unions;
@@ -328,7 +332,11 @@ VUCO( "", VERSION_STAMP );
 			new_culture_union.type			=	each_culture.type;
 			new_culture_union.namesbase		=	each_culture.namesbase;
 			new_culture_union.origins		=	each_culture.origins;
-			new_culture_union.name			=	each_culture.name;
+
+			std::string temporary_name = each_culture.name;
+			temporary_name[0] = tolower ( temporary_name[0] );
+
+			new_culture_union.name			=	temporary_name;
 			//new_culture_union.primary		=	each_culture.primary;
 		
 			all_culture_unions.emplace ( each_culture.id, new_culture_union );
@@ -339,12 +347,14 @@ VUCO( "", VERSION_STAMP );
 		std::unordered_map<std::string, short>	unique_cultures;
 		std::unordered_map<std::string, short> unique_state_province_and_new_culture;
 		for (auto& each_cell : all_cells) {
+			VUCO ( "Cell ID", each_cell.id );
 			std::string string_country = std::to_string ( each_cell.country );
 			std::string string_subcountry = std::to_string ( each_cell.sub_country );
 			std::string temp_key = string_country + string_subcountry;
+			VUCO ( "Concattenated country subcountry", temp_key );
 
 			if(		(unique_cultures.emplace ( temp_key, each_cell.culture ).second)	) { // if emplacement successful
-
+				VUCO ( "", "New Culture!" );
 				culture new_culture;
 
 				new_culture = all_cultures_map[each_cell.culture];
@@ -358,6 +368,7 @@ VUCO( "", VERSION_STAMP );
 				new_culture_ids++;
 			}
 			else {	// Can't emplace, thus exists already and cell culture needs updated
+				VUCO ( "", "Old Culture!" );
 				each_cell.culture = unique_state_province_and_new_culture[temp_key];
 			}
 			
@@ -366,12 +377,13 @@ VUCO( "", VERSION_STAMP );
 		// Update culture mapping to only include additional cultures (all_culture = additional_culture);
 		all_cultures.clear ();
 		all_cultures = additional_cultures;
-
-		all_cultures_map.clear();
-		all_cultures_size = all_cultures.size ();
-		for (int t_itr = 0; t_itr < all_cultures_size; t_itr++) {
-			all_cultures_map.emplace ( all_cultures[t_itr].id, all_cultures[t_itr] );
+		
+		all_cell_map.clear();
+		all_cells_size = all_cells.size ();
+		for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
+			all_cell_map.emplace ( all_cells[t_itr].id, all_cells[t_itr] );
 		}
+		
 		
 		// Need to generate name lists for each unique culture (now all_cultures)
 		for (auto& each_culture : all_cultures) {
@@ -380,24 +392,77 @@ VUCO( "", VERSION_STAMP );
 			int letters_min = all_namebase_map[each_culture.namesbase].min_length;
 			int letters_max = all_namebase_map[each_culture.namesbase].max_length;
 
-			for (int x = 0; x <= 20;x++) {
-			
-				each_culture.male_names.push_back (		all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
-				each_culture.female_names.push_back (	all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
+		// Dedicate like 60 to male_names in 00_cultures.txt
+		// Dedicate like 45ish to monarch_names in [Country.txt] (or just generate on demand)
+		// Dedicate like 45ish to leader_names in [Country.txt] (or just generate on demand)
+		// Dedicate like 10 to dynasty_names in 00_cultures.txt
 
+			std::string temp_name = all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles );
+			temp_name[0] = tolower ( temp_name[0] );
+			each_culture.name = temp_name;
+
+			//VUCO_WAN ( '\n' ); VUCO_WAN ( "Assign culture name: " ); VUCO_WAN ( temp_name ); VUCO_WAN ( " From " ); VUCO_WAN ( each_culture.namesbase ); VUCO_WAN ( '\n' );
+
+			for (int x = 0; x <= 150;x++) {
+				each_culture.male_names.push_back (		all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
 			}
-			for (int x = 0; x <= 15; x++) {
-				
+			for (int x = 0; x <= 20; x++) {			
+				each_culture.female_names.push_back (	all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
+			}
+			for (int x = 0; x <= 35; x++) {
 				each_culture.dynasty_names.push_back (	all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
-			
-			
 			}
 		
 		
 		}
 	
+		all_cultures_map.clear ();
+		all_cultures_size = all_cultures.size ();
+		for (int t_itr = 0; t_itr < all_cultures_size; t_itr++) {
+			all_cultures_map.emplace ( all_cultures[t_itr].id, all_cultures[t_itr] );
+		}
+
+		for (auto& each_province : all_provinces) {
+			int pop_max = 0;
+			int cell_id_with_max_pop;
+			for (auto& each_cell : each_province.cell_ids) {
+				if (all_cell_map[each_cell].pop >= pop_max) {
+					cell_id_with_max_pop = each_cell;
+					pop_max = all_cell_map[each_cell].pop;
+				
+				}
+			
+			
+			}
+			VUCO ( "Got cell ID", cell_id_with_max_pop, TRUE );
+			VUCO ( "Got culture", all_cell_map[cell_id_with_max_pop].culture, TRUE );	// Getting 7 and not getting a namebase?
+			VUCO ( "Got namebase", all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase, TRUE );
+			int letters_max = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].max_length;
+			int letters_min = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].min_length;
+			std::string doubles = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].doubled_letters;
+			//VUCO ( "Province assignment", all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].name , TRUE);
+			
+			each_province.name =	all_namebase_map[    all_cultures_map[  all_cell_map[ cell_id_with_max_pop ].culture  ].namesbase    ].fn_MakeWordAzgaar(letters_min,letters_max,doubles);
+
+			//std::string prov_culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
+			//prov_culture[0] = tolower ( prov_culture[0] );
+			each_province.culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
+			VUCO ( "Province Name", each_province.name );
+			VUCO ( "Assign culture", each_province.culture );
+		
+		
+		}
 	
 	}
+
+
+
+
+
+
+
+
+
 
 /*####################	?? MAP TECH GROUPS BASED ON ORIGINS??		##############################*/
 
@@ -530,8 +595,8 @@ VUCO( "", VERSION_STAMP );
 			int burg_population = 0;
 			int rural_population = 0;
 			for (auto& each_cell : each_province.cell_ids) {
-				total_population += indexed_cells[each_cell].pop;
-				burg_population += indexed_burgs[indexed_cells[each_cell].burg_id].pop;
+				total_population += all_cell_map[each_cell].pop;
+				burg_population += indexed_burgs[all_cell_map[each_cell].burg_id].pop;
 			}
 			rural_population = total_population - burg_population;
 
@@ -570,13 +635,13 @@ VUCO( "", VERSION_STAMP );
 
 			for (auto& each_cell : each_province.cell_ids) {
 			
-				if (capital.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].capital ) == 0)	{	adm += options.DBV[0][0];	dip += options.DBV[0][1];	mil += options.DBV[0][2]; }
-				if (port.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].port ) == 0)			{	adm += options.DBV[1][0];	dip += options.DBV[1][1];	mil += options.DBV[0][2]; }
-				if (citadel.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].citadel ) == 0)	{	adm += options.DBV[2][0];	dip += options.DBV[2][1];	mil += options.DBV[0][2]; }
-				if (walls.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].walls ) == 0)		{	adm += options.DBV[3][0];	dip += options.DBV[3][1];	mil += options.DBV[0][2]; }
-				if (plaza.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].plaza ) == 0)		{	adm += options.DBV[4][0];	dip += options.DBV[4][1];	mil += options.DBV[0][2]; }
-				if (temple.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].temple ) == 0)		{	adm += options.DBV[5][0];	dip += options.DBV[5][1];	mil += options.DBV[0][2]; }
-				if (shanty.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].shanty ) == 0)		{	adm += options.DBV[6][0];	dip += options.DBV[6][1];	mil += options.DBV[0][2]; }
+				if (capital.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].capital ) == 0)	{	adm += options.DBV[0][0];	dip += options.DBV[0][1];	mil += options.DBV[0][2]; }
+				if (port.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].port ) == 0)			{	adm += options.DBV[1][0];	dip += options.DBV[1][1];	mil += options.DBV[0][2]; }
+				if (citadel.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].citadel ) == 0)	{	adm += options.DBV[2][0];	dip += options.DBV[2][1];	mil += options.DBV[0][2]; }
+				if (walls.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].walls ) == 0)		{	adm += options.DBV[3][0];	dip += options.DBV[3][1];	mil += options.DBV[0][2]; }
+				if (plaza.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].plaza ) == 0)		{	adm += options.DBV[4][0];	dip += options.DBV[4][1];	mil += options.DBV[0][2]; }
+				if (temple.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].temple ) == 0)		{	adm += options.DBV[5][0];	dip += options.DBV[5][1];	mil += options.DBV[0][2]; }
+				if (shanty.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].shanty ) == 0)		{	adm += options.DBV[6][0];	dip += options.DBV[6][1];	mil += options.DBV[0][2]; }
 
 			}
 
@@ -605,13 +670,13 @@ VUCO( "", VERSION_STAMP );
 
 			for (auto& each_cell : each_province.cell_ids) {
 			
-				//if (capital.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].capital ) == 0)	{	adm += 2;	dip += 2;	mil += 2;	}
-				if (port.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].port ) == 0)			{ each_province.shipyard = TRUE; }
-				if (citadel.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].citadel ) == 0)	{ each_province.fort_15th = TRUE; }
-				if (walls.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].walls ) == 0)		{ each_province.fort_15th = TRUE; }
-				if (plaza.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].plaza ) == 0)		{ each_province.center_of_trade = 1; }
-				//if (temple.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].temple ) == 0)		{	adm += 2;							}
-				//if (shanty.compare ( indexed_burgs[indexed_cells[each_cell].burg_id].shanty ) == 0)		{	adm += 1;	dip += 1;				}
+				//if (capital.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].capital ) == 0)	{	adm += 2;	dip += 2;	mil += 2;	}
+				if (port.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].port ) == 0)			{ each_province.shipyard = TRUE; }
+				if (citadel.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].citadel ) == 0)	{ each_province.fort_15th = TRUE; }
+				if (walls.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].walls ) == 0)		{ each_province.fort_15th = TRUE; }
+				if (plaza.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].plaza ) == 0)		{ each_province.center_of_trade = 1; }
+				//if (temple.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].temple ) == 0)		{	adm += 2;							}
+				//if (shanty.compare ( indexed_burgs[all_cell_map[each_cell].burg_id].shanty ) == 0)		{	adm += 1;	dip += 1;				}
 
 			}
 		}
