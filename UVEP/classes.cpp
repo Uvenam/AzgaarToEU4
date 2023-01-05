@@ -1456,9 +1456,17 @@
 				// Emblems #################################################################################
 				Culture_Track++;
 				// Origins #################################################################################
+				/// Need to include origins for tracking culture
 				if (Culture_Track == sreg_end) { break; }	// origins sometimes empty
-				Culture_Track++;
-
+				while (Culture_Track != sreg_end) {
+					std::string origin_culture = Culture_Track->str ();
+					origin_culture.erase ( std::remove ( origin_culture.begin (), origin_culture.end (), '"' ), origin_culture.end () ); //remove " from string
+					//if (origin_culture.size () == 0) { break; }
+					all_cultures[culture_itr].origins.push_back ( origin_culture );
+					VUCO ( "Got origin culture", origin_culture, act );
+					Culture_Track++;
+				
+				}
 			}
 		}
 		VUCO_WAN ( "Cultures parsed." );
@@ -1584,6 +1592,96 @@
 		VUCO_WAN ( "Burgs parsed" );
 		return all_burgs;
 	}
+
+    std::vector<religion> ReligionParse ( std::string religion_path )
+    {
+		std::vector<religion> all_religions;
+		bool act = FALSE;
+		std::string fnn = "ReligionParse";
+		VUCO ( fnn, "Parsing religion..." );
+		std::vector<std::string> religion_strs;
+		religion_strs = ReadFromLineByLine ( religion_path );
+		religion_strs.erase ( religion_strs.begin () ); // gets rid of format example (initial line of azgaar file)
+		int all_religion_size = religion_strs.size ();
+		if (all_religion_size <= 1) { throw std::runtime_error ( "# of religions too small!" ); }
+		all_religions.reserve ( all_religion_size );	// Rough estimate,
+		std::regex comma_separated ( "\[^,\]+" );
+		std::sregex_iterator sreg_end;
+		for (int religion_itr = 0; religion_itr < all_religion_size; religion_itr++) {
+			std::sregex_iterator Religion_Track ( religion_strs[religion_itr].cbegin (), religion_strs[religion_itr].cend (), comma_separated );
+			all_religions.push_back ( religion () );
+			while (Religion_Track != sreg_end) {
+				// ID ####################################################################################
+				all_religions[religion_itr].id = std::stoi ( Religion_Track->str () );
+				VUCO ( fnn, all_religions[religion_itr].id, act );
+				if (all_religions[religion_itr].id == 0)
+				{
+					//Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++;
+					//all_religions[culture_itr].namesbase = Culture_Track->str ();
+					break;
+				}	//neutrals mess it up, but keep namesbase
+				Religion_Track++;
+				// Name #################################################################################
+				all_religions[religion_itr].name = Religion_Track->str ();
+				VUCO ( "Name", all_religions[religion_itr].name, act );
+				Religion_Track++;
+				// Color #################################################################################
+				std::string bbtemp = Religion_Track->str ();
+				int hexified;
+				bbtemp.erase ( bbtemp.begin () );
+				std::stringstream hexifier;
+				hexifier << std::hex << bbtemp;
+				hexifier >> hexified;
+				all_religions[religion_itr].color = hexified;
+				VUCO ( "Color", all_religions[religion_itr].color, act );
+				Religion_Track++;
+				// Type #################################################################################
+				all_religions[religion_itr].type = Religion_Track->str ();
+				VUCO ( "Type", all_religions[religion_itr].type, act );
+				Religion_Track++;
+				// Form #################################################################################
+				all_religions[religion_itr].form = Religion_Track->str ();
+				VUCO ( "Form", all_religions[religion_itr].form, act );
+				Religion_Track++;
+				// Non-theism and Animism don't have deities
+				// Supreme Deity #################################################################################
+				std::string deity_name = Religion_Track->str ();
+				if (deity_name.size () != 2) { // if non-theism form or animism form, not generated with deity name
+					deity_name.erase ( std::remove ( deity_name.begin (), deity_name.end (), '"' ), deity_name.end () ); //remove " from string
+					Religion_Track++;
+					std::string deity_title = Religion_Track->str ();
+					deity_title.erase ( std::remove ( deity_title.begin (), deity_title.end (), '"' ), deity_title.end () ); //remove " from string
+					all_religions[religion_itr].supreme_deity = deity_name + ", " + deity_title;
+					VUCO ( "Supreme deity", all_religions[religion_itr].supreme_deity, act );
+				}
+				else {
+					all_religions[religion_itr].supreme_deity = "None";
+				}
+				Religion_Track++;
+				// Area #################################################################################
+				VUCO ( "Area", "Don't Care", act );
+				Religion_Track++;
+				// Believers #################################################################################
+				VUCO ( "Believers", "Don't care", act );
+				Religion_Track++;
+				// Origins #################################################################################
+				/// Need to include origins for tracking culture
+				if (Religion_Track == sreg_end) { break; }	// origins sometimes empty
+				while (Religion_Track != sreg_end) {
+					std::string origin_religion = Religion_Track->str ();
+					origin_religion.erase ( std::remove ( origin_religion.begin (), origin_religion.end (), '"' ), origin_religion.end () ); //remove " from string
+					//if (origin_religion.size () == 0) { break; }
+					all_religions[religion_itr].origins.push_back ( origin_religion );
+					VUCO ( "Got origin religion", origin_religion, act );
+					Religion_Track++;
+				}
+			}
+		}
+		VUCO_WAN ( "Religions parsed." );
+
+
+		return all_religions;
+    }
 
 
 	void GenericOutput(std::vector<cell_info> all_cells, std::string output_file) {

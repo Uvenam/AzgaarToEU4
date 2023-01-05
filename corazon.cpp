@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.416"
+#define		VERSION_STAMP	"V 0.420"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -277,8 +277,8 @@ VUCO( "", VERSION_STAMP );
 /*##########################     ASSIGN UNIQUE COLORS TO PROV    #################################*/
 	/// Needs tested \/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\/
 
-	std::unordered_set<unsigned char[3]> unique_prov_colors;
-	int rgbt = 65793;	// 1 + 2^8 + 2^16
+	//std::unordered_set<unsigned char[3]> unique_prov_colors;		// CAN'T DO HASH OF ARRAY (or at least can't do it like its done here)
+	int rgbt = 0x010101;	// 0xBGR
 	for (auto& each_province : all_provinces) {
 		unsigned char rt = static_cast<unsigned char>(	(rgbt 	& 0x000000FF)	>> 0		);
 		unsigned char gt = static_cast<unsigned char>(	(rgbt 	& 0x0000FF00)	>> 8		);
@@ -289,15 +289,20 @@ VUCO( "", VERSION_STAMP );
 		each_province.color_rgb[2] = bt;
 
 		rgbt++;
-	
-	
 	}
 	/// Needs tested /\+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/\
 
-/*##########################      WORKING WITH THE CULUTRES      #################################*/
+
+
+
+/*##########################      PARSE RELIGIONS	             #################################*/
 /*################################################################################################*/
 
-	// EU4 has 71 culture groups, average of five-ish subcultures per
+	std::vector<religion> all_religions;
+	all_religions = ReligionParse ( religions_path );
+
+/*##########################      WORKING WITH THE CULUTRES      #################################*/
+/*################################################################################################*/
 
 	// all cultures
 	std::vector<culture> all_cultures;
@@ -328,6 +333,8 @@ VUCO( "", VERSION_STAMP );
 	}
 
 /*####################	CALCULATE RELATED CULTURES BASED ON ORIGINS ##############################*/
+
+	// EU4 has 71 culture groups, average of five-ish subcultures per
 
 	/// How to iterate through unordered_map ? Or rather, how to take unordered_map and make regular map ?
 	/// Or rather, how to have unordered_map be between KEY and POINTER rather than KEY and OBJECT (since we have duplicates that and thus have to update twice)
@@ -519,6 +526,10 @@ VUCO( "", VERSION_STAMP );
 		ID_to_TAG.emplace ( state_itr.ID, state_itr.TAG );
 	
 	}
+
+
+/*###########################		 GOVERNMENT           ########################################*/
+/*################################################################################################*/
 
 
 // RETRIEVE EMBLEMS

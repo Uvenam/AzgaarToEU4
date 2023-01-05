@@ -20,8 +20,7 @@ const std::vector<std::string> AZGAAR_Government_Forms_Monarchy = {
 	"Sultanate",
 	"Tsardom",
 	"Ulus",
-	"Viceroyalty",
-
+	"Viceroyalty"
 };
 const std::vector<std::string> AZGAAR_Government_Forms_Republic = {
 
@@ -36,8 +35,7 @@ const std::vector<std::string> AZGAAR_Government_Forms_Republic = {
 	"Republic",
 	"Tetrarchy",
 	"Trade Company",
-	"Triumvirate",
-
+	"Triumvirate"
 };
 const std::vector<std::string> AZGAAR_Government_Forms_Union = {
 	"Confederacy",
@@ -51,9 +49,7 @@ const std::vector<std::string> AZGAAR_Government_Forms_Union = {
 	"United Provinces",
 	"United Republic",
 	"United States",
-	"United Tribes",
-
-
+	"United Tribes"
 };
 const std::vector<std::string> AZGAAR_Government_Forms_Theocracy = {
 	"Bishopric",
@@ -70,7 +66,7 @@ const std::vector<std::string> AZGAAR_Government_Forms_Theocracy = {
 	"Holy State",
 	"Imamah",
 	"Patriarchate",
-	"Theocracy",
+	"Theocracy"
 };
 const std::vector<std::string> AZGAAR_Government_Forms_Anarchy = {
 
@@ -78,166 +74,132 @@ const std::vector<std::string> AZGAAR_Government_Forms_Anarchy = {
 	"Community",
 	"Council",
 	"Free Territory",
-	"Tribes",
-
-
-
+	"Tribes"
 };
 
 const std::vector<std::string> EU4_Government_Forms = {
-		"monarchy",
-		"republic",
-		"tribal",
-		"native",
-		"theocracy",
-
-
+	"monarchy",
+	"republic",
+	"tribal",
+	"native",
+	"theocracy"
 };
 // Could make this an unordered map
 const std::vector<std::string> EU4_Government_Forms_Monarchy = {
+	"feudalism_reform",
+	"autocracy_reform",
+	"plutocratic_reform",
+	"indian_sultanate_reform",
+	"nayankara_reform",
+	"misl_confederacy_reform",
+	"rajput_kingdom",
+	"negusa_nagast",
+	"solomonic_empire",
+	//#Specific:
+	"grand_duchy_reform",
+	"daimyo",
+	"indep_daimyo",
+	"elective_monarchy",
+	"iqta",
+	"ottoman_government",
+	"prussian_monarchy",
+	"austrian_dual_monarchy",
+	"principality",
+	"tsardom",
+	"mamluk_government",
+	"feudal_theocracy",
+	"celestial_empire",
+	"shogunate",
+	"english_monarchy",
+	"mandala_reform",
+	"revolutionary_empire_reform",
+	"holy_state_reform",
+	"austrian_archduchy_reform",
+	"siamese_absolutism",
+	"confucian_bureaucracy",
+	"musa_rule",
+	"mossi_federal_kingdom"
 
-
+	// Missing some from recent EU4 update (after 1.30.6)
 
 };
 // Monarchy -> Level 1 
 // government = monarchy
 // add_government_reform = ___________
-/*
-
-				feudalism_reform
-				autocracy_reform
-				plutocratic_reform
-				# indian_sultanate_reform
-				# nayankara_reform
-				# misl_confederacy_reform
-				# rajput_kingdom
-				#negusa_nagast
-				#solomonic_empire
-				#Specific:
-				# grand_duchy_reform
-				# daimyo
-				# indep_daimyo
-				# elective_monarchy
-				# iqta
-				# ottoman_government
-				# prussian_monarchy
-				# austrian_dual_monarchy
-				# principality
-				# tsardom
-				# mamluk_government
-				# feudal_theocracy
-				# celestial_empire
-				# shogunate
-				# english_monarchy
-				# mandala_reform
-				# revolutionary_empire_reform
-				# holy_state_reform
-				# austrian_archduchy_reform
-				# siamese_absolutism
-				# confucian_bureaucracy
-				#musa_rule
-				#mossi_federal_kingdom
-*/
 const std::vector<std::string> EU4_Government_Forms_Republic = {
+	"oligarchy_reform",
+	"merchants_reform",
+	"venice_merchants_reform",
+	"pirate_republic_reform",
+	"noble_elite_reform",
+	"free_city",
+	"trading_city",
+	"ambrosian_republic",
+	"veche_republic",
+	//# american_republic
+	//# federal_republic
+	"colonial_government",
+	"crown_colony_government",
+	"private_enterprise_colony_government",
+	"self_governing_colony_government",
+	"dutch_republic",
+	"peasants_republic",
+	"revolutionary_republic_reform",
+	"junior_revolutionary_republic_reform",
+	"presidential_despot_reform",
+	"cossacks_reform",
+	"military_dictatorship_reform",
+	"signoria_reform",
+	"protectorate_parliament_reform",
+	"prussian_republic_reform",
+	"united_cantons_reform",
+	"kongsi_federation",
+	"millenarian_theocracy_reform"
 
-
+	// Missing some from recent EU4 update (after 1.30.6)
 
 };
 // Republic -> Level 1
 // government = republic
 // add_government_reform = ___________
-/*
-
-
-				oligarchy_reform
-				merchants_reform
-				# venice_merchants_reform
-				pirate_republic_reform
-				noble_elite_reform
-				free_city
-				trading_city
-				ambrosian_republic
-				veche_republic
-				# american_republic
-				# federal_republic
-				colonial_government
-				crown_colony_government
-				private_enterprise_colony_government
-				self_governing_colony_government
-				# dutch_republic
-				peasants_republic
-				revolutionary_republic_reform
-				junior_revolutionary_republic_reform
-				presidential_despot_reform
-				cossacks_reform
-				military_dictatorship_reform
-				signoria_reform
-				protectorate_parliament_reform
-				# prussian_republic_reform
-				# united_cantons_reform
-				# kongsi_federation
-				# millenarian_theocracy_reform
-
-
-
-*/
 const std::vector<std::string> EU4_Government_Forms_Tribal = {
+	"steppe_horde",
+	"tribal_federation",			// HAS TO be arab
+	"tribal_despotism",
+	"tribal_kingdom",
+	"siberian_tribe",
+	"gond_kingdom",
+	"great_mongol_state_reform",	// HAS TO be Mongol Empire
+	"stateless_society",
+	"polynesian_kingdom",			// HAS TO start with it or complete Polynesian mission centralize the realm, lost if no longer polynesian
+	"polynesian_tribe"				// HAS TO start with it, lost if no longer polynesian
 
-
-
+	// Missing some from recent EU4 update (after 1.30.6)
 };
 // Tribal -> Level 1
 // government = tribal
 // add_government_reform = ___________
-/*
-
-				steppe_horde
-				tribal_federation
-				tribal_despotism
-				tribal_kingdom
-				siberian_tribe
-				# gond_kingdom
-				great_mongol_state_reform
-				stateless_society
-				polynesian_kingdom
-				polynesian_tribe
-
-
-
-
-*/
 const std::vector<std::string> EU4_Government_Forms_Native = {
-
-
-
+	"native_chiefdom_reform",
+	"native_federation_reform",
+	"native_clan_council_reform",
+	"native_hereditary_reform"
 };
 // Native -> Level 1
 // government = native
 // add_government_reform = ___________
-/*
-				native_chiefdom_reform
-				native_federation_reform
-				native_clan_council_reform
-				native_hereditary_reform
-
-*/
 const std::vector<std::string> EU4_Government_Forms_Theocracy = {
+	"leading_clergy_reform",
+	"monastic_order_reform",
+	"papacy_reform",
+	"holy_state_reform",
+	"united_cantons_reform",
 
-
-
+	// Missing some from recent EU4 update (after 1.30.6)
 };
 // Theocracy -> Level 1
 // government = theocracy
 // add_government_reform = ___________
-/*
-				leading_clergy_reform
-				monastic_order_reform
-				papacy_reform
-				holy_state_reform
-				# united_cantons_reform
-
-*/
-
 
 
 std::vector<std::string> AZGAAR_Religions;

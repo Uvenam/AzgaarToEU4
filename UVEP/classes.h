@@ -12,7 +12,9 @@ struct settings {
 	bool USE_RNW = FALSE;
 	bool UNINHABITED_NEW_WORLD = FALSE;
 
-	bool UNIQUE_GOVERNMENT_USAGE = TRUE;	
+	bool GOVERNMENT_UNIQUE_USAGE = TRUE;		// Will try to start countries with unique government or allow it (ex: random area on border of "catholic" religion area, if its "protestant" then it can form "prussia") (ex: russia)
+	bool GOVERNMENT_STRICT_CONDITIONS = FALSE;	// Will either try and assign as many unique governments as possible at game start if false. If true, will adhere to conditions of original (ex: gond kingdom, you have to have indian tech and gondi culture)		
+												// Also GOVERNMENT_STRICT_CONDITION will OVERWRITE government conditions
 
 	bool CULTURE_BREAKDOWN_STATES_AS_UNIONS = FALSE;	// Mutually exclusive with CULTURE_BREAKDOWN_STATES // Also not sure if should only apply to large states
 	bool CULTURE_BREAKDOWN_STATES = TRUE;
@@ -24,14 +26,24 @@ struct settings {
 	std::vector<std::string> TECH_AMERICAN;
 	// ...
 
+	bool RELIGION_MAPPING_ACTION = TRUE;				// FALSE is EXPERIMENTAL, UNTESTED, NOT GUARANTEED TO WORK. This is a placeholder currently. TRUE is azgaar religions will be (roughly) mapped to EU4 religions
+
 	std::vector<std::string> HRE_EQUIVALENT;
+	bool HRE_CREATION = TRUE;
 	bool HRE_BREAKDOWN = FALSE; // If given 1 for HRE_EQUIVALENT, assume given multiple
 
 	std::string MANDATE_OF_HEAVEN_EQUIVALENT;
+	bool MANDATE_OF_HEAVEN_CREATION = TRUE;
 
-	std::vector<std::string> SHOGUN_EQUIVALENT;
-	bool SHOGUN_BREAKDOWN = TRUE; // Assume only given 1. Will be to single province breakdown
-
+	std::string SHOGUN_EQUIVALENT;	// This country will be considered the shogun (should have government Shogunate
+	bool SHOGUN_CREATION = TRUE;	// Use SHOGUN_EQUIVALENT or find largest state (population wise) with Shogunate government in Azgaar_states and make them SHOGUN_EQUIVALENT. They will be the shogun. 
+	bool SHOGUN_ONE_AZGAAR_SHOGUNATE = TRUE;	// All other states with shogunate government will be independent daimyos if false or vassal daimyos if true
+	bool SHOGUN_BREAKDOWN = TRUE; // SHOGUN_EQUIVALENT will be broken down into single province
+	bool SHOGUN_OVERRIDE_SHOGUNS_RELIGION_TO_SHINTO = FALSE;	// Whatever religion the azgaar state is becomes equivalent to Shinto, OVERRIDES other religion
+	bool SHOGUN_CONVERT_SHOGUN_TO_SHINTO = FALSE;	// all provinces within SHOGUN_EQUIVALENT will be converted to Shinto, no religion correlation if OVERRIDE_SHOGUNS_RELIGION_TO_SHINTO is false. Otherwise will convert all provinces to be the overridden religion (enforces uniformity)
+	bool SHOGUN_CONVERT_JAPAN_TO_SHINTO = TRUE;		// all provinces within JAPAN region will be converted to Shinto, no religion correlation if OVERRIDE_SHOGUNS_RELIGION_TO_SHINTO is false. Otherwise will convert all provinces to be the overriden religion (enforces uniformity)
+	// For gameplay purposes, the culture of the largest state with Shogunate government will be considered Japanese. all provinces of states with shogunate azgaar government form will be a part of the Japan region
+	// Capital of SHOGUN_EQUIVALENT will be considered Kyoto
 
 
 	std::vector<std::string> SPECIFIC_BREAKDOWNS;  // Provide list of countries you want specifically broken down 
@@ -302,6 +314,21 @@ struct culture_union : public culture {
 public:
 	std::vector<culture> subcultures;
 	std::string graphical_culture;
+};
+// NOTE: Deities MUST HAVE TITLES! "Name, title"
+struct religion {
+
+	std::string EU4_equivalent;
+
+	int id;
+	std::string name;
+	int color;
+	std::string type;
+	std::string form;
+	std::string supreme_deity;
+	//Area mi2	
+	//Believers	
+	std::vector<std::string> origins;
 };
 
 struct culture_namebase {	//##################################################################################
@@ -714,6 +741,7 @@ std::vector<state_info> StateParse( std::string state_path );
 std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states );
 std::vector<culture> CultureParse(std::string culture_path);
 std::vector<burg_info> BurgParse( std::string burg_path );
+std::vector<religion> ReligionParse ( std::string religion_path );
 void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
 
 void TransformPoints( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
