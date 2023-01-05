@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.415"
+#define		VERSION_STAMP	"V 0.416"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -275,6 +275,7 @@ VUCO( "", VERSION_STAMP );
 	std::vector<province_info> all_provinces = CreateProvinces ( all_cells );
 
 /*##########################     ASSIGN UNIQUE COLORS TO PROV    #################################*/
+	/// Needs tested \/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\/
 
 	std::unordered_set<unsigned char[3]> unique_prov_colors;
 	int rgbt = 65793;	// 1 + 2^8 + 2^16
@@ -291,10 +292,12 @@ VUCO( "", VERSION_STAMP );
 	
 	
 	}
-
+	/// Needs tested /\+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/\
 
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
+
+	// EU4 has 71 culture groups, average of five-ish subcultures per
 
 	// all cultures
 	std::vector<culture> all_cultures;
@@ -460,6 +463,10 @@ VUCO( "", VERSION_STAMP );
 	
 	}
 
+	if (options.CULTURE_BREAKDOWN_STATES_AS_UNIONS == TRUE && options.CULTURE_BREAKDOWN_STATES == FALSE) {
+	// Azgaar will only output 32 unique cultures and 99 states. EU4 has 71 culture unions with about 5 per
+	
+	}
 	// Update Province culture and give it a name
 	for (auto& each_province : all_provinces) {
 		int pop_max = 0;
@@ -487,10 +494,10 @@ VUCO( "", VERSION_STAMP );
 	}
 
 
-/*####################	?? MAP TECH GROUPS BASED ON ORIGINS??		##############################*/
+/*####################	?? MAP TECH GROUPS BASED ON ORIGINS??									##############################*/
 /*####################	?? MAP TECH GROUPS BASED ON TYPE (Nomadic, river, hunting,etc.)??		##############################*/
 
-/*####################	CULTURE DIVISION BASED ON STATE+PROVINCE DIVISION			##############################*/
+/*####################	CULTURE DIVISION BASED ON STATE+PROVINCE DIVISION									##############################*/
 /*####################	?? MAP TECH GROUPS BASED ON CULTURE DIVISION, USING ROOT CULTURE AS DICTATING??		##############################*/
 
 	// ex
@@ -893,6 +900,9 @@ VUCO( "", VERSION_STAMP );
 	
 // CREAITON OF RELIGIONS https://eu4.paradoxwikis.com/Religion_modding
 /*################################################################################################*/
+	// Religion count: 28 default, CK2 denominations: 28 (total of 56, but the CK2 denominations don't show up normally)
+
+
 	// EUIV / common / religious_conversions / 00_religious_conversions.txt
 	// EUIV / common / religions / 00_religions.txt
 	
@@ -958,6 +968,192 @@ VUCO( "", VERSION_STAMP );
 	// CREATING THE IMAGE
 	// FOLLOWING IS FOR EXAMPLE PURPOSES! FIRSTLY: PROVINCE ID NEEDS TO BE UNIQUELY MAPPED TO COLOR_RGB TO ENUSRE THAT THERE ARE NO REPEATS
 	// NOTE THAT THE VERTICIES CONTAIN A DUPLICATE VALUE OF THE FIRST COORD INITIALLY PUT INTO THEM (just the way it is output from AZGAAR). IT WILL NOT BE USED IN RASTERIZATION because the DrawPolygon ignores duplicates (effectively)
+
+/*###########################      FORMABLE DECISIONS           ##################################*/
+
+//EXAMPLE OF FORMAT
+/* 
+country_decisions = {
+	castanor_nation = {
+		major = yes
+		potential = {
+			has_country_flag = escanni_wars_castanor_option_unlocked
+			OR = {
+				culture_group = escanni
+				culture_group = dostanorian_g
+				primary_culture = marrodic
+			}
+			NOT = { has_country_flag = formed_castanor_flag }
+			NOT = { has_adventurer_reform = yes }
+			NOT = { exists = B32 } #Castanor doesn't exist
+			#NOT = { exists = Z34 } #Black Castanor doesn't exist
+			#NOT = { tag = B33 } #Blademarches hate Castanor
+			NOT = { tag = Z34 }	#Black Castanor cannot into Castanor
+			NOT = { has_country_flag = orc_nation_formed }	#prevents orc formables from forming it
+			OR = {
+				ai = no
+				is_playing_custom_nation = no
+			}
+			OR = {
+				ai = no
+				AND = {
+					ai = yes
+					num_of_cities = 3
+				}
+			}
+			is_colonial_nation = no
+			OR = {
+				is_former_colonial_nation = no
+				AND = {
+					is_former_colonial_nation = yes
+					ai = no
+				}
+			}
+			normal_or_historical_nations = yes
+		}
+
+		provinces_to_highlight = {
+			OR = {
+				province_id = 840
+				province_id = 833
+				province_id = 831
+				province_id = 832
+			}
+			OR = {
+				NOT = { owned_by = ROOT }
+				NOT = { is_core = ROOT }
+			}
+		}
+
+		allow = {
+			#adm_tech = 10
+			is_free_or_tributary_trigger = yes
+			is_nomad = no
+			is_at_war = no
+
+			#Requires provinces
+			owns_core_province = 840	#North Citadel
+			owns_core_province = 833	#North Castonath
+			owns_core_province = 831	#South Castonath
+			owns_core_province = 832	#West Castonath
+
+			840 = { has_province_modifier = castanorian_citadel }
+			custom_trigger_tooltip = {
+				tooltip = already_attempted_trials
+				NOT = { has_ruler_flag = attempted_trials_within_lifetime }
+			}
+		}
+		effect = {
+			custom_tooltip = take_trials_form_castanor_effect_tt
+			set_country_flag = try_castanor_trials_decision_taken
+			set_ruler_flag = attempted_trials_within_lifetime
+		}
+		ai_will_do = {
+			factor = 2
+		}
+		ai_importance = 400
+	}
+}
+*/
+
+// FORMAT GENERALIZED
+/*
+country_decisions = {
+	castanor_nation = {
+		major = yes
+		potential = {
+			has_country_flag = escanni_wars_castanor_option_unlocked
+			OR = {
+				culture_group = escanni
+				culture_group = dostanorian_g
+				primary_culture = marrodic
+			}
+			NOT = { has_country_flag = formed_castanor_flag }
+			NOT = { has_adventurer_reform = yes }
+			NOT = { exists = B32 } #Castanor doesn't exist
+			#NOT = { exists = Z34 } #Black Castanor doesn't exist
+			#NOT = { tag = B33 } #Blademarches hate Castanor
+			NOT = { tag = Z34 }	#Black Castanor cannot into Castanor
+			NOT = { has_country_flag = orc_nation_formed }	#prevents orc formables from forming it
+			OR = {
+				ai = no
+				is_playing_custom_nation = no
+			}
+			OR = {
+				ai = no
+				AND = {
+					ai = yes
+					num_of_cities = 3
+				}
+			}
+			is_colonial_nation = no
+			OR = {
+				is_former_colonial_nation = no
+				AND = {
+					is_former_colonial_nation = yes
+					ai = no
+				}
+			}
+			normal_or_historical_nations = yes
+		}
+
+		provinces_to_highlight = {
+			OR = {
+				province_id = 840
+				province_id = 833
+				province_id = 831
+				province_id = 832
+			}
+			OR = {
+				NOT = { owned_by = ROOT }
+				NOT = { is_core = ROOT }
+			}
+		}
+
+		allow = {
+			#adm_tech = 10
+			is_free_or_tributary_trigger = yes
+			is_nomad = no
+			is_at_war = no
+
+			#Requires provinces
+			owns_core_province = 840	#North Citadel
+			owns_core_province = 833	#North Castonath
+			owns_core_province = 831	#South Castonath
+			owns_core_province = 832	#West Castonath
+
+			840 = { has_province_modifier = castanorian_citadel }
+			custom_trigger_tooltip = {
+				tooltip = already_attempted_trials
+				NOT = { has_ruler_flag = attempted_trials_within_lifetime }
+			}
+		}
+		effect = {
+			custom_tooltip = take_trials_form_castanor_effect_tt
+			set_country_flag = try_castanor_trials_decision_taken
+			set_ruler_flag = attempted_trials_within_lifetime
+		}
+		ai_will_do = {
+			factor = 2
+		}
+		ai_importance = 400
+	}
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*###########################      CREATING THE IMAGES          ##################################*/
 /*################################################################################################*/

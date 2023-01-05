@@ -14,8 +14,8 @@ struct settings {
 
 	bool UNIQUE_GOVERNMENT_USAGE = TRUE;	
 
+	bool CULTURE_BREAKDOWN_STATES_AS_UNIONS = FALSE;	// Mutually exclusive with CULTURE_BREAKDOWN_STATES // Also not sure if should only apply to large states
 	bool CULTURE_BREAKDOWN_STATES = TRUE;
-	
 	bool CULTURE_BREAKDOWN_PROVINCES = TRUE;
 
 	// Azgaar stores info of landmasses as continent (3) and islands (seemingly random #, probably based on generation order). EX: Af-Eur-Asia : Continent (3), NA : Island (9), SA : Island (34), Aus : Island (43), Jap : Island (28)
@@ -42,6 +42,7 @@ struct settings {
 	bool BREAKDOWN_KEEP_CLAIMS = TRUE;
 	bool BREAKDOWN_KEEP_CORES = FALSE; // Supersedes claims
 	bool BREAKDOWN_SUCCESSOR_STATES = FALSE; // All breakdown calculations occur, then remnant country is replaced. Disables vassalization-release methods if TRUE.
+	bool BREAKDOWN_FORMABLE = TRUE;	// Successor states will be able to form the initial state
 	bool BREAKDOWN_TAG_TO_DUCHY_VASSAL = TRUE;
 	bool BREAKDOWN_DUCHY_TO_PROVINCE_VASSAL = TRUE;
 	bool BREAKDOWN_VASSAL_TIERED = TRUE;
