@@ -1272,6 +1272,172 @@
 
 	}
 
+    void ParseStringUpdateRivers ( std::vector<river_info>& all_rivers, std::string& example_data )
+	{
+		std::string fn = "PSUR";
+		bool act = FALSE;
+		/// NEEDS UPDATED AND REFORMATED
+
+		//std::cout << "\nParsing string, updating cells...";
+		VUCO ( "", "Parsing string, updating rivers..." );
+		VUCO ( fn,"Creating regex_cell_block and rex_river_block", act );
+		const std::string regex_cell_block	/// Might work, needs tested
+			= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"LineString\",\"coordinates\":.*?\\}\\}";	// should get ex:
+		std::regex rex_river_block ( "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"LineString\",\"coordinates\":.*?\\}\\}" );
+		/*
+		"coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}}
+		*/
+		VUCO ( fn, "Creating regex_cell_coordinates, regex_cell_vertex, and rex_river_points", act );
+		const std::string regex_cell_coordinates = "\\[\\[.*?\\]\\]\\}"; /// Should be fine
+		/*
+		[[																					// entire string as match[0]
+		[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25] // as match[1]
+		]]}
+		*/
+		const std::string regex_cell_vertex = "\-?\[0-9\]+\\.?\[0-9\]*"; /// NEEDS UPDATED
+		std::regex rex_river_points ("-?[0-9]+\.?[0-9]*");	/// Should work
+		/*
+		-44.66
+		57.25
+		-50.62
+		52.65
+		-56.25
+		56.8
+		...and so on
+		*/
+		VUCO ( fn, "Creating regex_cell_properties and rex_river_information", act );
+		const std::string regex_cell_properties = "\"id\":\(\[0-9\]+\),\"height\":\(-?\[0-9\]+\),\"biome\":\(\[0-9\]+\),\"type\":\(\"\[^\"\]+\"\),\"population\":\(\[0-9\]+\),\"state\":\(\[0-9\]+\),\"province\":\(\[0-9\]+\),\"culture\":\(\[0-9\]+\),\"religion\":\(\[0-9\]+\),\(\"neighbors\"\:\\[\[^\\]\]+\\]\)";	 /// NEEDS UPDATED
+		std::regex rex_river_information("\"i\":\(\[0-9\]+\),\"source\":\(-?\[0-9\]+\),\"mouth\":\(\[0-9\]+\),\"discharge\":\(\[0-9\]+\),\"length\":\(\[0-9\\.\]+\),\"width\":\(\[0-9\\.\]+\),\"widthFactor\":\(\[0-9\\.\]+\),\"sourceWidth\":\(\[0-9\\.\]+\),\"parent\":\(-?\[0-9\]+\),\"cells\":\(\\[\[^\\]\]+\\]\),\"basin\":\(\[0-9\]+\),\"name\":\"\(\[A-Za-z\]+\)\",\"type\":\"\(\[A-Za-z\]+\)\",\"id\":\"\(\[A-Za-z0-9\]+\)\""); /// needs tested
+		// Regex for regex101.com
+		/*
+		\"id\":([0-9]+),\"height\":(-?[0-9]+),\"biome\":([0-9]+),\"type\":(\"[^\"]+\"),\"population\":([0-9]+),\"state\":([0-9]+),\"province\":([0-9]+),\"culture\":([0-9]+),\"religion\":([0-9]+)
+		*/
+		VUCO ( fn, "Creating fetched_data smatch, Xcoord and Ycoord initialization", act );
+		std::smatch fetched_data;	/// prolly fine
+		short Xcoord = -1;
+		short Ycoord = -1;
+
+		long river_index = -1;	/// NEEDS UPDATED
+		VUCO ( fn, "Creating regex formats from strings and RiverData_itr", act );
+		std::regex rex_chunk ( regex_cell_block );		/// NEEDS UPDATED
+		//all_cells.push_back(cell_info()); // creates a new element
+				// Divy up example_data into various matches
+		std::sregex_iterator RiverData_itr ( example_data.cbegin (), example_data.cend (), rex_river_block );	/// NEEDS UPDATED
+		// Define regex for coords and verticies
+		std::regex rex_coords ( regex_cell_coordinates );		/// NEEDS UPDATED
+		std::regex rex_vertex ( regex_cell_vertex );			/// NEEDS UPDATED
+		std::regex rex_properties ( regex_cell_properties );	/// NEEDS UPDATED
+		std::regex rex_cell_ids ( "\(\[0-9\]+\)" );			/// NEEDS UPDATED
+		// For iterator	
+		std::sregex_iterator sreg_end;							/// good
+		// For temp holding of string
+		std::string RiverData_str;								/// NEEDS UPDATED
+		std::string RiverPoint_str;								/// NEEDS UPDATED
+		std::smatch RiverData_matches;							/// NEEDS UPDATED
+		std::string CellNeighbor_str;							/// NEEDS UPDATED
+
+		/// NEEDS UPDATED
+		VUCO ( fn, "Entering main while loop...", act );
+		while (RiverData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
+			/// NEEDS UPDATED
+			all_rivers.push_back ( river_info () ); river_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
+	// TODO				// Should use size function on the array to find number of cells
+			//std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
+			/// NEEDS UPDATED
+			RiverData_str = RiverData_itr->str ();
+			VUCO ( fn, "Got RiverData_str", act );
+			//YELL(CellData_str);
+
+			//Have cell_data chunk from above, need to sift out coordinates and properties
+			// Searching chunk at a time, so the following will create verticies
+			/// NEEDS UPDATED
+			std::regex_search ( RiverData_str.cbegin (), RiverData_str.cend (), RiverData_matches, rex_coords );
+			/// NEEDS UPDATED
+			RiverPoint_str = RiverData_matches[0];
+			VUCO ( fn, "Got RiverPoint_str ", act );
+			//YELL(CellCoord_str);
+			//YELL("\n[INFO]Cell vertecies fetched:");
+			/// NEEDS UPDATED
+			std::sregex_iterator RiverPoint_itr ( RiverPoint_str.cbegin (), RiverPoint_str.cend (), rex_river_points );
+
+
+
+			// TAKING sifted coordinates AND PLACING THEM in corresponding FPoint, subsequently forwarding it to points vector
+			/// NEEDS UPDATED
+			while (RiverPoint_itr != sreg_end) {
+
+				Xcoord = std::stof( RiverPoint_itr->str ( 0 ) );
+				//VUCO ( fn, "Got Xcoord", act );
+				RiverPoint_itr++;
+
+				Ycoord = std::stof( RiverPoint_itr->str ( 0 ) );
+				//VUCO ( fn, "Got Ycoord", act );
+				all_rivers[river_index].points.push_back (FPoint( Xcoord, Ycoord) );
+				RiverPoint_itr++;
+			}
+
+			// TAKING sifted properties AND PLACING THEM in corresponding cell
+			/// NEEDS UPDATED
+			std::regex_search ( RiverData_str.cbegin (), RiverData_str.cend (), RiverData_matches, rex_river_information );
+
+
+
+			int M = 1;
+			// ID AS A NUMBER
+			all_rivers[river_index].i = std::stoi(RiverData_matches[M++].str ());
+			VUCO ( "Got I", all_rivers[river_index].i, act );
+			// SOURCE
+			all_rivers[river_index].source = std::stoi ( RiverData_matches[M++].str () );
+			VUCO ( "Got SOURCE", all_rivers[river_index].source, act );
+			// MOUTH
+			all_rivers[river_index].mouth = std::stoi ( RiverData_matches[M++].str () );
+			VUCO ( "Got MOUTH", all_rivers[river_index].mouth, act );
+			// DISCHARGE
+			M++;
+			// LENGTH
+			M++;
+			// WIDTH
+			M++;
+			// WIDTHFACTOR
+			M++;
+			// SOURCEWIDTH
+			M++;
+			// PARENT
+			all_rivers[river_index].parent = StringToShort ( RiverData_matches[M++].str () );
+			VUCO ( "Got PARENT", all_rivers[river_index].parent, act );
+			// CELLS
+			std::string RiverCells_str = RiverData_matches[M++].str ();
+			VUCO ( fn, "Got RiverCells_str", act );
+			std::sregex_iterator RiverCell_itr ( RiverCells_str.cbegin (), RiverCells_str.cend (), rex_cell_ids );
+			while (RiverCell_itr != sreg_end) {
+				std::string temp_vuco = RiverCell_itr->str ();
+				all_rivers[river_index].cells.push_back ( std::stoi ( RiverCell_itr->str ( 0 ) ) );
+				VUCO ( "Got cell", temp_vuco, act);
+				RiverCell_itr++;
+			}
+			// BASIN
+			M++;
+			// NAME
+			all_rivers[river_index].name = RiverData_matches[M++].str () ;
+			VUCO ( "got name", all_rivers[river_index].name, act);
+			// TYPE
+			M++;
+			// ID AS A STRING
+			M++;
+
+			// TAKING sifted neighbors AND PLACING THEM in corresponding neighbors vector
+			/// NEEDS UPDATED
+
+			RiverData_itr++;
+		}// end of while(CellData_itr != sreg_end){
+		VUCO_WAN ( "Rivers updated" );
+		return;
+
+
+
+	}
+
+
     void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase>& all_namebases )
     {
 		// For each item in read_list

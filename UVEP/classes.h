@@ -195,6 +195,7 @@ public:
 
 };
 struct cell_info {
+	//cells have 2 decimal precision for floats
 	std::vector<RPoint> verticies;
 	int id;
 	short height;
@@ -210,6 +211,29 @@ struct cell_info {
 	short burg_id;	// 1 burg per cell
 
 	void add_coord(int x_coord, int y_coord);
+};
+struct river_info {
+	// Rivers have 4 decimal precision for floats
+	std::vector<FPoint> points;
+
+	unsigned char rgb[3];
+
+	int i;		// id
+	int source;	// cell ID
+	int mouth;	// cell ID
+	// int discharge;
+	// float length;
+	// float width;
+	// float width_factor;
+	// float source_width;
+	int parent;	// id of the parent river, whichever it "directly" "connects" to 
+	std::vector<int> cells;
+	// int basin;	// What "Main" river is this a part of? 
+	std::string name;
+	// std::string type;
+	// std::string id_string;	// 
+
+
 };
 struct burg_info {
 	// ID
@@ -734,6 +758,7 @@ public:
 
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);
+void						   ParseStringUpdateRivers ( std::vector<river_info>& all_rivers, std::string& example_data );
 // Also calls namebase generation function
 void NamebaseParse( std::vector<std::string> read_list, std::vector<culture_namebase> &all_namebases );
 // Takes file path, returns vector of states with info filled in

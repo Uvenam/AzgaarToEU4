@@ -14,7 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.420"
+#define		VERSION_STAMP	"V 0.425"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -145,6 +145,7 @@ CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
 try {
 std::vector<cell_info>	all_cells;					// holds all cell info
 std::string file_info;
+std::string river_file_info;
 std::string CellNeighbor_str;
 std::fstream fileStream;
 //std::cout << VERSION_STAMP << std::endl;
@@ -177,6 +178,7 @@ VUCO( "", VERSION_STAMP );
 	}	
 	*/
 	std::string cell_path = FindFileDirectory(dir_azgaar, std::regex( "\[\\w\]+ Cells \[0-9^-\]+.geojson" ) );
+	std::string river_path = FindFileDirectory ( dir_azgaar, std::regex ( "\[\\w\]+ Rivers \[0-9^-\]+.geojson" ) );
 	std::string culture_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Cultures \[0-9^-\]+.csv" ) );
 	std::string namesbase_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Namesbase \[0-9^-\]+.txt" ) );
 	std::string religions_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Religions \[0-9^-\]+.csv" ) );
@@ -231,6 +233,12 @@ VUCO( "", VERSION_STAMP );
 	// get burgs, their population, then include/measure with cell_info
 
 	// burgs have an ID, a name, a province, province full name, state, state full name, culture, religion, population, latittude, longitude, elevation, capital, port, citadel, walls, plaza, temple, shanty town, and city generator link
+
+
+	std::vector<river_info> all_rivers;
+	ReadFromPlaceInto ( river_path, river_file_info );
+	ParseStringUpdateRivers ( all_rivers, river_file_info );	// takes EXTREMELY LONG, HOLY SOKES. Fast on release
+
 
 	TransformPoints( 5632, 2048, all_burgs, all_cells, extents );
 	//TransformPoints_NoStretch ( all_burgs, all_cells, extents );
@@ -1386,7 +1394,7 @@ catch (std::runtime_error runtime) {		// managing file opening error
 	system ( "pause>0" );
 	return 0;
 }//end of catch for runtime error
-
+std::cout << "\n[ ] run_log.txt has information" << std::endl;
 std::cout << "\n[ ] Program End. Enjoy!" << std::endl;
 #ifdef _DEBUG
 	system("pause>0");

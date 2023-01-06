@@ -8,6 +8,11 @@ RPoint::RPoint()
 RPoint::RPoint( int x_value, int y_value )
 	: x_pos( x_value ), y_pos( y_value )
 {}
+void RPoint::operator=( const FPoint & F )
+{
+	this->x_pos = std::round(F.x_pos);
+	this->y_pos = std::round(F.y_pos);
+}
 bool operator==( RPoint const& lhs, RPoint const& rhs )
 {
 
@@ -18,6 +23,10 @@ bool operator==( RPoint const& lhs, RPoint const& rhs )
 	}
 	return false;
 
+}
+bool operator==( FPoint const& lhs, FPoint const& rhs )
+{
+    return false;
 }
 /*#########################################################################################################*/
 
@@ -124,4 +133,25 @@ std::vector<RPoly> CreateTiledHexagonGrid( int width_ele, int height_ele, int ho
 
 
 	return poly_grid;
+}
+
+FPoint::FPoint () 
+	: x_pos ( 0 ), y_pos ( 0 )
+{
+}
+
+FPoint::FPoint ( int x_value, int y_value ) 
+	: x_pos(x_value), y_pos(y_value)
+{
+}
+
+FPoint::FPoint ( float x_value, float y_value ) 
+	: x_pos(x_value), y_pos(y_value)
+{
+}
+
+void FPoint::operator=( const RPoint& R )
+{
+	this->x_pos = R.x_pos;
+	this->y_pos = R.y_pos;
 }

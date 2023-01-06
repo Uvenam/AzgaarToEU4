@@ -140,7 +140,8 @@ void ReadFromPlaceInto(std::string wanted_file, std::string& file_info) {
 
 	}//end of if for fileStream
 	else {		// couldn't open file, some sort of error
-		throw std::runtime_error("Cannot open cell_file");
+		std::string error_specific = "Cannot open " + wanted_file;
+		throw std::runtime_error(error_specific);
 	}//couldn't open fileStream else
 
 

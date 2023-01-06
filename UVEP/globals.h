@@ -18,6 +18,7 @@ extern std::vector<std::string> AZGAAR_Religions;
 
 extern const std::vector<std::string> EU4_Religions;
 
+extern std::ofstream LOG;
 
 extern std::string example_data;
 extern const std::string example_snippet;
