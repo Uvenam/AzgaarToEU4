@@ -214,4 +214,58 @@ std::string FindFileDirectory(std::string base_directory, std::regex filter )
 
     return temp;
 }
-;
+short PromptYNX ()
+{
+	std::string input;
+	std::cout << " [Y]es/[n]o?: ";
+	std::getline ( std::cin, input );
+	if (DoesCharExist ( input, 'Y' )) { return 1; }
+	else { 
+		if (DoesCharExist ( input, 'n' )) { return	-1; }
+	}
+	return 0;
+}
+int PromptINT ()
+{
+	std::string input;
+	int num;
+	std::cout << " #?: ";
+	std::getline ( std::cin, input );
+
+	try {
+		auto value = std::stoi ( input );
+		//std::cout << "Thanks for the " << value << " (but the string was \"" << input << "\")\n";
+		num = value;
+	}
+	catch (std::invalid_argument const&) {
+		std::cout << "Provide number!\n";
+		num = PromptINT ();
+	}
+	catch (std::out_of_range const&) {
+		std::cout << "Provide smaller value!\n";
+		num = PromptINT ();
+	}
+
+	return num;
+
+}
+std::string PromptSTRING ()
+{
+	std::string input;
+	std::cout << " : ";
+	std::getline ( std::cin, input );
+	return input;
+}
+bool DoesCharExist ( std::string input_string, char X ) {
+	std::size_t found = input_string.find ( X );
+	if (found != std::string::npos) //if X found
+	{
+		return TRUE;
+	}
+	else // if X not found
+	{
+		return FALSE;
+	}
+
+
+}

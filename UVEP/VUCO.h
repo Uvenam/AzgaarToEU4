@@ -2,10 +2,12 @@
 #include "../UVEP/head.h"
 #include "../UVEP/globals.h"
 
+#define VUCO_CONSOLE
+
 template <class ST>
 void VUCO(std::string where_ele, ST message)
 {
-#ifdef _DEBUG
+#ifdef VUCO_CONSOLE
 	// write message to std::cerr
 	std::cout << '\n' << "[ " << where_ele << " ] " << message;
 #else
@@ -16,7 +18,7 @@ void VUCO(std::string where_ele, ST message)
 template <class ST>
 void VUCO(std::string where_ele, ST message, bool act)
 {
-#ifdef _DEBUG
+#ifdef VUCO_CONSOLE
 	// write message to std::cerr
 	if (act == TRUE)
 	{
@@ -35,7 +37,7 @@ void VUCO(std::string where_ele, ST message, bool act)
 template <class ST>
 void VUCO_WAN( ST message )
 {
-#ifdef _DEBUG
+#ifdef VUCO_CONSOLE
 	// write message to std::cerr
 
 		std::cout << message;

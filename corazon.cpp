@@ -156,8 +156,9 @@ VUCO( "", VERSION_STAMP );
 // First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
 //std::cout << "\nAffirming AZGAAR directory...";
 
-	VUCO( "", "Loading settings..." );
+	VUCO( "", "Loading default settings..." );
 	settings options;
+	ConfigureSettings ( options );
 
 	VUCO("", "Affirming AZGAAR directory..." );
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
@@ -384,7 +385,7 @@ VUCO( "", VERSION_STAMP );
 		std::unordered_map<std::string, short> unique_state_province_and_new_culture;
 		// Calculate unique cultures, assign newly made cultures to each cell
 		for (auto& each_cell : all_cells) {
-			VUCO ( "Cell ID", each_cell.id );
+			//VUCO ( "Cell ID", each_cell.id, FALSE );
 			std::string string_country = std::to_string ( each_cell.country );
 			std::string string_subcountry = std::to_string ( each_cell.sub_country );
 			std::string temp_key = string_country + string_subcountry;
@@ -405,7 +406,7 @@ VUCO( "", VERSION_STAMP );
 				new_culture_ids++;
 			}
 			else {	// Can't emplace, thus exists already and cell culture needs updated
-				VUCO ( "", "Old Culture!" );
+				//VUCO ( "", "Old Culture!" , FALSE);
 				each_cell.culture = unique_state_province_and_new_culture[temp_key];
 			}
 			
@@ -556,10 +557,13 @@ VUCO( "", VERSION_STAMP );
 // CREATION OF FLAGS
 /*################################################################################################*/
 
-	VUCO ( "FLAGS", "Use external resource ARMORIA to generate flags", TRUE );
+	VUCO ( "FLAGS", "FOR MASS GENERATION: Use external resource ARMORIA to generate flags", TRUE );
 	VUCO ( "FLAGS", "Generate at least 700 flags of size 128x128", TRUE );
-	VUCO ( "FLAGS", "Recommended settings: 1920x1080 screen, GIANT gallery, NO SIMPLE shield, NO gradient, black border of thickness 1, scale 1.6", TRUE );
+	VUCO ( "FLAGS", "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333", TRUE );
 	VUCO ( "FLAGS", "Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files", TRUE );
+	VUCO ( "FLAGS", "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png", TRUE ); // Vertical separation is 8 pixels
+	VUCO ( "FLAGS", "Regions will be using flags from the same pack/file", TRUE );
+	VUCO ( "FLAGS", "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this", TRUE );
 
 // EU4 needs 128x128 TGA files with TAG.tga format
 	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale

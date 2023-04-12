@@ -22,7 +22,11 @@ void EnsureDirectory(std::string desired_dir);
 // Returns the relative directory for a single file determined by filter
 std::string FindFileDirectory( std::string base_directory, std::regex filter );
 
+short PromptYNX ();
+int PromptINT ();
+std::string PromptSTRING ();
 
 
+bool DoesCharExist ( std::string input_string, char X );
 
 

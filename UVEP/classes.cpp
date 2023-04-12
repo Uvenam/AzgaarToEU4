@@ -1125,7 +1125,31 @@
 
 
 
-// Extra Functions working with relevant classes
+    void ConfigureSettings ( settings& opt )
+    {
+		VUCO ( "", "Bool Request" );
+		short value = PromptYNX ();
+			if (value == -1) { VUCO ( "", "No change" ); }
+		VUCO ( "Got", value );
+		VUCO ( "", "Number Request" );
+		int number = PromptINT ();
+		VUCO ( "Got", number );
+		std::string string_v;
+		VUCO ( "", "String Request" );
+		string_v = PromptSTRING ();
+		VUCO ( "Got", string_v );
+
+
+		VUCO ( "", "Settings Configured!" );
+
+
+
+
+
+
+    }
+
+    // Extra Functions working with relevant classes
 	std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data) {
 
 		//std::cout << "\nParsing string, updating cells...";

@@ -87,11 +87,12 @@ struct settings {
 	bool MILITARY_TRUE_NONE_OR_FALSE_ECONOMY = TRUE;
 	bool USE_BURGS_CSV_FOR_DEVELOPMENT = FALSE;	
 	bool USE_BURGS_CSV_FOR_BUILDINGS = FALSE;		/// ? What if its mid-game? So there would realistically be chapels and workshops built?
+	bool USE_REQUEST_FEATURE_OF_ARMORIA = FALSE;
 
 	
 
 };
-
+void ConfigureSettings ( settings &opt );
 class progressBar {			//##################################################################################
 	// https://www.youtube.com/watch?v=ayfCxgVStdQ&ab_channel=JacobSorber
 public:
@@ -755,6 +756,8 @@ public:
 	int	freq = 0;
 	//##################################################################################
 }; // end class				
+
+
 
 // Extra functions working with classes
 std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data);

@@ -107,6 +107,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\O\opencv\build\include;C:\Program Files\boost;$(SolutionDir)UVEP</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4267;4129;4244;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
