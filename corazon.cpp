@@ -559,7 +559,11 @@ VUCO( "", VERSION_STAMP );
 
 	VUCO ( "FLAGS", "FOR MASS GENERATION: Use external resource ARMORIA to generate flags", TRUE );
 	VUCO ( "FLAGS", "Generate at least 700 flags of size 128x128", TRUE );
+	// WANT 140, not 128!!!!!
+	// Following is for 128:
 	VUCO ( "FLAGS", "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333", TRUE );
+
+	// FIND RESULTS FOR 140!!!!!!
 	VUCO ( "FLAGS", "Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files", TRUE );
 	VUCO ( "FLAGS", "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png", TRUE ); // Vertical separation is 8 pixels
 	VUCO ( "FLAGS", "Regions will be using flags from the same pack/file", TRUE ); 
