@@ -14,10 +14,9 @@
 import opencv_personal;
 import screens;
 // commit all, then push
-#define		VERSION_STAMP	"V 0.425"
+#define		VERSION_STAMP	"V 0.428"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
-
 
 /*
 void make_uppercase(std::string& data)
@@ -138,9 +137,27 @@ const std::string cell_file = "cell_map.geojson";
 const std::string cell_file_t = "cell_map_t.geojson";
 const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
+///TODO: Implement Localization at ANY point text is output to user (put enums into header? Desire these to be global
+
+enum language {
+	ENGLISH = 0, SPANISH,	LANG_COUNT
+};
+enum text_id {
+	LOADING1 = 0, AFFIRM1, FLAG1, FLAG2, FLAG3,		DESC_COUNT
+};
+std::string DESC[LANG_COUNT][DESC_COUNT];
+void Fill_Descriptions () {
+	DESC[ENGLISH][LOADING1] = "Loading default settings...";
+}
+
+
+
+
+
 int main() {
 CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
 /*################################################################################################*/
+Fill_Descriptions ();
 /*################################################################################################*/
 try {
 std::vector<cell_info>	all_cells;					// holds all cell info
@@ -155,10 +172,11 @@ VUCO( "", VERSION_STAMP );
 /*################################################################################################*/
 // First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
 //std::cout << "\nAffirming AZGAAR directory...";
-
-	VUCO( "", "Loading default settings..." );
+/*################################################################################################*/
+	VUCO( "", DESC[ENGLISH][LOADING1] );
 	settings options;
 	ConfigureSettings ( options );
+/*################################################################################################*/
 
 	VUCO("", "Affirming AZGAAR directory..." );
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
