@@ -137,17 +137,83 @@ const std::string cell_file = "cell_map.geojson";
 const std::string cell_file_t = "cell_map_t.geojson";
 const std::string file_test = "file_test.txt"; // for testing if comparisons work
 
+
+
+
+
+
+
+
+
 ///TODO: Implement Localization at ANY point text is output to user (put enums into header? Desire these to be global
 
 enum language {
-	ENGLISH = 0, SPANISH,	LANG_COUNT
+	ENGLISH = 0, SPANISH, ITU,	
+	LANG_COUNT
 };
 enum text_id {
-	LOADING1 = 0, AFFIRM1, FLAG1, FLAG2, FLAG3,		DESC_COUNT
+	LOADING1 = 0, AFFIRM1, NAMEBASE_GET, CONCAT_SUBCOUNTRY, NEW_CULTURE,
+	FLAG1, FLAG2, FLAG3, FLAG4, FLAG5, FLAG6, FLAG7, FLAG8, FLAG9,
+	CONVERSION1, CONVERSION2, CONVERSION3, 
+	POLYMAP_GENERATION1, POLYMAP_GENERATION2, POLYMAP_GENERATION3,		
+	DESC_COUNT
 };
 std::string DESC[LANG_COUNT][DESC_COUNT];
 void Fill_Descriptions () {
+	//*************************************************************************************************************************************************************************//
+	//*************************************************************************************************************************************************************************//
 	DESC[ENGLISH][LOADING1] = "Loading default settings...";
+	DESC[ENGLISH][AFFIRM1] = "Affirming Azgaar directory...";
+	DESC[ENGLISH][NAMEBASE_GET] = "Getting namebases...";
+	DESC[ENGLISH][CONCAT_SUBCOUNTRY] = "Concattenated country subcountry";
+	DESC[ENGLISH][NEW_CULTURE] = "New Culture!";
+
+	DESC[ENGLISH][FLAG1] = "Flags should be generated in square format";
+	DESC[ENGLISH][FLAG2] = "Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
+	DESC[ENGLISH][FLAG3] = "FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
+	DESC[ENGLISH][FLAG4] = "Generate at least 700 flags of size 128x128";
+	DESC[ENGLISH][FLAG5] = "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
+	DESC[ENGLISH][FLAG6] = "Export as PNG, place within flags folder.You should do this 3 or 4 times, and thus will have 3 or 4.png files";
+	DESC[ENGLISH][FLAG7] = "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
+	DESC[ENGLISH][FLAG8] = "Regions will be using flags from the same pack/file";
+	DESC[ENGLISH][FLAG9] = "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
+
+	DESC[ENGLISH][CONVERSION1] = "FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET";
+	DESC[ENGLISH][CONVERSION2] = "FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET";
+	DESC[ENGLISH][CONVERSION3] ="FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" ;
+
+	DESC[ENGLISH][POLYMAP_GENERATION1] = "Generating polygonmap from all_cells...";
+	DESC[ENGLISH][POLYMAP_GENERATION2] = "Mapping polygons to EU4 map...";
+	DESC[ENGLISH][POLYMAP_GENERATION3] = "Creating bmp...";		
+	//*************************************************************************************************************************************************************************//
+	//*************************************************************************************************************************************************************************//
+	DESC[ITU][LOADING1] = "Vemhim-bi zumol mul... ";	//"Inserting normal data...";
+	DESC[ITU][AFFIRM1] = "Maholum-bi molhayim di 'AZGAAR' ...";//"Affirming azgaar directory...";
+	DESC[ITU][NAMEBASE_GET] = "Bezlal-bi hayim di hasmu ...";//"Getting namebases...";
+	DESC[ITU][CONCAT_SUBCOUNTRY] = "Concattenated country subcountry";
+	DESC[ITU][NEW_CULTURE] = "Hub yemi!";// "New Culture!";
+		 
+	DESC[ITU][FLAG1] = "Vizi: lum hobla-la de dov la"; // suggestion: make flags in square format
+
+	DESC[ITU][FLAG2] = "Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
+	DESC[ITU][FLAG3] = "FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
+	DESC[ITU][FLAG4] = "Generate at least 700 flags of size 128x128";
+	DESC[ITU][FLAG5] = "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
+	DESC[ITU][FLAG6] = "Export as PNG, place within flags folder.You should do this 3 or 4 times, and thus will have 3 or 4.png files";
+	DESC[ITU][FLAG7] = "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
+	DESC[ITU][FLAG8] = "Regions will be using flags from the same pack/file";
+	DESC[ITU][FLAG9] = "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
+		 
+	DESC[ITU][CONVERSION1] = "FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET";
+	DESC[ITU][CONVERSION2] = "FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET";
+	DESC[ITU][CONVERSION3] = "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET";
+		 
+	DESC[ITU][POLYMAP_GENERATION1] = "Lum-bi vilyel di hulgog jim 'all_cells'...";// "Generating polygonmap from all_cells...";
+	DESC[ITU][POLYMAP_GENERATION2] = "Vilyel-bi hulgog gij vilyel di 'EU4'...";// "Mapping polygons to EU4 map...";
+	DESC[ITU][POLYMAP_GENERATION3] = "Lum-bi 'BMP'...";// "Creating bmp...";
+	//*************************************************************************************************************************************************************************//
+	//*************************************************************************************************************************************************************************//
+
 }
 
 
@@ -157,6 +223,7 @@ void Fill_Descriptions () {
 int main() {
 CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
 /*################################################################################################*/
+language selected_language = ENGLISH;
 Fill_Descriptions ();
 /*################################################################################################*/
 try {
@@ -173,12 +240,12 @@ VUCO( "", VERSION_STAMP );
 // First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
 //std::cout << "\nAffirming AZGAAR directory...";
 /*################################################################################################*/
-	VUCO( "", DESC[ENGLISH][LOADING1] );
+	VUCO( "", DESC[selected_language][LOADING1] );
 	settings options;
 	ConfigureSettings ( options );
 /*################################################################################################*/
 
-	VUCO("", "Affirming AZGAAR directory..." );
+	VUCO("", DESC[selected_language][AFFIRM1] );
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
 	//std::cout << "\Retrieving Cell path...";
 	/*
@@ -341,7 +408,7 @@ VUCO( "", VERSION_STAMP );
 	}
 
 /*####################		MAKING OF THE NAMEBASES		            ##############################*/
-	VUCO( "", "Getting Namesbases..." );
+	VUCO( "", DESC[selected_language][NAMEBASE_GET] );
 	std::vector<culture_namebase> all_namebases;
 
 	std::vector<std::string> namebase_file_lines;
@@ -407,10 +474,10 @@ VUCO( "", VERSION_STAMP );
 			std::string string_country = std::to_string ( each_cell.country );
 			std::string string_subcountry = std::to_string ( each_cell.sub_country );
 			std::string temp_key = string_country + string_subcountry;
-			VUCO ( "Concattenated country subcountry", temp_key );
+			VUCO ( "Concattenated country subcountry", temp_key );			/// DESC[ENGLISH][CONCAT_SUBCOUNTRY] = "Concattenated country subcountry";
 			// Find and make unique cultures
 			if(		(unique_cultures.emplace ( temp_key, each_cell.culture ).second)	) { // if emplacement successful
-				VUCO ( "", "New Culture!" );
+				VUCO ( "", "New Culture!" );								/// DESC[ENGLISH][NEW_CULTURE] = "New Culture!";
 				culture new_culture;
 
 				new_culture = all_cultures_map[each_cell.culture];
@@ -565,8 +632,9 @@ VUCO( "", VERSION_STAMP );
 	// https://armoria.herokuapp.com/?format=png&size=147&shield=square	// Need to trim transparent edge off
 	//https://github.com/Azgaar/armoria-api#readme
 
-	VUCO ( "FLAGS", "Flags should be generated in square format", TRUE );
-	VUCO ( "FLAGS", "Unfortunately, retrieving and rendering .svg files is out of the scope of this application", TRUE );
+	VUCO ( "FLAGS", DESC[selected_language][FLAG1], TRUE );		//"Flags should be generated in square format";
+	VUCO ( "FLAGS", DESC[selected_language][FLAG2], TRUE );		//"Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
+
 		// either read it via program and batch/series of files
 		// or ASK USER TO DOWNLOAD ALL STATE PNG AND RENAME TO STATE
 		// or ASK USER TO ADD EXTENSION TO DO THE RETRIEVAL AND RENAMING automatic
@@ -575,17 +643,20 @@ VUCO( "", VERSION_STAMP );
 // CREATION OF FLAGS
 /*################################################################################################*/
 
-	VUCO ( "FLAGS", "FOR MASS GENERATION: Use external resource ARMORIA to generate flags", TRUE );
-	VUCO ( "FLAGS", "Generate at least 700 flags of size 128x128", TRUE );
+	VUCO ( "FLAGS", DESC[selected_language][FLAG3], TRUE ); //"FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
+	VUCO ( "FLAGS", DESC[selected_language][FLAG4], TRUE );							//"Generate at least 700 flags of size 128x128";
 	// WANT 140, not 128!!!!!
 	// Following is for 128:
-	VUCO ( "FLAGS", "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333", TRUE );
-
+	VUCO ( "FLAGS", DESC[selected_language][FLAG5], TRUE ); //"Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
 	// FIND RESULTS FOR 140!!!!!!
-	VUCO ( "FLAGS", "Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files", TRUE );
-	VUCO ( "FLAGS", "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png", TRUE ); // Vertical separation is 8 pixels
-	VUCO ( "FLAGS", "Regions will be using flags from the same pack/file", TRUE ); 
-	VUCO ( "FLAGS", "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this", TRUE );
+	VUCO ( "FLAGS", DESC[selected_language][FLAG6], TRUE ); //"Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files";
+	VUCO ( "FLAGS", DESC[selected_language][FLAG7], TRUE ); // Vertical separation is 8 pixels //"You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
+	VUCO ( "FLAGS", DESC[selected_language][FLAG8], TRUE ); //"Regions will be using flags from the same pack/file";
+	VUCO ( "FLAGS", DESC[selected_language][FLAG9], TRUE ); // "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
+
+
+
+
 
 // EU4 needs 128x128 TGA files with TAG.tga format
 	// Armoria: on a 1920x1080 screen: GIANT gallery, NO SIMPLE shield,NO gradient,1 black border, 1.6 scale
@@ -1245,14 +1316,14 @@ country_decisions = {
 // must use Nearest Neighbour to maintain pixel-perfect accuracy.
 
 // CREATE colormap_water.dds	// land is like RGB 19,216,216; coast is 14,97,110; deep ocean is 5,18,36; ocean is 8,54,60
-VUCO( "DDS", "FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET" );
+VUCO( "DDS", DESC[selected_language][CONVERSION1] );	//"FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET";
 
 // CREATE climate.txt
 
 // CREATE trees.bmp
-VUCO( "DDS", "FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET" );
+VUCO( "DDS", DESC[selected_language][CONVERSION2] );	//"FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET";
 // CREATE colormap_[SEASON].dds in EUIV / map / terrain
-VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" );
+VUCO( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" ;
 // CREATE colormap_[SEASON].dds in EUIV / map / random
 
 // CREATE lakes.txt in EUIV / map / lakes / 00_lakes.txt
@@ -1260,7 +1331,7 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
-	VUCO( "", "Generating polygonmap from all_cells..." );
+	VUCO( "", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
 		int height_col = (3248+all_cells[dp_itr].height)/99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
 		IPixel color_rgb( height_col, height_col, height_col );
@@ -1308,10 +1379,10 @@ VUCO( "DDS", "FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET
 	
 	Image EU4_MAP_BMP( 5632, 2048 );
 	//std::cout << "\nMapping polygons to EU4 Map...";
-	VUCO( "", "Mapping polygons to EU4 map...");
+	VUCO( "", DESC[selected_language][POLYMAP_GENERATION2] );					//"Mapping polygons to EU4 map...";
 	EU4_MAP_BMP.MapRaster( EU4_MAP );
 	//std::cout << "\nCreating bmp...";
-	VUCO( "", "Creating bmp...");
+	VUCO( "", DESC[selected_language][POLYMAP_GENERATION3] );					//"Creating bmp...";			
 	EU4_MAP_BMP.Export24( "eu4_map.bmp" );
 
 /*###########################      BOOKMARK CREATION			##################################*/
