@@ -198,6 +198,7 @@ public:
 struct cell_info {
 	//cells have 2 decimal precision for floats
 	std::vector<RPoint> verticies;
+	RPoint centroid;
 	int id;
 	short height;
 	short biome;

@@ -195,7 +195,8 @@ void Fill_Descriptions () {
 		 
 	DESC[ITU][FLAG1] = "Vizi: lum hobla-la de dov la"; // suggestion: make flags in square format
 
-	DESC[ITU][FLAG2] = "Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
+	DESC[ITU][FLAG2] = "Mom bodje wijehje, vejimci-bi dam jojehwe-bi '.svg' files wadib zil di lumde hedo";
+		//"Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
 	DESC[ITU][FLAG3] = "FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
 	DESC[ITU][FLAG4] = "Generate at least 700 flags of size 128x128";
 	DESC[ITU][FLAG5] = "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";

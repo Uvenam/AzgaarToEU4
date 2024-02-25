@@ -1246,6 +1246,14 @@
 				vertex_itr++;
 
 			}
+
+			// Take verticies and calculate centroid
+			// Average X coords of all verticies, place into "x_coord_avg"
+			// Average Y coords of all verticies, place into "y_coord_avg"
+			// RPoint centroid_from_verticies (x_coord_avg,y_coord_avg);
+			// all_cells[cell_index].centroid = centroid_from_verticies;
+
+
 			// TAKING sifted properties AND PLACING THEM in corresponding cell
 
 			std::regex_search(CellData_str.cbegin(), CellData_str.cend(), CellData_matches, rex_properties);
