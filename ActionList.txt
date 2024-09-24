@@ -1,0 +1,37 @@
+ 
+ https://eu4.paradoxwikis.com/Map_Modding_Quick_Reference
+ 
+ heightmap.bmp - gets generated, unsure if correct
+ 
+ world_normal.bmp - gets generated, unsure if correct, unsure if "good"
+ 
+ provinces.bmp - notyet
+ definition.csv
+ 
+ positions.txt 
+ 
+ climate.txt
+ 
+terrain.txt
+ terrain.bmp - notyet
+ trees.bmp - notyet
+
+ 
+ 
+ rivers.bmp - notyet
+ 
+ default.map
+ adjacencies.csv
+ 
+ continents.txt
+ 
+These control the visual image and serve as "texture":
+
+ colormap_autumn.dds - notyet
+ colormap_spring.dds - notyet
+ colormap_summer.dds - notyet
+ colormap_winter.dds - notyet
+ 
+  colormap_water.dds - notyet
+ 
+ 

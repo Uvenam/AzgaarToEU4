@@ -200,6 +200,7 @@ struct cell_info {
 	std::vector<RPoint> verticies;
 	RPoint centroid;
 	int id;
+	int prov_id;
 	short height;
 	short biome;
 	std::string type;

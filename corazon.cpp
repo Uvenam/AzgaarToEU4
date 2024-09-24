@@ -14,6 +14,7 @@
 import opencv_personal;
 import screens;
 // commit all, then push
+
 #define		VERSION_STAMP	"V 0.428"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
@@ -222,8 +223,11 @@ void Fill_Descriptions () {
 
 
 int main() {
-CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			// FOR ESC EXIT
+
+//For being able to hit the ESC button to quickly exit
+CreateThread(NULL, 0, CheckEscape, NULL, 0, NULL);			
 /*################################################################################################*/
+
 language selected_language = ENGLISH;
 Fill_Descriptions ();
 /*################################################################################################*/
@@ -233,20 +237,21 @@ std::string file_info;
 std::string river_file_info;
 std::string CellNeighbor_str;
 std::fstream fileStream;
-//std::cout << VERSION_STAMP << std::endl;
 
+//std::cout << VERSION_STAMP << std::endl;
 VUCO( "", VERSION_STAMP );
 /*################################################################################################*/
-/*################################################################################################*/
-// First, want to ensure directories. Theres information to be gotten from AZGAAR, and there is information to be placed in EU4
-//std::cout << "\nAffirming AZGAAR directory...";
-/*################################################################################################*/
+
+
+
 	VUCO( "", DESC[selected_language][LOADING1] );
 	settings options;
 	ConfigureSettings ( options );
-/*################################################################################################*/
+
 
 	VUCO("", DESC[selected_language][AFFIRM1] );
+
+/// 1. Run Program, 2. Program checks directory paths and remakes them if they aren't there.
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
 	//std::cout << "\Retrieving Cell path...";
 	/*
@@ -264,6 +269,8 @@ VUCO( "", VERSION_STAMP );
 		throw std::runtime_error("Couldn't find needed file XXX Cells DDDD.geojson");				
 	}	
 	*/
+
+/// 3. Directory ensured, going to look for specific files:
 	std::string cell_path = FindFileDirectory(dir_azgaar, std::regex( "\[\\w\]+ Cells \[0-9^-\]+.geojson" ) );
 	std::string river_path = FindFileDirectory ( dir_azgaar, std::regex ( "\[\\w\]+ Rivers \[0-9^-\]+.geojson" ) );
 	std::string culture_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Cultures \[0-9^-\]+.csv" ) );
@@ -273,6 +280,7 @@ VUCO( "", VERSION_STAMP );
 	std::string burg_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Burgs \[0-9^-\]+.csv" ) );
 	//VUCO( "", cell_path );
 	//cell_path = OpenFileReturnString( dir_cells ); // Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it																												
+/// 4. Files found, check/remake directory for EU4 modding
 	EnsureDirectory( dir_EU4 ); // EU4 top  folder directory										
 	// HAVE IT OUTPUT FILES THAT ARE NEEDED
 			//(so first execution it will create all the directories it will grab from and output that it needs 
@@ -284,12 +292,14 @@ VUCO( "", VERSION_STAMP );
 		// After ensuring directories exist, want to start with reading from AZGAAR cell info
 /*########################		 INFO GATHERING		 		   ###################################*/
 /*################################################################################################*/
+
+/// 5. Have AZGAAR cell file, need to load into ram to work with
 	ReadFromPlaceInto(cell_path, file_info);
 	//std::cout << "\nRead from " << cell_path;
 	{std::string vuco_temp = "Read from" + cell_path;
 	VUCO( "", vuco_temp );
 	}
-
+/// 6. Want to parse AZGAAR cells, also want to get max extents for scaling/positioning purposes
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
 	std::tuple<int, int, int, int> extents; // should be: left, right, top, bottom
 	extents = ParseStringUpdateCells(all_cells, file_info); // left, right, top, bottom
@@ -301,12 +311,11 @@ VUCO( "", VERSION_STAMP );
 /*######################	WORKING WITH THE MAP			######################################*/
 /*################################################################################################*/
 
+/// 7. Want to parse AZGAAR burgs
 	std::vector<burg_info> all_burgs;	// all burgs X and Y point, need to convert two decimal float to int
 	// Regex: [^,]*,
 	// C++ regex: \[^,\]*,
 	// note that all will have comma at end
-
-	
 	all_burgs = BurgParse( burg_path );
 	//VUCO( "", all_burgs[0].capital );
 	{
@@ -321,24 +330,25 @@ VUCO( "", VERSION_STAMP );
 
 	// burgs have an ID, a name, a province, province full name, state, state full name, culture, religion, population, latittude, longitude, elevation, capital, port, citadel, walls, plaza, temple, shanty town, and city generator link
 
-
+/// 8. Want to parse AZGAAR rivers
 	std::vector<river_info> all_rivers;
 	ReadFromPlaceInto ( river_path, river_file_info );
 	ParseStringUpdateRivers ( all_rivers, river_file_info );	// takes EXTREMELY LONG, HOLY SOKES. Fast on release
 
-
+/// 9. Want to stretch incoming AZGAAR dimensions into appropriate EU4 dimensions - have to apply transform to anything location driven (cells, burgs, etc.)
 	TransformPoints( 5632, 2048, all_burgs, all_cells, extents );
 	//TransformPoints_NoStretch ( all_burgs, all_cells, extents );
 	//TransformPoints ( 5632, 2048, all_burgs, extents );
 	
 	// Create Map using ID of all_cell element and correspond it to the cell_info
 	// New Array where the index matches ID of cell (done using map)
+/// 10. Want to access AZGAAR cells by ID
 	std::unordered_map <int, cell_info> all_cell_map;
 	int all_cells_size = all_cells.size();
 	for (int t_itr = 0; t_itr < all_cells_size; t_itr++) {
 		all_cell_map.emplace( all_cells[t_itr].id, all_cells[t_itr] );
 	}
-
+/// 11. Want to access AZGAAR burgs by ID
 	std::unordered_map <int, burg_info> indexed_burgs;
 	int all_burgs_size = all_burgs.size ();
 	for (int t_itr = 0; t_itr < all_burgs_size; t_itr++) {
@@ -363,28 +373,109 @@ VUCO( "", VERSION_STAMP );
 
 	*/
 
+/// 12. Want to assign AZGAAR burgs to AZGAAR cells
 	std::vector<int> index_list_of_cells_with_burgs = AssignBurgsToCells (all_burgs,all_cells);
-
 	// burg ID corresponds to location within all_burgs -1 (so burg id of 1 is at all_burgs[0])
 
+/// 13. Want to create EU4 provinces, will do so using AZGAAR cells
 	std::vector<province_info> all_provinces = CreateProvinces ( all_cells );
+
+/// 14. Want to access EU4 provinces by ID
+	std::unordered_map <short, province_info> all_province_map;
+	int all_provinces_size = all_provinces.size ();
+	for (int t_itr = 0; t_itr < all_provinces_size; t_itr++) {
+		all_province_map.emplace ( all_provinces[t_itr].prov_id, all_provinces[t_itr] );
+	}
 
 /*##########################     ASSIGN UNIQUE COLORS TO PROV    #################################*/
 	/// Needs tested \/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\/
 
 	//std::unordered_set<unsigned char[3]> unique_prov_colors;		// CAN'T DO HASH OF ARRAY (or at least can't do it like its done here)
-	int rgbt = 0x010101;	// 0xBGR
-	for (auto& each_province : all_provinces) {
-		unsigned char rt = static_cast<unsigned char>(	(rgbt 	& 0x000000FF)	>> 0		);
-		unsigned char gt = static_cast<unsigned char>(	(rgbt 	& 0x0000FF00)	>> 8		);
-		unsigned char bt = static_cast<unsigned char>(	(rgbt 	& 0x00FF0000)	>> 16		);
-	
-		each_province.color_rgb[0] = rt;
-		each_province.color_rgb[1] = gt;
-		each_province.color_rgb[2] = bt;
 
-		rgbt++;
+	// find total number of provinces
+	int province_count = all_provinces.size();
+	VUCO ( "PROV_COUNT", province_count, TRUE );
+	// generate list of unique numbers (for RGB, add 1 to R. After max, G = G+2 and then add 1 to R. After G max, B = B+2, and etc.
+	std::vector<int> number_list;
+	unsigned char temp_rt = 0x02;
+	unsigned char temp_gt = 0x02;
+	unsigned char temp_bt = 0x02;
+	VUCO ( "PROV", "About to modify list...", TRUE );
+
+	int tracking_value = province_count;
+
+
+	for (short r_val = 0x02; r_val < 0xFF; r_val += 0x02) {
+		for (short b_val = 0x02; b_val < 0xFF; b_val += 0x02) {
+			for (short g_val = 0x02; g_val < 0xFF; g_val += 0x02) {
+				if (tracking_value-- <= 0) {
+					break;
+				}
+				number_list.push_back ( (r_val << 0 + g_val << 8 + b_val << 16) );
+
+			}
+			if (tracking_value-- <= 0) {
+				break;
+			}
+		}
+		if (tracking_value-- <= 0) {
+			break;
+		}
+
 	}
+
+	for (int i = 0; i == province_count; i++) {
+
+		VUCO ( "PROV", "Modifying list...", TRUE );
+
+		number_list.push_back (( temp_rt << 0 + temp_gt << 8 + temp_bt << 16 ));
+
+		if ((temp_rt + 0x02) > (0xFF - 0x03)) {
+			temp_rt = 0x02 + 1;
+			if ((temp_gt + 0x02) > (0xFF - 0x03)){
+				temp_gt = 0x02 + 1;
+				temp_bt += 0x02;		}
+			temp_gt += 0x02;				}
+		temp_rt += 0x02;						}
+	// randomize list order
+	auto rng = std::default_random_engine{};
+	std::shuffle ( std::begin ( number_list ), std::end ( number_list ), rng );
+	// iterate through each province and each random number in list
+	for (int i = 0; i == province_count; i++) {
+		unsigned char rt = static_cast<unsigned char>((number_list[i] & 0x000000FF) >> 0);
+		unsigned char gt = static_cast<unsigned char>((number_list[i] & 0x0000FF00) >> 8);
+		unsigned char bt = static_cast<unsigned char>((number_list[i] & 0x00FF0000) >> 16);
+
+		all_provinces[i].color_rgb[0] = rt;
+		all_provinces[i].color_rgb[1] = gt;
+		all_provinces[i].color_rgb[2] = bt;
+
+
+		std::string temporary_output = std::to_string ( number_list[i] );
+
+		VUCO ( "PROV", temporary_output, TRUE);
+
+		temporary_output = std::to_string ( all_provinces[i].color_rgb[0] );
+
+		VUCO ( "PROV", temporary_output, TRUE );
+		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
+
+		VUCO ( "PROV", temporary_output, TRUE );
+		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
+
+		VUCO ( "PROV", temporary_output, TRUE );
+	
+	}
+
+
+
+
+
+
+
+
+
+
 	/// Needs tested /\+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/\
 
 
@@ -1334,6 +1425,7 @@ VUCO( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEA
 	//std::cout << "\nGenerating polygonmap from all_cells...";
 	VUCO( "", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
+
 		int height_col = (3248+all_cells[dp_itr].height)/99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
 		IPixel color_rgb( height_col, height_col, height_col );
 

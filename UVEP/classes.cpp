@@ -2247,6 +2247,7 @@
 			province_info new_province;
 			new_province.prov_id = prov_id_itr++;
 			new_province.cell_ids.push_back ( each_cell.id );
+			each_cell.prov_id = new_province.prov_id;
 
 			all_provinces.push_back ( new_province );
 		}
