@@ -5,7 +5,7 @@
 #define VUCO_CONSOLE
 
 template <class ST>
-void VUCO(std::string where_ele, ST message)
+void CONSOLE_LOG(std::string where_ele, ST message)
 {
 #ifdef VUCO_CONSOLE
 	// write message to std::cerr
@@ -16,7 +16,7 @@ void VUCO(std::string where_ele, ST message)
 #endif
 }
 template <class ST>
-void VUCO(std::string where_ele, ST message, bool act)
+void CONSOLE_LOG(std::string where_ele, ST message, bool act)
 {
 #ifdef VUCO_CONSOLE
 	// write message to std::cerr

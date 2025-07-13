@@ -15,7 +15,7 @@ import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.428"
+#define		VERSION_STAMP	"V 0.429"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -239,23 +239,23 @@ std::string CellNeighbor_str;
 std::fstream fileStream;
 
 //std::cout << VERSION_STAMP << std::endl;
-VUCO( "", VERSION_STAMP );
+CONSOLE_LOG( "", VERSION_STAMP );
 /*################################################################################################*/
 
 
 
-	VUCO( "", DESC[selected_language][LOADING1] );
+	CONSOLE_LOG( "", DESC[selected_language][LOADING1] );
 	settings options;
 	ConfigureSettings ( options );
 
 
-	VUCO("", DESC[selected_language][AFFIRM1] );
+	CONSOLE_LOG("", DESC[selected_language][AFFIRM1] );
 
 /// 1. Run Program, 2. Program checks directory paths and remakes them if they aren't there.
 	EnsureDirectory(dir_azgaar); // First, have to ensure top  folder directory
 	//std::cout << "\Retrieving Cell path...";
 	/*
-	VUCO( "", "Retrieving Cell Path...");
+	CONSOLE_LOG( "", "Retrieving Cell Path...");
 	std::smatch cell_file_name;
 	std::string temp;
 	for (const auto& entry : fs::directory_iterator( dir_azgaar )) {
@@ -278,7 +278,7 @@ VUCO( "", VERSION_STAMP );
 	std::string religions_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Religions \[0-9^-\]+.csv" ) );
 	std::string state_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ States \[0-9^-\]+.csv" ) );
 	std::string burg_path = FindFileDirectory( dir_azgaar, std::regex( "\[\\w\]+ Burgs \[0-9^-\]+.csv" ) );
-	//VUCO( "", cell_path );
+	//CONSOLE_LOG( "", cell_path );
 	//cell_path = OpenFileReturnString( dir_cells ); // Trying to read for specific file (end in .geojson) within the dir_cells AND that there is only one file in it																												
 /// 4. Files found, check/remake directory for EU4 modding
 	EnsureDirectory( dir_EU4 ); // EU4 top  folder directory										
@@ -297,7 +297,7 @@ VUCO( "", VERSION_STAMP );
 	ReadFromPlaceInto(cell_path, file_info);
 	//std::cout << "\nRead from " << cell_path;
 	{std::string vuco_temp = "Read from" + cell_path;
-	VUCO( "", vuco_temp );
+	CONSOLE_LOG( "", vuco_temp );
 	}
 /// 6. Want to parse AZGAAR cells, also want to get max extents for scaling/positioning purposes
 	// READ FROM CELL_MAP or string, EXTRACT VERTEX DATA, ID DATA, and so on
@@ -317,12 +317,12 @@ VUCO( "", VERSION_STAMP );
 	// C++ regex: \[^,\]*,
 	// note that all will have comma at end
 	all_burgs = BurgParse( burg_path );
-	//VUCO( "", all_burgs[0].capital );
+	//CONSOLE_LOG( "", all_burgs[0].capital );
 	{
 		std::string capital = "capital";
-		//VUCO ( "Capital?", all_burgs[0].capital, TRUE );
+		//CONSOLE_LOG ( "Capital?", all_burgs[0].capital, TRUE );
 		int value = capital.compare ( all_burgs[0].capital );
-		//VUCO ( "COMPARE RESULTS", value, TRUE);
+		//CONSOLE_LOG ( "COMPARE RESULTS", value, TRUE);
 	
 	
 	}
@@ -394,13 +394,13 @@ VUCO( "", VERSION_STAMP );
 
 	// find total number of provinces
 	int province_count = all_provinces.size();
-	VUCO ( "PROV_COUNT", province_count, TRUE );
+	CONSOLE_LOG ( "PROV_COUNT", province_count, TRUE );
 	// generate list of unique numbers (for RGB, add 1 to R. After max, G = G+2 and then add 1 to R. After G max, B = B+2, and etc.
 	std::vector<int> number_list;
 	unsigned char temp_rt = 0x02;
 	unsigned char temp_gt = 0x02;
 	unsigned char temp_bt = 0x02;
-	VUCO ( "PROV", "About to modify list...", TRUE );
+	CONSOLE_LOG ( "PROV", "About to modify list...", TRUE );
 
 	int tracking_value = province_count;
 
@@ -426,7 +426,7 @@ VUCO( "", VERSION_STAMP );
 
 	for (int i = 0; i == province_count; i++) {
 
-		VUCO ( "PROV", "Modifying list...", TRUE );
+		CONSOLE_LOG ( "PROV", "Modifying list...", TRUE );
 
 		number_list.push_back (( temp_rt << 0 + temp_gt << 8 + temp_bt << 16 ));
 
@@ -453,17 +453,17 @@ VUCO( "", VERSION_STAMP );
 
 		std::string temporary_output = std::to_string ( number_list[i] );
 
-		VUCO ( "PROV", temporary_output, TRUE);
+		CONSOLE_LOG ( "PROV", temporary_output, false);
 
 		temporary_output = std::to_string ( all_provinces[i].color_rgb[0] );
 
-		VUCO ( "PROV", temporary_output, TRUE );
+		CONSOLE_LOG ( "PROV", temporary_output, false );
 		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
 
-		VUCO ( "PROV", temporary_output, TRUE );
+		CONSOLE_LOG ( "PROV", temporary_output, false );
 		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
 
-		VUCO ( "PROV", temporary_output, TRUE );
+		CONSOLE_LOG ( "PROV", temporary_output, false );
 	
 	}
 
@@ -483,13 +483,14 @@ VUCO( "", VERSION_STAMP );
 
 /*##########################      PARSE RELIGIONS	             #################################*/
 /*################################################################################################*/
-
+/// 16. Want to parse AZGAAR religions
 	std::vector<religion> all_religions;
 	all_religions = ReligionParse ( religions_path );
 
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
-
+/// 17. Want to parse AZGAAR cultures
+	// cultures tied with namebase
 	// all cultures
 	std::vector<culture> all_cultures;
 	all_cultures = CultureParse( culture_path );
@@ -500,7 +501,8 @@ VUCO( "", VERSION_STAMP );
 	}
 
 /*####################		MAKING OF THE NAMEBASES		            ##############################*/
-	VUCO( "", DESC[selected_language][NAMEBASE_GET] );
+/// 18. Want to use AZGAAR namebase as reference for name/provinces/armies/etc. Therefore, parse.
+	CONSOLE_LOG( "", DESC[selected_language][NAMEBASE_GET] );
 	std::vector<culture_namebase> all_namebases;
 
 	std::vector<std::string> namebase_file_lines;
@@ -508,7 +510,7 @@ VUCO( "", VERSION_STAMP );
 	NamebaseParse( namebase_file_lines, all_namebases );
 	/*{
 		std::string vuco_temp = all_namebases[0].fn_MakeWordAzgaar( 5, 12, "" );
-		VUCO( "", vuco_temp );
+		CONSOLE_LOG( "", vuco_temp );
 	}*/
 
 	// create unordered map of namebase using name as key, enables cultures to use namebase easily
@@ -562,14 +564,14 @@ VUCO( "", VERSION_STAMP );
 		std::unordered_map<std::string, short> unique_state_province_and_new_culture;
 		// Calculate unique cultures, assign newly made cultures to each cell
 		for (auto& each_cell : all_cells) {
-			//VUCO ( "Cell ID", each_cell.id, FALSE );
+			//CONSOLE_LOG ( "Cell ID", each_cell.id, FALSE );
 			std::string string_country = std::to_string ( each_cell.country );
 			std::string string_subcountry = std::to_string ( each_cell.sub_country );
 			std::string temp_key = string_country + string_subcountry;
-			VUCO ( "Concattenated country subcountry", temp_key );			/// DESC[ENGLISH][CONCAT_SUBCOUNTRY] = "Concattenated country subcountry";
+			//CONSOLE_LOG ( "Concattenated country subcountry", temp_key );			/// DESC[ENGLISH][CONCAT_SUBCOUNTRY] = "Concattenated country subcountry";
 			// Find and make unique cultures
 			if(		(unique_cultures.emplace ( temp_key, each_cell.culture ).second)	) { // if emplacement successful
-				VUCO ( "", "New Culture!" );								/// DESC[ENGLISH][NEW_CULTURE] = "New Culture!";
+				//CONSOLE_LOG ( "", "New Culture!" );								/// DESC[ENGLISH][NEW_CULTURE] = "New Culture!";
 				culture new_culture;
 
 				new_culture = all_cultures_map[each_cell.culture];
@@ -583,7 +585,7 @@ VUCO( "", VERSION_STAMP );
 				new_culture_ids++;
 			}
 			else {	// Can't emplace, thus exists already and cell culture needs updated
-				//VUCO ( "", "Old Culture!" , FALSE);
+				//CONSOLE_LOG ( "", "Old Culture!" , FALSE);
 				each_cell.culture = unique_state_province_and_new_culture[temp_key];
 			}
 			
@@ -671,19 +673,19 @@ VUCO( "", VERSION_STAMP );
 
 			}
 		}
-		//VUCO ( "Got cell ID", cell_id_with_max_pop, TRUE );
-		//VUCO ( "Got culture", all_cell_map[cell_id_with_max_pop].culture, TRUE );	// Getting 7 and not getting a namebase?
-		//VUCO ( "Got namebase", all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase, TRUE );
+		//CONSOLE_LOG ( "Got cell ID", cell_id_with_max_pop, TRUE );
+		//CONSOLE_LOG ( "Got culture", all_cell_map[cell_id_with_max_pop].culture, TRUE );	// Getting 7 and not getting a namebase?
+		//CONSOLE_LOG ( "Got namebase", all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase, TRUE );
 		int letters_max = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].max_length;
 		int letters_min = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].min_length;
 		std::string doubles = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].doubled_letters;
-		//VUCO ( "Province assignment", all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].name , TRUE);
+		//CONSOLE_LOG ( "Province assignment", all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].name , TRUE);
 		each_province.name = all_namebase_map[all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles );
 		//std::string prov_culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
 		//prov_culture[0] = tolower ( prov_culture[0] );
 		each_province.culture = all_cultures_map[all_cell_map[cell_id_with_max_pop].culture].name;
-		//VUCO ( "Province Name", each_province.name );
-		//VUCO ( "Assign culture", each_province.culture );
+		//CONSOLE_LOG ( "Province Name", each_province.name );
+		//CONSOLE_LOG ( "Assign culture", each_province.culture );
 	}
 
 
@@ -696,6 +698,7 @@ VUCO( "", VERSION_STAMP );
 	// ex
 /*###########################   WORKING WITH THE STATES   ########################################*/
 /*################################################################################################*/
+/// 20. Want to parse states that exist
 	// all states
 	std::vector<state_info> all_states;
 	all_states = StateParse( state_path );	// Copy operation?
@@ -724,8 +727,8 @@ VUCO( "", VERSION_STAMP );
 	// https://armoria.herokuapp.com/?format=png&size=147&shield=square	// Need to trim transparent edge off
 	//https://github.com/Azgaar/armoria-api#readme
 
-	VUCO ( "FLAGS", DESC[selected_language][FLAG1], TRUE );		//"Flags should be generated in square format";
-	VUCO ( "FLAGS", DESC[selected_language][FLAG2], TRUE );		//"Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG1], TRUE );		//"Flags should be generated in square format";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG2], TRUE );		//"Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
 
 		// either read it via program and batch/series of files
 		// or ASK USER TO DOWNLOAD ALL STATE PNG AND RENAME TO STATE
@@ -735,16 +738,16 @@ VUCO( "", VERSION_STAMP );
 // CREATION OF FLAGS
 /*################################################################################################*/
 
-	VUCO ( "FLAGS", DESC[selected_language][FLAG3], TRUE ); //"FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
-	VUCO ( "FLAGS", DESC[selected_language][FLAG4], TRUE );							//"Generate at least 700 flags of size 128x128";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG3], TRUE ); //"FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG4], TRUE );							//"Generate at least 700 flags of size 128x128";
 	// WANT 140, not 128!!!!!
 	// Following is for 128:
-	VUCO ( "FLAGS", DESC[selected_language][FLAG5], TRUE ); //"Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG5], TRUE ); //"Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
 	// FIND RESULTS FOR 140!!!!!!
-	VUCO ( "FLAGS", DESC[selected_language][FLAG6], TRUE ); //"Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files";
-	VUCO ( "FLAGS", DESC[selected_language][FLAG7], TRUE ); // Vertical separation is 8 pixels //"You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
-	VUCO ( "FLAGS", DESC[selected_language][FLAG8], TRUE ); //"Regions will be using flags from the same pack/file";
-	VUCO ( "FLAGS", DESC[selected_language][FLAG9], TRUE ); // "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG6], TRUE ); //"Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG7], TRUE ); // Vertical separation is 8 pixels //"You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG8], TRUE ); //"Regions will be using flags from the same pack/file";
+	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG9], TRUE ); // "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
 
 
 
@@ -1165,7 +1168,7 @@ VUCO( "", VERSION_STAMP );
 // Information calculated, time to output into EU4 formats and such
 	
 
-//GenericOutput(all_cells, "log2.txt");
+//AllCell_OutputToTextFile(all_cells, "log2.txt");
 
 	// HAVE TO GENERATE SEABOARD (make grid of hexagons that span the world, write them first, have them "replace" the cells that they take up and their neighbors (so land cells that border ocean cells (i.e. have ocean cells as neighbors) will instead have this new cell as a neighbor (or not even a cell, maybe have it as a sea province)
 	// could have centers equally spaced through the map and make a new DrawHexagonCenteredHere()
@@ -1351,79 +1354,30 @@ country_decisions = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*###########################      CREATING THE IMAGES          ##################################*/
 /*################################################################################################*/
-	//VUCO( "", "Creating image" );
+	//CONSOLE_LOG( "", "Creating image" );
 	//std::random_device rd; // obtain random number from hardware
 	//std::mt19937 gen( rd() ); // seed generator
 	//std::uniform_int_distribution<> distrib( 0, 255 ); //define the range // distrib(gen)
 
 
-// EUIV / map
+/// 25. Want to create files for EU4, mainly by rasterizing AZGAAR map into EU4 format.
 
-// CREATE continent.txt
-
-// CREATE default.map (text file)
-
-// CREATE definition.csv
-
-// CREATE positions.txt
-
-// CREATE region.txt
-
-// CREATE superregion.txt
-
-// CREATE rivers.bmp
-
-// CREATE terrain.bmp
-
-// CREATE terrain.txt
-
-// CREATE world_normal.bmp	// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
-
-// CREATE heightmap.bmp
-// Issue: Heightmap is not working correctly
-// Cause : You have an gradient that is too extreme.Don’t go from 100 to 200 without steps in between.
-
-// CREATE province.bmp
-// province colors HAVE TO BE UNIQUE! Just like TAGS
-
-// CREATE area.txt
-
-// .dds -> 8.8.8.8 ARGB 32bpp (or bit) profile with no mipmaps.
-// or maybe 8.8.8.8 16 bit ARGB with mipmaps. according to https://www.reddit.com/r/hoi4modding/comments/bk8umn/proper_way_to_save_dds_files/, needs verified
-// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
-// must use Nearest Neighbour to maintain pixel-perfect accuracy.
-
-// CREATE colormap_water.dds	// land is like RGB 19,216,216; coast is 14,97,110; deep ocean is 5,18,36; ocean is 8,54,60
-VUCO( "DDS", DESC[selected_language][CONVERSION1] );	//"FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET";
-
-// CREATE climate.txt
-
-// CREATE trees.bmp
-VUCO( "DDS", DESC[selected_language][CONVERSION2] );	//"FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET";
-// CREATE colormap_[SEASON].dds in EUIV / map / terrain
-VUCO( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" ;
-// CREATE colormap_[SEASON].dds in EUIV / map / random
-
-// CREATE lakes.txt in EUIV / map / lakes / 00_lakes.txt
-
+/// 26A. Create Province Map (provinces.bmp) and link (definitions.csv)
+	// definitions.csv is "provinceID;red;green;blue;Name;x" 
+	/// NOTE: province1 IS ID1, not 0!!
+	// CREATE province.bmp
+	// province colors HAVE TO BE UNIQUE! Just like TAGS
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
-	VUCO( "", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
+	CONSOLE_LOG( "", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
+
+	std::vector<std::string> definitions_csv;
+
+	definitions_csv.push_back ( "province;red;green;blue;x;x" );
+
 	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
 
 		int height_col = (3248+all_cells[dp_itr].height)/99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
@@ -1450,8 +1404,23 @@ VUCO( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEA
 		//temp_poly2.points = all_cells[dp_itr+1].verticies; // TEMP, ALSO CHANGE size()-1 to size()
 		//temp_poly.MergePoly(temp_poly2);
 		DrawPolygon( &temp_poly, &color_rgb, EU4_MAP );
+		std::string definitions_province_line;
+		definitions_province_line = definitions_province_line + std::to_string(all_cells[dp_itr].id) 
+			+ ";" 
+			+ std::to_string ( color_rgb.r ) + ";"
+			+ std::to_string ( color_rgb.g ) + ";" 
+			+ std::to_string ( color_rgb.b ) + ";"
+			+ "name" + std::to_string( all_cells[dp_itr].culture) + ";" + "x";
+		definitions_csv.push_back ( definitions_province_line );
 	}
 
+	EnsureDirectory ( dir_EU4 );
+	OutputToTextFile ( definitions_csv, dir_EU4 + "/definitions.csv" );
+
+/// 26B. Create Height Map (heightmap.bmp)
+	// CREATE heightmap.bmp
+	// Issue: Heightmap is not working correctly
+	// Cause : You have an gradient that is too extreme.Don’t go from 100 to 200 without steps in between.
 	// GenerateCoastalPolygons
 	// GenerateSeaboardPolygons
 	// If we draw a hexagon grid
@@ -1465,18 +1434,69 @@ VUCO( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEA
 	heightmap_bmp.RenderPixels ( heightmap_bmp.grid_vector );
 	heightmap_bmp.Export8 ( "heightmap_randomized.bmp", 1 );
 
+/// 26C. Create Normal Map (world_normal.bmp)
+	// CREATE world_normal.bmp	
+	// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
 	ScreenRaster normal_bmp = CalculateNormal(heightmap_bmp);
 	Image normal_export( normal_bmp.width, normal_bmp.height );
 	normal_export.MapRaster( normal_bmp );
-	normal_export.Export24("normal.bmp");
+	normal_export.Export24("world_normal.bmp");
 	
+/// 26D. Create EU4 map (eu4_map.bmp) 
+		//EUIV / map
 	Image EU4_MAP_BMP( 5632, 2048 );
 	//std::cout << "\nMapping polygons to EU4 Map...";
-	VUCO( "", DESC[selected_language][POLYMAP_GENERATION2] );					//"Mapping polygons to EU4 map...";
+	CONSOLE_LOG( "", DESC[selected_language][POLYMAP_GENERATION2] );	//"Mapping polygons to EU4 map...";
 	EU4_MAP_BMP.MapRaster( EU4_MAP );
 	//std::cout << "\nCreating bmp...";
-	VUCO( "", DESC[selected_language][POLYMAP_GENERATION3] );					//"Creating bmp...";			
+	CONSOLE_LOG( "", DESC[selected_language][POLYMAP_GENERATION3] );	//"Creating bmp...";	
+
+
 	EU4_MAP_BMP.Export24( "eu4_map.bmp" );
+
+
+/// CREATE continent.txt
+
+/// CREATE default.map (text file)
+
+/// CREATE definition.csv
+
+/// CREATE positions.txt
+
+/// CREATE region.txt
+
+/// CREATE superregion.txt
+
+/// CREATE terrain.txt
+
+/// CREATE area.txt
+
+	// .dds -> 8.8.8.8 ARGB 32bpp (or bit) profile with no mipmaps.
+	// or maybe 8.8.8.8 16 bit ARGB with mipmaps. according to https://www.reddit.com/r/hoi4modding/comments/bk8umn/proper_way_to_save_dds_files/, needs verified
+	// needs to be 1/2 of dimensions of full scale map [2816 x 1024]
+	// must use Nearest Neighbour to maintain pixel-perfect accuracy.
+
+
+/// CREATE climate.txt
+
+/// 27A. Create River Map (rivers.bmp)
+	
+/// 27B. Create Water Map (colormap_water.dds)
+	// CREATE colormap_water.dds	
+	// land is like RGB 19,216,216; coast is 14,97,110; deep ocean is 5,18,36; ocean is 8,54,60
+	CONSOLE_LOG ( "DDS", DESC[selected_language][CONVERSION1] );	//"FIND IMAGE colormap_water.bmp AND CONVERT TO DDS USING PAINT.NET";
+	
+/// 27C. Create Terrain Map (terrain.bmp) and works with (terrain.txt)
+
+/// 27D. Create Tree Map (trees.bmp) and works with terrain.txt
+	CONSOLE_LOG ( "DDS", DESC[selected_language][CONVERSION2] );	//"FIND IMAGE trees.bmp AND CONVERT TO DDS USING PAINT.NET";
+
+/// 27E. Create Color Maps (colormap_autumn.dds, colormap_spring.dds, colormap_summer.dds and colormap_winter.dds)
+	// CREATE colormap_[SEASON].dds in EUIV / map / terrain
+	CONSOLE_LOG ( "DDS", DESC[selected_language][CONVERSION3] );	//"FIND IMAGES colormap_SEASON.bmp AND CONVERT TO DDS USING PAINT.NET" ;
+	// CREATE colormap_[SEASON].dds in EUIV / map / random
+
+/// CREATE lakes.txt in EUIV / map / lakes / 00_lakes.txt
 
 /*###########################      BOOKMARK CREATION			##################################*/
 /*################################################################################################*/

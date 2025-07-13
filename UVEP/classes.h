@@ -772,7 +772,9 @@ std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states );
 std::vector<culture> CultureParse(std::string culture_path);
 std::vector<burg_info> BurgParse( std::string burg_path );
 std::vector<religion> ReligionParse ( std::string religion_path );
-void GenericOutput(std::vector<cell_info> all_cells, std::string output_file);
+void AllCell_OutputToTextFile(std::vector<cell_info> all_cells, std::string output_file);
+void OutputToTextFile ( std::string text, std::string output_file );
+void OutputToTextFile ( std::vector<std::string> text_array, std::string output_file );
 
 void TransformPoints( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
 void TransformPoints_NoStretch ( std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents );

@@ -130,12 +130,12 @@ void ReadFromPlaceInto(std::string wanted_file, std::string& file_info) {
 	if (fileStream) {
 		//std::cout << wanted_file << " opened" << std::endl;
 		{std::string vuco_temp = wanted_file + " opened";
-		VUCO( "", vuco_temp );
+		CONSOLE_LOG( "", vuco_temp );
 		}
 		// File is open, Want to get line for future usage and save (IO expensive) / Copy file contents into string
 		buffer << fileStream.rdbuf();	// read entire file content
 		file_info = buffer.str();		// stringify it, put it into string variable
-		VUCO("","File info retrieved");
+		CONSOLE_LOG("","File info retrieved");
 		//YELL(file_info);
 
 	}//end of if for fileStream
@@ -153,16 +153,16 @@ std::vector<std::string> ReadFromLineByLine( std::string wanted_file ) {
 
 
 
-		VUCO( nm, "Creating vector...", act );
+		CONSOLE_LOG( nm, "Creating vector...", act );
 		std::vector<std::string> every_file_line;
-		VUCO( nm, "Creating filestream...", act );
+		CONSOLE_LOG( nm, "Creating filestream...", act );
 		std::ifstream fileStream;
-		VUCO( nm, "Opening file...", act );
+		CONSOLE_LOG( nm, "Opening file...", act );
 		fileStream.open( wanted_file, std::ios::in );	// read contents (don't want to output to this file)
 		
 		if (fileStream) {
-			VUCO( nm, "File Opened", act );
-			VUCO( nm, "Get each line...", act );
+			CONSOLE_LOG( nm, "File Opened", act );
+			CONSOLE_LOG( nm, "Get each line...", act );
 			//int i = 0;
 			for (std::string line = ""; std::getline(fileStream, line);) {
 				//std::cout << "\nLine " << i++ << ":";
@@ -185,17 +185,17 @@ void EnsureDirectory(std::string desired_dir) {
 	{
 		//std::cout << '\n' << desired_dir << " created successfully!" << std::endl;
 		{std::string vuco_temp = desired_dir + " created successfully!";
-		VUCO( "", vuco_temp );
+		CONSOLE_LOG( "", vuco_temp );
 		}
 	}
 	//std::cout << '\n' << desired_dir << " directory exists" << std::endl;
 	{std::string vuco_temp = desired_dir + " directory exists";
-	VUCO( "", vuco_temp );
+	CONSOLE_LOG( "", vuco_temp );
 	}
 }
 std::string FindFileDirectory(std::string base_directory, std::regex filter )
 {
-	VUCO( "", "Retrieving File Path..." );
+	CONSOLE_LOG( "", "Retrieving File Path..." );
 	std::smatch matches;
 	std::string temp;
 	for (const auto& entry : std::filesystem::directory_iterator( base_directory )) {

@@ -268,7 +268,7 @@
 			// Alternate between adding vowels and adding consonants
 			if (++vowel_consonant % 2 == 0)
 			{
-				//VUCO ( "CVCV INDEX CONS", index_of_dia_cons );
+				//CONSOLE_LOG ( "CVCV INDEX CONS", index_of_dia_cons );
 				//LOGG "[CVCV SIZE CONS] " << unique_consonants_saved.size ();
 
 				word_str += unique_consonants_saved[index_of_dia_cons];
@@ -277,7 +277,7 @@
 			}
 			else
 			{
-				//VUCO ( "CVCV INDEX VOWEL", index_of_dia_vowel );
+				//CONSOLE_LOG ( "CVCV INDEX VOWEL", index_of_dia_vowel );
 				//LOGG "[CVCV SIZE VOWEL] " << unique_vowels_saved.size ();
 
 				word_str += unique_vowels_saved[index_of_dia_vowel];
@@ -307,7 +307,7 @@
 
 
 
-		VUCO(nm, word_str,act);
+		CONSOLE_LOG(nm, word_str,act);
 		this->unique_names.insert(word_str);
 
 
@@ -599,16 +599,16 @@
 		std::string onset_building;
 		for (int eachword = 0; eachword <= original_list.size() - 1; eachword++)
 		{
-			VUCO("fnMM Word", eachword, act);
+			CONSOLE_LOG("fnMM Word", eachword, act);
 			for (int eachchar = 0; eachchar <= original_list[eachword].length() - 2; eachchar++)
 			{
-				VUCO("fnMM Characters", eachchar,act);
+				CONSOLE_LOG("fnMM Characters", eachchar,act);
 				try
 				{
 					// get 2 characters
 					onset_building = original_list[eachword].substr(eachchar, 2);	// from original list element (i.e. a word), get the first two characters, copy them and place them into onsets
 					//std::cout << "\n" << "[mMC] BUILT ONSET " << onset_building;
-					VUCO("fnMM Get Onset", onset_building,act);
+					CONSOLE_LOG("fnMM Get Onset", onset_building,act);
 
 					if (onset_building.length() == 2)
 					{
@@ -628,7 +628,7 @@
 						if (onset_building.length() == 1)
 						{
 							//std::cout << "\n" << "[ISSUE] ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED";
-							VUCO( "ISSUE", "ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED" );
+							CONSOLE_LOG( "ISSUE", "ONSET_BUILDING ONLY LENGTH 1, SOMEHOW REACHED FURTHER THAN INTENDED" );
 							this->generic_coda.push_back(onset_building.substr(1, 2));
 
 						}
@@ -654,7 +654,7 @@
 	{
 		//The following is done assuming non-accented latin characters (i.e. keys on a US keyboard)
 		//Following also assumes lowercase
-		// for VUCO function (just helps with debugging and having a console output log
+		// for CONSOLE_LOG function (just helps with debugging and having a console output log
 		bool act = TRUE;
 		std::string nm = "makeMarkov_Dia";
 
@@ -716,7 +716,7 @@
 		//	eachchar = 0;
 		//	while (eachchar < wordsize)
 			//for ( int eachchar = 0; eachchar < original_list[eachword].length () - 1; eachchar++ )
-			//VUCO ( "mSL START", eachword );
+			//CONSOLE_LOG ( "mSL START", eachword );
 			eachchar = 0;
 			while (eachchar <= original_list[eachword].length() - 1)
 			{
@@ -725,11 +725,11 @@
 				// Add to dia_building
 				// probe type of next char
 				// if same, add to dia_building and repeat
-				//VUCO (act, "mSL", "####### START #############" );
+				//CONSOLE_LOG (act, "mSL", "####### START #############" );
 				//std::cout << "\n" << "[mSL] New dia_building";
 				dia_building = "";
 				dia_building += original_list[eachword][eachchar];
-				//VUCO ( act, "mSL", dia_building );
+				//CONSOLE_LOG ( act, "mSL", dia_building );
 				//std::cout << "\n" << "[mSL] " << dia_building;
 
 				c_or_v = yn_isVowel(original_list[eachword][eachchar]);
@@ -747,7 +747,7 @@
 				{
 					//	std::cout << "\n" << "[mSL] Word End reached ";
 						//eachchar = original_list[eachword].length (); //reached end of word
-						//VUCO ( act, "mSL", "Word End Reached" );
+						//CONSOLE_LOG ( act, "mSL", "Word End Reached" );
 					break; // exit while for eachchar
 				}
 
@@ -801,7 +801,7 @@
 					dia_map[prev_dia_building].push_back(dia_building);
 					prev_dia_building = dia_building;
 				}
-				//VUCO ( "mSL", "######## END ############" );
+				//CONSOLE_LOG ( "mSL", "######## END ############" );
 				loop_ctr++;
 
 
@@ -842,7 +842,7 @@
 		// can also do range constructor, but since vector element already exists it is not doable
 		//https://www.techiedelight.com/convert-set-vector-cpp/
 
-		VUCO( nm, "END OF FUNCTION", act);
+		CONSOLE_LOG( nm, "END OF FUNCTION", act);
 	} // end funct
 
 	void culture_namebase::fn_AzgaarNamebaseGeneration( std::vector<std::string> original_list )
@@ -860,18 +860,18 @@
 		std::string fnn = "AzgNamebaseGen";
 
 		
-		VUCO( fnn, "\rMaking Namebase...", act );
+		CONSOLE_LOG( fnn, "\rMaking Namebase...", act );
 
 
-		VUCO( fnn, "Get size of og_list", act );
+		CONSOLE_LOG( fnn, "Get size of og_list", act );
 		int list_size = original_list.size();
 		std::smatch m;
-		VUCO( fnn, "Regex matches", act );
+		CONSOLE_LOG( fnn, "Regex matches", act );
 		std::regex latinize ("\[^ -~\]");	// match from space to tilde (ASCII decimal 33 to 126)
 		// For every word in original_list
 		for (int eachword = 0; eachword < list_size; eachword++) {
-			VUCO( fnn, "Iterating through og_list", act );
-			VUCO( fnn, eachword, act );
+			CONSOLE_LOG( fnn, "Iterating through og_list", act );
+			CONSOLE_LOG( fnn, eachword, act );
 
 			// std::string t_name;
 			std::string t_name;
@@ -886,32 +886,32 @@
 			std::string syllable = "";
 			unsigned char v = 0; // 0 if no vowels in syllable
 			for (signed char i = -1; i < t_name_size; i += (syllable.length() || 1), syllable = "") {
-				VUCO( fnn, "Iterating through each character in word", act );
+				CONSOLE_LOG( fnn, "Iterating through each character in word", act );
 				// char prev = name[-1] (need prev to be equal to previous char. so for start of word, it will be "", for middle of word it'll be previous and so on
 				char prev;
-				//VUCO( fnn, "Attempting to u", act );
+				//CONSOLE_LOG( fnn, "Attempting to u", act );
 				try {
 					prev = t_name.at( i );
 				}
 				catch (std::out_of_range& e) {
-					VUCO( fnn, "\nOutofRange!", act );
+					CONSOLE_LOG( fnn, "\nOutofRange!", act );
 					prev = '\0';
 				}
 
 				v = 0; // 0 if no vowels in syllable
 				// for (int c = i+1; name.at(c) && syllable.length() < 5; c++)
 				for (int c = i + 1; (syllable.length() < 5) && (c < t_name_size); c++) {
-					VUCO( fnn, "Iterating through each syllable in a word", act );
-					VUCO( fnn, c, act );
-					VUCO( fnn, "Accessing that element of word", act );
+					CONSOLE_LOG( fnn, "Iterating through each syllable in a word", act );
+					CONSOLE_LOG( fnn, c, act );
+					CONSOLE_LOG( fnn, "Accessing that element of word", act );
 					char that = t_name[c];
 					char next;
 					if (c + 1 < t_name_size) { 
-						VUCO( fnn, "Able to access next char", act );
+						CONSOLE_LOG( fnn, "Able to access next char", act );
 						next = t_name[c + 1]; 
 					}
 					else { 
-						VUCO( fnn, "Next char is NULL as its the end of the word", act );
+						CONSOLE_LOG( fnn, "Next char is NULL as its the end of the word", act );
 						next = '\0'; 
 					}
 
@@ -939,15 +939,15 @@
 					//if (v && vowel( name[c + 2] )) break; // syllable has vowel and additional	vowel is expected soon
 				}
 				// if chains[prev] == undefined) chains[prev] = [];
-				VUCO( fnn, "Emplace using prev char as hash key", act );
-				VUCO( fnn, prev , act);
-				VUCO( fnn, syllable , act);
+				CONSOLE_LOG( fnn, "Emplace using prev char as hash key", act );
+				CONSOLE_LOG( fnn, prev , act);
+				CONSOLE_LOG( fnn, syllable , act);
 				five_letter_syllable_map[prev].push_back( syllable );
 
 				// chains[prev].push(syllable);
 			}
 		}
-		VUCO( fnn, "End of funct", act );
+		CONSOLE_LOG( fnn, "End of funct", act );
 	}
 
 	std::string culture_namebase::fn_MakeWordAzgaar( int min, int max, std::string dupl )
@@ -960,8 +960,8 @@
 		bool act = FALSE;
 		std::string fnn = "MWA";
 
-		//VUCO( fnn, "Begin Making word and creating", act );
-		VUCO ( "Using this namebase", name,act );
+		//CONSOLE_LOG( fnn, "Begin Making word and creating", act );
+		CONSOLE_LOG ( "Using this namebase", name,act );
 		
 
 		std::vector<std::string> v;
@@ -976,11 +976,11 @@
 
 
 
-		//VUCO( fnn, "Generating Randomness...", act );
+		//CONSOLE_LOG( fnn, "Generating Randomness...", act );
 		std::random_device rd;
 		std::mt19937 gen( rd() );
 		std::uniform_int_distribution<> distrib( 0, 7829 );	// 7829 is a prime number (assuming there will be 4000 provinces with unique names and potentially 100 states -> 500 potential names per state?)
-		//VUCO( fnn, "Getting random onset syllable", act );
+		//CONSOLE_LOG( fnn, "Getting random onset syllable", act );
 		std::string cur = v[distrib( gen ) % v.size()];
 		//std::cout << "\n\tGot: " << cur << std::endl;
 		std::string w = "";
@@ -989,7 +989,7 @@
 			
 			if (cur == "") {
 				if (w.length() < min) {
-					VUCO( fnn, "Empty CUR and word too small", act );
+					CONSOLE_LOG( fnn, "Empty CUR and word too small", act );
 					cur = "";
 					w = "";
 					v = this->five_letter_syllable_map['\0'];
@@ -1098,7 +1098,7 @@
 		// if the name is less than 2, name will be randomly picked from the original list
 		if (summ.length() < 2) {
 			//std::cout << "\n[ERROR] Picking jimothy as name as name was too short";
-			VUCO( "ERROR", "Picking random name from OG list as name, name was too short",TRUE );
+			CONSOLE_LOG( "ERROR", "Picking random name from OG list as name, name was too short",TRUE );
 
 			int source_list_size = source_list.size ();
 			int pick = distrib ( gen ) % source_list_size;
@@ -1108,12 +1108,12 @@
 			summ = source_list[pick];
 		}
 
-		//VUCO( fnn, "Summ is: ", act );
+		//CONSOLE_LOG( fnn, "Summ is: ", act );
 		//std::cout << "\n\t" << summ << std::endl;
 		// first char is made upper case
 		summ[0] = toupper( summ[0] );
-		//VUCO( fnn, "Capitalized word", act );
-		VUCO ( "RESULT", summ, act );
+		//CONSOLE_LOG( fnn, "Capitalized word", act );
+		CONSOLE_LOG ( "RESULT", summ, act );
 
 		return summ;
 	}
@@ -1127,20 +1127,20 @@
 
     void ConfigureSettings ( settings& opt )
     {
-		VUCO ( "", "Bool Request" );
+		CONSOLE_LOG ( "", "Bool Request" );
 		short value = PromptYNX ();
-			if (value == -1) { VUCO ( "", "No change" ); }
-		VUCO ( "Got", value );
-		VUCO ( "", "Number Request" );
+			if (value == -1) { CONSOLE_LOG ( "", "No change" ); }
+		CONSOLE_LOG ( "Got", value );
+		CONSOLE_LOG ( "", "Number Request" );
 		int number = PromptINT ();
-		VUCO ( "Got", number );
+		CONSOLE_LOG ( "Got", number );
 		std::string string_v;
-		VUCO ( "", "String Request" );
+		CONSOLE_LOG ( "", "String Request" );
 		string_v = PromptSTRING ();
-		VUCO ( "Got", string_v );
+		CONSOLE_LOG ( "Got", string_v );
 
 
-		VUCO ( "", "Settings Configured!" );
+		CONSOLE_LOG ( "", "Settings Configured!" );
 
 
 
@@ -1153,7 +1153,7 @@
 	std::tuple<int, int, int, int> ParseStringUpdateCells(std::vector<cell_info>& all_cells, std::string& example_data) {
 
 		//std::cout << "\nParsing string, updating cells...";
-		VUCO( "", "Parsing string, updating cells..." );
+		CONSOLE_LOG( "", "Parsing string, updating cells..." );
 		const std::string regex_cell_block
 			= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"Polygon\",\"coordinates\":.*?\\}\\}";	// should get ex:
 		/*
@@ -1311,15 +1311,15 @@
 		/// NEEDS UPDATED AND REFORMATED
 
 		//std::cout << "\nParsing string, updating cells...";
-		VUCO ( "", "Parsing string, updating rivers..." );
-		VUCO ( fn,"Creating regex_cell_block and rex_river_block", act );
+		CONSOLE_LOG ( "", "Parsing string, updating rivers..." );
+		CONSOLE_LOG ( fn,"Creating regex_cell_block and rex_river_block", act );
 		const std::string regex_cell_block	/// Might work, needs tested
 			= "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"LineString\",\"coordinates\":.*?\\}\\}";	// should get ex:
 		std::regex rex_river_block ( "\\{\"type\":\"Feature\",\"geometry\":\\{\"type\":\"LineString\",\"coordinates\":.*?\\}\\}" );
 		/*
 		"coordinates":[[[-44.66,57.25],[-50.62,52.65],[-56.25,56.8],[-54,59.38],[-44.55,58.26],[-44.66,57.25]]]},"properties":{"id":0,"height":-109,"biome":0,"type":"ocean","population":0,"state":0,"province":0,"culture":0,"religion":0,"neighbors":[1,7,6]}}
 		*/
-		VUCO ( fn, "Creating regex_cell_coordinates, regex_cell_vertex, and rex_river_points", act );
+		CONSOLE_LOG ( fn, "Creating regex_cell_coordinates, regex_cell_vertex, and rex_river_points", act );
 		const std::string regex_cell_coordinates = "\\[\\[.*?\\]\\]\\}"; /// Should be fine
 		/*
 		[[																					// entire string as match[0]
@@ -1337,20 +1337,20 @@
 		56.8
 		...and so on
 		*/
-		VUCO ( fn, "Creating regex_cell_properties and rex_river_information", act );
+		CONSOLE_LOG ( fn, "Creating regex_cell_properties and rex_river_information", act );
 		const std::string regex_cell_properties = "\"id\":\(\[0-9\]+\),\"height\":\(-?\[0-9\]+\),\"biome\":\(\[0-9\]+\),\"type\":\(\"\[^\"\]+\"\),\"population\":\(\[0-9\]+\),\"state\":\(\[0-9\]+\),\"province\":\(\[0-9\]+\),\"culture\":\(\[0-9\]+\),\"religion\":\(\[0-9\]+\),\(\"neighbors\"\:\\[\[^\\]\]+\\]\)";	 /// NEEDS UPDATED
 		std::regex rex_river_information("\"i\":\(\[0-9\]+\),\"source\":\(-?\[0-9\]+\),\"mouth\":\(\[0-9\]+\),\"discharge\":\(\[0-9\]+\),\"length\":\(\[0-9\\.\]+\),\"width\":\(\[0-9\\.\]+\),\"widthFactor\":\(\[0-9\\.\]+\),\"sourceWidth\":\(\[0-9\\.\]+\),\"parent\":\(-?\[0-9\]+\),\"cells\":\(\\[\[^\\]\]+\\]\),\"basin\":\(\[0-9\]+\),\"name\":\"\(\[A-Za-z\]+\)\",\"type\":\"\(\[A-Za-z\]+\)\",\"id\":\"\(\[A-Za-z0-9\]+\)\""); /// needs tested
 		// Regex for regex101.com
 		/*
 		\"id\":([0-9]+),\"height\":(-?[0-9]+),\"biome\":([0-9]+),\"type\":(\"[^\"]+\"),\"population\":([0-9]+),\"state\":([0-9]+),\"province\":([0-9]+),\"culture\":([0-9]+),\"religion\":([0-9]+)
 		*/
-		VUCO ( fn, "Creating fetched_data smatch, Xcoord and Ycoord initialization", act );
+		CONSOLE_LOG ( fn, "Creating fetched_data smatch, Xcoord and Ycoord initialization", act );
 		std::smatch fetched_data;	/// prolly fine
 		short Xcoord = -1;
 		short Ycoord = -1;
 
 		long river_index = -1;	/// NEEDS UPDATED
-		VUCO ( fn, "Creating regex formats from strings and RiverData_itr", act );
+		CONSOLE_LOG ( fn, "Creating regex formats from strings and RiverData_itr", act );
 		std::regex rex_chunk ( regex_cell_block );		/// NEEDS UPDATED
 		//all_cells.push_back(cell_info()); // creates a new element
 				// Divy up example_data into various matches
@@ -1369,7 +1369,7 @@
 		std::string CellNeighbor_str;							/// NEEDS UPDATED
 
 		/// NEEDS UPDATED
-		VUCO ( fn, "Entering main while loop...", act );
+		CONSOLE_LOG ( fn, "Entering main while loop...", act );
 		while (RiverData_itr != sreg_end) {		// Go through all cell_data matches (coordinates and properties)
 			/// NEEDS UPDATED
 			all_rivers.push_back ( river_info () ); river_index++;		// Create new cell, pushback onto global vector of all cells, update how many cells there are
@@ -1377,7 +1377,7 @@
 			//std::cout << "\n[INFO]Cell data chunk for cell " << cell_index << ": " << std::endl;
 			/// NEEDS UPDATED
 			RiverData_str = RiverData_itr->str ();
-			VUCO ( fn, "Got RiverData_str", act );
+			CONSOLE_LOG ( fn, "Got RiverData_str", act );
 			//YELL(CellData_str);
 
 			//Have cell_data chunk from above, need to sift out coordinates and properties
@@ -1386,7 +1386,7 @@
 			std::regex_search ( RiverData_str.cbegin (), RiverData_str.cend (), RiverData_matches, rex_coords );
 			/// NEEDS UPDATED
 			RiverPoint_str = RiverData_matches[0];
-			VUCO ( fn, "Got RiverPoint_str ", act );
+			CONSOLE_LOG ( fn, "Got RiverPoint_str ", act );
 			//YELL(CellCoord_str);
 			//YELL("\n[INFO]Cell vertecies fetched:");
 			/// NEEDS UPDATED
@@ -1399,11 +1399,11 @@
 			while (RiverPoint_itr != sreg_end) {
 
 				Xcoord = std::stof( RiverPoint_itr->str ( 0 ) );
-				//VUCO ( fn, "Got Xcoord", act );
+				//CONSOLE_LOG ( fn, "Got Xcoord", act );
 				RiverPoint_itr++;
 
 				Ycoord = std::stof( RiverPoint_itr->str ( 0 ) );
-				//VUCO ( fn, "Got Ycoord", act );
+				//CONSOLE_LOG ( fn, "Got Ycoord", act );
 				all_rivers[river_index].points.push_back (FPoint( Xcoord, Ycoord) );
 				RiverPoint_itr++;
 			}
@@ -1417,13 +1417,13 @@
 			int M = 1;
 			// ID AS A NUMBER
 			all_rivers[river_index].i = std::stoi(RiverData_matches[M++].str ());
-			VUCO ( "Got I", all_rivers[river_index].i, act );
+			CONSOLE_LOG ( "Got I", all_rivers[river_index].i, act );
 			// SOURCE
 			all_rivers[river_index].source = std::stoi ( RiverData_matches[M++].str () );
-			VUCO ( "Got SOURCE", all_rivers[river_index].source, act );
+			CONSOLE_LOG ( "Got SOURCE", all_rivers[river_index].source, act );
 			// MOUTH
 			all_rivers[river_index].mouth = std::stoi ( RiverData_matches[M++].str () );
-			VUCO ( "Got MOUTH", all_rivers[river_index].mouth, act );
+			CONSOLE_LOG ( "Got MOUTH", all_rivers[river_index].mouth, act );
 			// DISCHARGE
 			M++;
 			// LENGTH
@@ -1436,22 +1436,22 @@
 			M++;
 			// PARENT
 			all_rivers[river_index].parent = StringToShort ( RiverData_matches[M++].str () );
-			VUCO ( "Got PARENT", all_rivers[river_index].parent, act );
+			CONSOLE_LOG ( "Got PARENT", all_rivers[river_index].parent, act );
 			// CELLS
 			std::string RiverCells_str = RiverData_matches[M++].str ();
-			VUCO ( fn, "Got RiverCells_str", act );
+			CONSOLE_LOG ( fn, "Got RiverCells_str", act );
 			std::sregex_iterator RiverCell_itr ( RiverCells_str.cbegin (), RiverCells_str.cend (), rex_cell_ids );
 			while (RiverCell_itr != sreg_end) {
 				std::string temp_vuco = RiverCell_itr->str ();
 				all_rivers[river_index].cells.push_back ( std::stoi ( RiverCell_itr->str ( 0 ) ) );
-				VUCO ( "Got cell", temp_vuco, act);
+				CONSOLE_LOG ( "Got cell", temp_vuco, act);
 				RiverCell_itr++;
 			}
 			// BASIN
 			M++;
 			// NAME
 			all_rivers[river_index].name = RiverData_matches[M++].str () ;
-			VUCO ( "got name", all_rivers[river_index].name, act);
+			CONSOLE_LOG ( "got name", all_rivers[river_index].name, act);
 			// TYPE
 			M++;
 			// ID AS A STRING
@@ -1525,7 +1525,7 @@
 
 	std::vector<state_info> StateParse( std::string state_path )
 	{
-		VUCO ( "", "Parsing states..." );
+		CONSOLE_LOG ( "", "Parsing states..." );
 		bool act = FALSE;
 		std::vector<state_info> all_states;
 		std::vector<std::string> state_strs;
@@ -1542,16 +1542,16 @@
 			while (State_Track != sreg_end) {
 				// ID ####################################################################################
 				all_states[state_itr].ID = std::stoi( State_Track->str() );
-				VUCO( "", all_states[state_itr].ID, act );
+				CONSOLE_LOG( "", all_states[state_itr].ID, act );
 				if (all_states[state_itr].ID == 0) { break; } // neutrals have nothing
 				State_Track++;
 				// STATE #################################################################################
 				all_states[state_itr].name = (State_Track->str());
-				VUCO( "", all_states[state_itr].name, act );
+				CONSOLE_LOG( "", all_states[state_itr].name, act );
 				State_Track++;
 				// FULL NAME #############################################################################
 				std::string vvtemp = State_Track->str();
-				VUCO( "", vvtemp, act );
+				CONSOLE_LOG( "", vvtemp, act );
 				State_Track++;
 				// FORM ##################################################################################
 				all_states[state_itr].form = State_Track->str();
@@ -1593,7 +1593,7 @@
 				State_Track++;
 				//URBAN POPULATION #######################################################################
 				vvtemp = State_Track->str();
-				VUCO( "", vvtemp, act );
+				CONSOLE_LOG( "", vvtemp, act );
 				State_Track++;
 
 
@@ -1607,7 +1607,7 @@
 
 	std::vector<culture> CultureParse( std::string culture_path )
 	{
-		VUCO ( "", "Parsing cultures..." );
+		CONSOLE_LOG ( "", "Parsing cultures..." );
 		std::vector<culture> all_cultures;
 		bool act = FALSE;
 		std::vector<std::string> culture_strs;
@@ -1624,7 +1624,7 @@
 			while (Culture_Track != sreg_end) {
 				// ID ####################################################################################
 				all_cultures[culture_itr].id = std::stoi( Culture_Track->str() );
-				VUCO( "", all_cultures[culture_itr].id, act );
+				CONSOLE_LOG( "", all_cultures[culture_itr].id, act );
 				if (all_cultures[culture_itr].id == 0)
 				{
 					Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++;
@@ -1661,7 +1661,7 @@
 					origin_culture.erase ( std::remove ( origin_culture.begin (), origin_culture.end (), '"' ), origin_culture.end () ); //remove " from string
 					//if (origin_culture.size () == 0) { break; }
 					all_cultures[culture_itr].origins.push_back ( origin_culture );
-					VUCO ( "Got origin culture", origin_culture, act );
+					CONSOLE_LOG ( "Got origin culture", origin_culture, act );
 					Culture_Track++;
 				
 				}
@@ -1673,7 +1673,7 @@
 
     std::vector<burg_info> BurgParse( std::string burg_path )
 	{
-		VUCO ("","Parsing burgs...", TRUE );
+		CONSOLE_LOG ("","Parsing burgs...", TRUE );
 		std::vector<burg_info> all_burgs;
 		bool act = FALSE;
 		std::string fn = "BurgParse";
@@ -1691,7 +1691,7 @@
 			while (burg_Track != sreg_end) {
 				// ID ####################################################################################
 				//all_burgs[burg_itr].id = std::stoi( burg_Track->str() );
-				//VUCO( "", all_burgs[burg_itr].id, act );
+				//CONSOLE_LOG( "", all_burgs[burg_itr].id, act );
 				//if (all_burgs[burg_itr].id == 0)
 				//{
 				//	burg_Track++; burg_Track++; burg_Track++; burg_Track++; burg_Track++;
@@ -1725,14 +1725,14 @@
 				//burg_Track++;
 
 				// ID
-				//VUCO ( fn, "Parsing...", act );
+				//CONSOLE_LOG ( fn, "Parsing...", act );
 				all_burgs[burg_itr].id = std::stoi ( burg_Track->str ().substr ( 0, burg_Track->str ().length () - 1 ) );
 				burg_Track++;
-				VUCO ( "ID", all_burgs[burg_itr].id, act );
+				CONSOLE_LOG ( "ID", all_burgs[burg_itr].id, act );
 				// BURG
 				all_burgs[burg_itr].name = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
 				burg_Track++;
-				VUCO ( "NAME", all_burgs[burg_itr].name, act );
+				CONSOLE_LOG ( "NAME", all_burgs[burg_itr].name, act );
 				// PROVINCE
 				burg_Track++;
 				// PROVINCE FULL NAME
@@ -1744,23 +1744,23 @@
 				// CULTURE
 				all_burgs[burg_itr].culture = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
 				burg_Track++;
-				//VUCO ( "CULTURE", all_burgs[burg_itr].culture, act );
+				//CONSOLE_LOG ( "CULTURE", all_burgs[burg_itr].culture, act );
 				// RELIGION
 				all_burgs[burg_itr].religion = (burg_Track->str().substr( 0, burg_Track->str().length() - 1 ));
 				burg_Track++;
-				//VUCO ( "RELIGION", all_burgs[burg_itr].religion, act );
+				//CONSOLE_LOG ( "RELIGION", all_burgs[burg_itr].religion, act );
 				// POPULATION
 				all_burgs[burg_itr].pop = std::stoi( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) );
 				burg_Track++;
-				//VUCO ( "POP", all_burgs[burg_itr].pop, act );
+				//CONSOLE_LOG ( "POP", all_burgs[burg_itr].pop, act );
 				// LATITUDE
 				all_burgs[burg_itr].y_latitude = static_cast<int>(100*(std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
 				burg_Track++;
-				VUCO ( "LATITUDE", all_burgs[burg_itr].y_latitude, act );
+				CONSOLE_LOG ( "LATITUDE", all_burgs[burg_itr].y_latitude, act );
 				// LONGITUDE
 				all_burgs[burg_itr].x_longitude = static_cast<int>(100 * (std::stof( burg_Track->str().substr( 0, burg_Track->str().length() - 1 ) )));
 				burg_Track++;
-				VUCO ( "LONG", all_burgs[burg_itr].x_longitude, act );
+				CONSOLE_LOG ( "LONG", all_burgs[burg_itr].x_longitude, act );
 				// ELEVATION(ft)
 				burg_Track++;
 				// CAPITAL
@@ -1796,7 +1796,7 @@
 		std::vector<religion> all_religions;
 		bool act = FALSE;
 		std::string fnn = "ReligionParse";
-		VUCO ( fnn, "Parsing religion..." );
+		CONSOLE_LOG ( fnn, "Parsing religion..." );
 		std::vector<std::string> religion_strs;
 		religion_strs = ReadFromLineByLine ( religion_path );
 		religion_strs.erase ( religion_strs.begin () ); // gets rid of format example (initial line of azgaar file)
@@ -1811,7 +1811,7 @@
 			while (Religion_Track != sreg_end) {
 				// ID ####################################################################################
 				all_religions[religion_itr].id = std::stoi ( Religion_Track->str () );
-				VUCO ( fnn, all_religions[religion_itr].id, act );
+				CONSOLE_LOG ( fnn, all_religions[religion_itr].id, act );
 				if (all_religions[religion_itr].id == 0)
 				{
 					//Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++; Culture_Track++;
@@ -1821,7 +1821,7 @@
 				Religion_Track++;
 				// Name #################################################################################
 				all_religions[religion_itr].name = Religion_Track->str ();
-				VUCO ( "Name", all_religions[religion_itr].name, act );
+				CONSOLE_LOG ( "Name", all_religions[religion_itr].name, act );
 				Religion_Track++;
 				// Color #################################################################################
 				std::string bbtemp = Religion_Track->str ();
@@ -1831,15 +1831,15 @@
 				hexifier << std::hex << bbtemp;
 				hexifier >> hexified;
 				all_religions[religion_itr].color = hexified;
-				VUCO ( "Color", all_religions[religion_itr].color, act );
+				CONSOLE_LOG ( "Color", all_religions[religion_itr].color, act );
 				Religion_Track++;
 				// Type #################################################################################
 				all_religions[religion_itr].type = Religion_Track->str ();
-				VUCO ( "Type", all_religions[religion_itr].type, act );
+				CONSOLE_LOG ( "Type", all_religions[religion_itr].type, act );
 				Religion_Track++;
 				// Form #################################################################################
 				all_religions[religion_itr].form = Religion_Track->str ();
-				VUCO ( "Form", all_religions[religion_itr].form, act );
+				CONSOLE_LOG ( "Form", all_religions[religion_itr].form, act );
 				Religion_Track++;
 				// Non-theism and Animism don't have deities
 				// Supreme Deity #################################################################################
@@ -1850,17 +1850,17 @@
 					std::string deity_title = Religion_Track->str ();
 					deity_title.erase ( std::remove ( deity_title.begin (), deity_title.end (), '"' ), deity_title.end () ); //remove " from string
 					all_religions[religion_itr].supreme_deity = deity_name + ", " + deity_title;
-					VUCO ( "Supreme deity", all_religions[religion_itr].supreme_deity, act );
+					CONSOLE_LOG ( "Supreme deity", all_religions[religion_itr].supreme_deity, act );
 				}
 				else {
 					all_religions[religion_itr].supreme_deity = "None";
 				}
 				Religion_Track++;
 				// Area #################################################################################
-				VUCO ( "Area", "Don't Care", act );
+				CONSOLE_LOG ( "Area", "Don't Care", act );
 				Religion_Track++;
 				// Believers #################################################################################
-				VUCO ( "Believers", "Don't care", act );
+				CONSOLE_LOG ( "Believers", "Don't care", act );
 				Religion_Track++;
 				// Origins #################################################################################
 				/// Need to include origins for tracking culture
@@ -1870,7 +1870,7 @@
 					origin_religion.erase ( std::remove ( origin_religion.begin (), origin_religion.end (), '"' ), origin_religion.end () ); //remove " from string
 					//if (origin_religion.size () == 0) { break; }
 					all_religions[religion_itr].origins.push_back ( origin_religion );
-					VUCO ( "Got origin religion", origin_religion, act );
+					CONSOLE_LOG ( "Got origin religion", origin_religion, act );
 					Religion_Track++;
 				}
 			}
@@ -1882,38 +1882,38 @@
     }
 
 
-	void GenericOutput(std::vector<cell_info> all_cells, std::string output_file) {
+	void AllCell_OutputToTextFile(std::vector<cell_info> all_cells, std::string output_file) {
 
 
 		//std::cout << "\nOutputting to log.txt...";
-		VUCO( "output_file", "Outputting..." );
+		CONSOLE_LOG( "output_file", "Outputting..." );
 		std::ofstream outputLog(output_file);		// Whatever is written will be an overwrite eachtime program runs
 		if (outputLog) {
 
 			//YELL("\n[INFO]Cell Data: ");
 
-			for (int proll = 0; proll < all_cells.size(); proll++) {
-				outputLog << "\nCell: " << all_cells[proll].id << "\n";
-				outputLog << "Height: " << all_cells[proll].height << "\n";
-				outputLog << "Biome: " << all_cells[proll].biome << "\n";
-				outputLog << "Type: " << all_cells[proll].type << "\n";
-				outputLog << "Population: " << all_cells[proll].pop << "\n";
-				outputLog << "State: " << all_cells[proll].country << "\n";
-				outputLog << "Sub-state: " << all_cells[proll].sub_country << "\n";
-				outputLog << "Culture: " << all_cells[proll].culture << "\n";
-				outputLog << "Religion: " << all_cells[proll].religion << "\n";
+			for (int cell_itr_GO = 0; cell_itr_GO < all_cells.size(); cell_itr_GO++) {
+				outputLog << "\nCell: " << all_cells[cell_itr_GO].id << "\n";
+				outputLog << "Height: " << all_cells[cell_itr_GO].height << "\n";
+				outputLog << "Biome: " << all_cells[cell_itr_GO].biome << "\n";
+				outputLog << "Type: " << all_cells[cell_itr_GO].type << "\n";
+				outputLog << "Population: " << all_cells[cell_itr_GO].pop << "\n";
+				outputLog << "State: " << all_cells[cell_itr_GO].country << "\n";
+				outputLog << "Sub-state: " << all_cells[cell_itr_GO].sub_country << "\n";
+				outputLog << "Culture: " << all_cells[cell_itr_GO].culture << "\n";
+				outputLog << "Religion: " << all_cells[cell_itr_GO].religion << "\n";
 
 				outputLog << "Verticies:\n";
-				for (int pion = 0; pion < all_cells[proll].verticies.size(); pion++) {
-					outputLog << (all_cells[proll].verticies[pion].x_pos);
+				for (int vertex_itr_GO = 0; vertex_itr_GO < all_cells[cell_itr_GO].verticies.size(); vertex_itr_GO++) {
+					outputLog << (all_cells[cell_itr_GO].verticies[vertex_itr_GO].x_pos);
 					outputLog << " , ";
-					outputLog << (all_cells[proll].verticies[pion].y_pos);
+					outputLog << (all_cells[cell_itr_GO].verticies[vertex_itr_GO].y_pos);
 					outputLog << "\n";
 				}
 
 				outputLog << "Neighbors:\n";
-				for (int plok = 0; plok < all_cells[proll].neighbors.size(); plok++) {
-					outputLog << all_cells[proll].neighbors[plok];
+				for (int neighbor_itr_GO = 0; neighbor_itr_GO < all_cells[cell_itr_GO].neighbors.size(); neighbor_itr_GO++) {
+					outputLog << all_cells[cell_itr_GO].neighbors[neighbor_itr_GO];
 					outputLog << " , ";
 				}
 			}
@@ -1925,7 +1925,7 @@
 			// Properties
 				// ID, height, biome, type, pop, country, sub_country, culture, religion, neighbors
 
-			VUCO("","write complete");
+			CONSOLE_LOG("","write complete");
 
 
 
@@ -1933,6 +1933,42 @@
 		else {
 			throw std::runtime_error("Cannot open log.txt");
 		}//else if couldn't open file
+
+
+	}
+
+	void OutputToTextFile ( std::string text, std::string output_file ) {
+
+
+		//std::cout << "\nOutputting to log.txt...";
+		CONSOLE_LOG ( "output_file", "Outputting..." );
+		std::ofstream outputLog ( output_file );		// Whatever is written will be an overwrite eachtime program runs
+		if (outputLog) {
+			outputLog << text;
+			CONSOLE_LOG ( "", "write complete" );
+		}//end of if for outputLog
+		else { //if couldn't open file
+			throw std::runtime_error ( "[OutputToTextFile] Cannot open file" );
+		}//end of else 
+
+
+	}
+
+	void OutputToTextFile ( std::vector<std::string> text_array, std::string output_file ) {
+
+
+		//std::cout << "\nOutputting to log.txt...";
+		CONSOLE_LOG ( "output_file", "Outputting..." );
+		std::ofstream outputLog ( output_file );		// Whatever is written will be an overwrite eachtime program runs
+		if (outputLog) {
+			for (std::string text : text_array) {
+				outputLog << text << "\n";
+			}
+			CONSOLE_LOG ( "", "write complete" );
+		}//end of if for outputLog
+		else { //if couldn't open file
+			throw std::runtime_error ( "[OutputToTextFile] Cannot open file" );
+		}//end of else 
 
 
 	}
@@ -1957,7 +1993,7 @@
 		Not all burgs are getting mapped to a cell
 
 		*/
-		VUCO ("","Transforming points...", TRUE );
+		CONSOLE_LOG ("","Transforming points...", TRUE );
 
 		bool act = FALSE;
 		std::string fn = "TransformPoints";
@@ -1988,18 +2024,18 @@
 			}
 		}
 		for (auto& each_burg : all_burgs) {
-			VUCO ( fn, "Was:", act );
-			VUCO ( "Y", each_burg.y_latitude, act );
-			VUCO ( "X", each_burg.x_longitude, act );
+			CONSOLE_LOG ( fn, "Was:", act );
+			CONSOLE_LOG ( "Y", each_burg.y_latitude, act );
+			CONSOLE_LOG ( "X", each_burg.x_longitude, act );
 
 			each_burg.x_longitude += horiz_shift_addend;
 			each_burg.x_longitude *= horiz_stretch_factor;
 			each_burg.y_latitude += vertical_shift_addend;
 			each_burg.y_latitude *= vertical_stretch_factor;
 
-			VUCO ( fn, "Now:", act );
-			VUCO ( "Y", each_burg.y_latitude, act );
-			VUCO ( "X", each_burg.x_longitude, act );
+			CONSOLE_LOG ( fn, "Now:", act );
+			CONSOLE_LOG ( "Y", each_burg.y_latitude, act );
+			CONSOLE_LOG ( "X", each_burg.x_longitude, act );
 			if (each_burg.y_latitude < 0 || each_burg.x_longitude < 0) {
 
 				throw std::runtime_error ( "IMPROPER MAPPING OF BURG AND CELLS!" );
@@ -2040,17 +2076,17 @@
 		int tp_vertex_itr;
 		tp_cell_count = all_cells.size ();
 
-		VUCO ( "", "Extents are", act );
-		VUCO ( "Left", std::get<0> ( extents ), act );
-		VUCO ( "Right", std::get<1> ( extents ), act );
-		VUCO ( "Top", std::get<2> ( extents ), act );
-		VUCO ( "Bottom", std::get<3> ( extents ), act );
+		CONSOLE_LOG ( "", "Extents are", act );
+		CONSOLE_LOG ( "Left", std::get<0> ( extents ), act );
+		CONSOLE_LOG ( "Right", std::get<1> ( extents ), act );
+		CONSOLE_LOG ( "Top", std::get<2> ( extents ), act );
+		CONSOLE_LOG ( "Bottom", std::get<3> ( extents ), act );
 
 		int horiz_shift_addend = std::abs ( std::get<0> ( extents ) );
 		int vertical_shift_addend = std::abs ( std::get<3> ( extents ) );
 
-		VUCO ( "Horiz_shift", horiz_shift_addend, act );
-		VUCO ( "Vertical_shift", vertical_shift_addend, act );
+		CONSOLE_LOG ( "Horiz_shift", horiz_shift_addend, act );
+		CONSOLE_LOG ( "Vertical_shift", vertical_shift_addend, act );
 
 		//double horiz_stretch_factor = static_cast<double>(desired_width) / (horiz_shift_addend + std::get<1> ( extents ));
 		//double vertical_stretch_factor = static_cast<double>(desired_height) / (vertical_shift_addend + std::get<2> ( extents ));
@@ -2073,18 +2109,18 @@
 			}
 		}
 		for (auto& each_burg : all_burgs) {
-			VUCO ( fn, "Was:", act );
-			VUCO ( "Y", each_burg.y_latitude, act );
-			VUCO ( "X", each_burg.x_longitude, act );
+			CONSOLE_LOG ( fn, "Was:", act );
+			CONSOLE_LOG ( "Y", each_burg.y_latitude, act );
+			CONSOLE_LOG ( "X", each_burg.x_longitude, act );
 
 			each_burg.x_longitude += horiz_shift_addend;
 			
 			each_burg.y_latitude += vertical_shift_addend;
 			
 
-			VUCO ( fn, "Now:", act );
-			VUCO ( "Y", each_burg.y_latitude, act );
-			VUCO ( "X", each_burg.x_longitude, act );
+			CONSOLE_LOG ( fn, "Now:", act );
+			CONSOLE_LOG ( "Y", each_burg.y_latitude, act );
+			CONSOLE_LOG ( "X", each_burg.x_longitude, act );
 			if (each_burg.y_latitude < 0 || each_burg.x_longitude < 0) {
 
 				throw std::runtime_error ( "IMPROPER MAPPING OF BURG AND CELLS!" );
@@ -2102,9 +2138,9 @@
 		//int total_burg_count = all_burgs_copy.size ();
 		bool FNACT = FALSE;
 		std::string fname = "AssignBurgToCells";
-		VUCO ( fname, "Getting all_cells...", FNACT );
+		CONSOLE_LOG ( fname, "Getting all_cells...", FNACT );
 		int total_burg_count = all_burgs_copy.size ();
-		VUCO ( "Have this many burgs:", total_burg_count, FNACT );
+		CONSOLE_LOG ( "Have this many burgs:", total_burg_count, FNACT );
 		int temp_burg_size = all_burgs_copy.size ();
 		for (auto& each_cell : all_cells) {
 			index++;
@@ -2123,25 +2159,25 @@
 				Ymax = (each_vertex.y_pos > Ymax) ? each_vertex.y_pos : Ymax;
 				Ymin = (each_vertex.y_pos < Ymin) ? each_vertex.y_pos : Ymin;
 			}
-			//VUCO ( fname, "Extents are", FNACT );
-			//VUCO ( "Xmin", Xmin, FNACT );
-			//VUCO ( "Xmax", Xmax, FNACT );
-			//VUCO ( "Ymin", Ymin, FNACT );
-			//VUCO ( "Ymax", Ymax, FNACT );
+			//CONSOLE_LOG ( fname, "Extents are", FNACT );
+			//CONSOLE_LOG ( "Xmin", Xmin, FNACT );
+			//CONSOLE_LOG ( "Xmax", Xmax, FNACT );
+			//CONSOLE_LOG ( "Ymin", Ymin, FNACT );
+			//CONSOLE_LOG ( "Ymax", Ymax, FNACT );
 			temp_burg_size = all_burgs_copy.size ();
-			VUCO ( "Have X Burgs left", temp_burg_size, FNACT );
-			if (temp_burg_size == 0) { VUCO ( fname, "No more burgs!", FNACT ); break; }
-			//VUCO ( fname, "Checking burg...", FNACT );
+			CONSOLE_LOG ( "Have X Burgs left", temp_burg_size, FNACT );
+			if (temp_burg_size == 0) { CONSOLE_LOG ( fname, "No more burgs!", FNACT ); break; }
+			//CONSOLE_LOG ( fname, "Checking burg...", FNACT );
 			for (int i = 0; i < temp_burg_size; i++) {
 				// Is this burg within the confines of the cell?
 				// If yes, add burg ID to cell ID
-				//VUCO ( fname, "Burg is at", FNACT );
-				//VUCO ( "X", all_burgs_copy[i].x_longitude );
-				//VUCO ( "Y", all_burgs_copy[i].y_latitude );
+				//CONSOLE_LOG ( fname, "Burg is at", FNACT );
+				//CONSOLE_LOG ( "X", all_burgs_copy[i].x_longitude );
+				//CONSOLE_LOG ( "Y", all_burgs_copy[i].y_latitude );
 				//VUCO_WAN ( all_burgs_copy[i].y_latitude); VUCO_WAN (all_burgs_copy[i].x_longitude);
 				if ((all_burgs_copy[i].y_latitude >= Ymin && all_burgs_copy[i].y_latitude <= Ymax) && (all_burgs_copy[i].x_longitude >= Xmin && all_burgs_copy[i].x_longitude <= Xmax)) {
-					VUCO ( fname, "Burg assigned!", FNACT );
-					VUCO ( all_burgs_copy[i].name, each_cell.id, FNACT );
+					CONSOLE_LOG ( fname, "Burg assigned!", FNACT );
+					CONSOLE_LOG ( all_burgs_copy[i].name, each_cell.id, FNACT );
 					each_cell.burg_id = all_burgs_copy[i].id;
 					index_list.push_back ( index );
 					all_burgs_copy.erase ( all_burgs_copy.begin () + i );
@@ -2153,9 +2189,9 @@
 		if (temp_burg_size != 0) {
 			for (auto& each_burg : all_burgs_copy) {
 				std::string temp_name = std::to_string ( each_burg.id );
-				VUCO ( temp_name, each_burg.name, FNACT );
-				VUCO ( temp_name, each_burg.x_longitude, FNACT );
-				VUCO ( temp_name, each_burg.y_latitude, FNACT );
+				CONSOLE_LOG ( temp_name, each_burg.name, FNACT );
+				CONSOLE_LOG ( temp_name, each_burg.x_longitude, FNACT );
+				CONSOLE_LOG ( temp_name, each_burg.y_latitude, FNACT );
 			}
 
 			throw std::runtime_error ( "UNASSIGNED BURGS!" );
@@ -2170,18 +2206,18 @@
 
 	std::unordered_set<std::string> TAGParse( std::vector<state_info>& all_states )
 	{
-		VUCO ( "", "Parsing tags..." );
+		CONSOLE_LOG ( "", "Parsing tags..." );
 		// Iterate through each state, take name and translate into a unique 3 char TAG and update each state
 		std::unordered_set<std::string> all_TAGS;
 		bool acto = FALSE;
 		for (auto& elem : all_states) {
-			VUCO( "full name is:", elem.name, acto );
+			CONSOLE_LOG( "full name is:", elem.name, acto );
 			std::string temporary_tag;
 			int while_count = 0;
 			char c = 'E';
 			do {
 				temporary_tag = "";
-				VUCO( "Temp Clear", temporary_tag, acto );
+				CONSOLE_LOG( "Temp Clear", temporary_tag, acto );
 				// Try to use just first three letters
 				if (while_count == 0) {
 					temporary_tag = elem.name.substr( 0, 3 );
@@ -2222,10 +2258,10 @@
 					}
 				}
 				transform( temporary_tag.begin(), temporary_tag.end(), temporary_tag.begin(), ::toupper );
-				VUCO( "Got temp tag", temporary_tag, acto );
+				CONSOLE_LOG( "Got temp tag", temporary_tag, acto );
 				// Check if its NAT, REB, or PIR. Can't be those
 				if (!(temporary_tag.compare( 0, 3, "NAT" )) || !(temporary_tag.compare( 0, 3, "PIR" )) || !(temporary_tag.compare( 0, 3, "REB" ))) {
-					VUCO( "", "GOT BAD TAG, TRY AGAIN", acto );
+					CONSOLE_LOG( "", "GOT BAD TAG, TRY AGAIN", acto );
 					while_count++;
 					continue;
 				}
@@ -2239,7 +2275,7 @@
 
 	std::vector<province_info> CreateProvinces ( std::vector<cell_info> all_cells )
 	{
-		VUCO ( "", "Creating provinces..." );
+		CONSOLE_LOG ( "", "Creating provinces..." );
 		std::vector<province_info> all_provinces;
 		short prov_id_itr = 1;
 		for (auto& each_cell : all_cells) {

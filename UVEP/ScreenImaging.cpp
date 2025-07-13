@@ -288,10 +288,10 @@ void ScreenRaster::	 Export8( const char* path , int bytes) {
 
 
 			unsigned char color[] = { b_ch };
-			//VUCO( "", "Outputting to .bmp..." );
+			//CONSOLE_LOG( "", "Outputting to .bmp..." );
 			f.write( reinterpret_cast<char*>(color), 1 );	
 		}
-		//VUCO( "", "Outputting line .bmp..." );
+		//CONSOLE_LOG( "", "Outputting line .bmp..." );
 		if (paddingAmount>0)
 			f.write( reinterpret_cast<char*>(bmpPad), paddingAmount );
 		
@@ -300,7 +300,7 @@ void ScreenRaster::	 Export8( const char* path , int bytes) {
 
 
 	f.close();
-	VUCO( path, "File created");
+	CONSOLE_LOG( path, "File created");
 	delete[] bmpPad;
 }
 
@@ -438,7 +438,7 @@ void Image::  Export24(const char* path) {
 
 
 	f.close();
-	VUCO(path,"File created");
+	CONSOLE_LOG(path,"File created");
 }
 void Image::  MapRaster(ScreenRaster& screen) {
 
@@ -606,7 +606,7 @@ std::vector<RPoint>		DrawPolygon_TrackAreas( RPoly* poly, const IPixel* color, S
 	std::vector<std::vector<std::vector<RPoint>>> tracked_areas;
 	int polysize = poly->points.size();
 	if (polysize == 0) {
-		VUCO( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
+		CONSOLE_LOG( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
 		return std::vector<RPoint>();
 	}
 	int pt_track = 0;
@@ -648,7 +648,7 @@ void					DrawPolygon( RPoly * poly, const IPixel * color, ScreenRaster & screen 
 {
 		int polysize = poly->points.size();
 		if (polysize == 0) {
-			VUCO( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
+			CONSOLE_LOG( "DrawPolygon", "ERROR! DRAWPOLYGON CALLED WHEN POLYSIZE ZERO", 1 );
 			return;
 		}
 		int pt_track = 0;
