@@ -35,7 +35,7 @@ void CONSOLE_LOG(std::string where_ele, ST message, bool act)
 #endif
 }
 template <class ST>
-void VUCO_WAN( ST message )
+void CONSOLE_MESSAGE( ST message )
 {
 #ifdef VUCO_CONSOLE
 	// write message to std::cerr

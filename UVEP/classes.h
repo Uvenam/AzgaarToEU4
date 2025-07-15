@@ -67,7 +67,7 @@ struct settings {
 	int DEVELOPMENT_POP_CAP[3] = { 5,5,5 };
 	bool DEVELOPMENT_ADD_RANDOM = TRUE;				
 	int	 DEVELOPMENT_RANDOM_RANGE[2] = { 3,30 };	
-	float DEVELOPMENT_POP_WEIGHTS[3] = { 0.5, 0.5, 0.5 };
+	float DEVELOPMENT_POP_WEIGHTS[3] = { .001, 0.001, 0.005 };
 	// DEVELOPMENT_BUILDING_VALUES
 	int DBV[7][3] =					
 	{
@@ -205,7 +205,9 @@ struct cell_info {
 	short biome;
 	std::string type;
 	int pop;
+	// the azgaar "state"
 	short country;
+	// the azgaar "province"
 	short sub_country;
 	short culture;
 	short religion;
@@ -775,6 +777,7 @@ std::vector<religion> ReligionParse ( std::string religion_path );
 void AllCell_OutputToTextFile(std::vector<cell_info> all_cells, std::string output_file);
 void OutputToTextFile ( std::string text, std::string output_file );
 void OutputToTextFile ( std::vector<std::string> text_array, std::string output_file );
+void Province_OutputToTextFile ( province_info single_province, std::string output_file );
 
 void TransformPoints( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int,int,int,int>& extents );
 void TransformPoints_NoStretch ( std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents );

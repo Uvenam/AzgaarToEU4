@@ -15,7 +15,8 @@ import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.429"
+#define		VERSION_STAMP	"V 0.430"
+#define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -110,7 +111,16 @@ Vania Cells 2022-10-09-13-05.geojson
 std::regex desired_cell_csv_path( "\[\\w\]+ Cells \[0-9^-\]+.geojson" );
 
 std::string dir_EU4 = "EU4_AZGAAR";
-std::string dir_countries = dir_EU4 + "/" + "countries";
+std::string dir_common = dir_EU4 + "/" + "common";
+std::string dir_countries = dir_common + "/" + "countries";
+std::string dir_country_tags = dir_common + "/" + "country_tags";
+std::string dir_EU4_cultures = dir_common + "/" + "cultures";
+std::string dir_ideas = dir_common + "/" + "ideas";
+std::string dir_history = dir_EU4 + "/" + "history";
+std::string dir_provinces = dir_history + "/" + "provinces";
+std::string dir_history_countries = dir_history + "/" + "countries";
+std::string dir_map = dir_EU4 + "/" + "map";
+
 /* Structure: EU4
 common
 	bookmarks
@@ -240,6 +250,7 @@ std::fstream fileStream;
 
 //std::cout << VERSION_STAMP << std::endl;
 CONSOLE_LOG( "", VERSION_STAMP );
+CONSOLE_LOG ( "", TODO_TASK );
 /*################################################################################################*/
 
 
@@ -486,6 +497,56 @@ CONSOLE_LOG( "", VERSION_STAMP );
 /// 16. Want to parse AZGAAR religions
 	std::vector<religion> all_religions;
 	all_religions = ReligionParse ( religions_path );
+	//AZGAAR: type, form, deity, potential(state,global,culture)
+	//EU4: defender_of_faith, can_form_personal_unions, center_of_religion, flags_with_emblem_percentage, flag_emblem_index_range, color, icon, allowed_conversion, country (effects), country_as_secondary(effects), hre_religion, on_convert, heretic, allowed_center_conversion
+	//EU4: organized as group = { specific_religion = {...} specific_religion2 = {..}}
+	/*
+	zoroastrian_group = {
+	flag_emblem_index_range = { 110 110 }
+	defender_of_faith = yes
+	zoroastrian = {
+		icon = 26
+		color = { 127 178 51 }
+		province = {
+			local_missionary_strength = -0.02
+		}
+		country = {
+			tolerance_own = 2
+			trade_efficiency = 0.1
+		}
+		country_as_secondary = {
+			merchants = 1
+			tolerance_own = 1
+		}
+		allowed_center_conversion = {
+			sunni
+			shiite
+			orthodox
+			coptic
+			hinduism
+		}
+
+		holy_sites = { 2212 4430 2223 441 4336 }
+
+		blessings = {
+			blessing_yasna
+			blessing_haoma
+			blessing_navjote
+			blessing_manthras
+			blessing_dakhma
+		}
+		
+		heretic = { MAZDAKI MANICHEAN }	
+	}
+	
+	harmonized_modifier = harmonized_zoroastrian_group
+	
+	crusade_name = HOLY_WAR
+	}
+	*/
+	/// Need to make map between religion ID and religion name
+
+
 
 /*##########################      WORKING WITH THE CULUTRES      #################################*/
 /*################################################################################################*/
@@ -504,6 +565,7 @@ CONSOLE_LOG( "", VERSION_STAMP );
 /// 18. Want to use AZGAAR namebase as reference for name/provinces/armies/etc. Therefore, parse.
 	CONSOLE_LOG( "", DESC[selected_language][NAMEBASE_GET] );
 	std::vector<culture_namebase> all_namebases;
+	CONSOLE_MESSAGE ( "Namebases gotten" );
 
 	std::vector<std::string> namebase_file_lines;
 	namebase_file_lines = ReadFromLineByLine( namesbase_path );
@@ -619,7 +681,7 @@ CONSOLE_LOG( "", VERSION_STAMP );
 			temp_name[0] = tolower ( temp_name[0] );
 			each_culture.name = temp_name;
 
-			//VUCO_WAN ( '\n' ); VUCO_WAN ( "Assign culture name: " ); VUCO_WAN ( temp_name ); VUCO_WAN ( " From " ); VUCO_WAN ( each_culture.namesbase ); VUCO_WAN ( '\n' );
+			//CONSOLE_MESSAGE ( '\n' ); CONSOLE_MESSAGE ( "Assign culture name: " ); CONSOLE_MESSAGE ( temp_name ); CONSOLE_MESSAGE ( " From " ); CONSOLE_MESSAGE ( each_culture.namesbase ); CONSOLE_MESSAGE ( '\n' );
 
 			for (int x = 0; x <= 150;x++) {
 				each_culture.male_names.push_back (		all_namebase_map[each_culture.namesbase].fn_MakeWordAzgaar ( letters_min, letters_max, doubles )	);
@@ -1360,6 +1422,44 @@ country_decisions = {
 	//std::random_device rd; // obtain random number from hardware
 	//std::mt19937 gen( rd() ); // seed generator
 	//std::uniform_int_distribution<> distrib( 0, 255 ); //define the range // distrib(gen)
+
+/// 22. Assign religions to provinces
+
+/// 23. Assign tags to provinces
+	for (auto& each_province : all_provinces) {
+		// for each province, see the cell_id's and their respective "states" and "provinces"
+		each_province.owner = ID_to_TAG[all_cell_map[each_province.cell_ids[0]].country];
+	}
+
+/// 24. Create /history/provinces folder and files
+	// format:
+	/* PROVID - Province Name.txt
+	owner = SON
+	controller = SON
+	culture = songhai
+	is_city = yes
+	base_manpower = 2
+	religion = sunni
+	capital = "Gao"
+	trade_goods = cloth
+	hre = no
+	base_tax = 7
+	base_production = 7
+	add_core = SON
+	discovered_by = sub_saharan
+	fort_15th = yes
+	extra_cost = 8
+	center_of_trade = 1
+	*/
+
+	EnsureDirectory ( dir_history );
+	EnsureDirectory ( dir_provinces );
+	CONSOLE_LOG ( "PROV_GEN", "Generating history files..." );
+	for (auto& each_province : all_provinces) {
+		std::string dir_province_file = dir_provinces + "/" + std::to_string(each_province.prov_id) + " - " + each_province.name + ".txt";
+		Province_OutputToTextFile ( each_province, dir_province_file );	
+	}
+	CONSOLE_MESSAGE ( "History files generated" );
 
 
 /// 25. Want to create files for EU4, mainly by rasterizing AZGAAR map into EU4 format.

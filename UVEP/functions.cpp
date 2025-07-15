@@ -209,7 +209,7 @@ std::string FindFileDirectory(std::string base_directory, std::regex filter )
 		throw std::runtime_error( std::string("Couldn't find desired file in ") + base_directory);
 	}
 	{std::string vuco_temp = "File " + temp + " found";
-	VUCO_WAN( vuco_temp );
+	CONSOLE_MESSAGE( vuco_temp );
 	}
 
     return temp;

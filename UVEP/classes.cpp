@@ -1297,7 +1297,7 @@
 
 			CellData_itr++;
 		}// end of while(CellData_itr != sreg_end){
-		VUCO_WAN( "Cells updated" );
+		CONSOLE_MESSAGE( "Cells updated" );
 		return std::make_tuple(left_most, right_most, top_most, bottom_most);
 
 
@@ -1462,7 +1462,7 @@
 
 			RiverData_itr++;
 		}// end of while(CellData_itr != sreg_end){
-		VUCO_WAN ( "Rivers updated" );
+		CONSOLE_MESSAGE ( "Rivers updated" );
 		return;
 
 
@@ -1600,7 +1600,7 @@
 
 			}
 		}
-		VUCO_WAN ( "States parsed." );
+		CONSOLE_MESSAGE ( "States parsed." );
 
 		return all_states;
 	}
@@ -1667,7 +1667,7 @@
 				}
 			}
 		}
-		VUCO_WAN ( "Cultures parsed." );
+		CONSOLE_MESSAGE ( "Cultures parsed." );
 		return all_cultures;
 	}
 
@@ -1787,7 +1787,7 @@
 
 			}
 		}
-		VUCO_WAN ( "Burgs parsed" );
+		CONSOLE_MESSAGE ( "Burgs parsed" );
 		return all_burgs;
 	}
 
@@ -1875,7 +1875,7 @@
 				}
 			}
 		}
-		VUCO_WAN ( "Religions parsed." );
+		CONSOLE_MESSAGE ( "Religions parsed." );
 
 
 		return all_religions;
@@ -1973,6 +1973,43 @@
 
 	}
 
+
+	void Province_OutputToTextFile ( province_info single_province, std::string output_file ) {
+
+
+		//std::cout << "\nOutputting to log.txt...";
+		//CONSOLE_LOG ( output_file, "Outputting..." );
+		std::ofstream outputLog ( output_file );		// Whatever is written will be an overwrite eachtime program runs
+		if (outputLog) {
+
+			//YELL("\n[INFO]Cell Data: ");
+
+			outputLog << "\nculture = " << single_province.culture;
+			outputLog << "\nreligion = " << single_province.religion;
+			outputLog << "\ncapital = " << single_province.name;
+			outputLog << "\nowner = " << single_province.owner;
+			outputLog << "\ncontroller = " << single_province.owner;
+			outputLog << "\nadd_core = " << single_province.owner;
+			outputLog << "\nis_city = yes";
+			outputLog << "\ntrade_goods = " << single_province.trade_good;
+			outputLog << "\nbase_manpower = " << std::to_string(single_province.base_dev[2]);
+			outputLog << "\nhre = " << "no";
+			outputLog << "\nbase_tax = " << std::to_string(single_province.base_dev[0]);
+			outputLog << "\nbase_production = " << std::to_string(single_province.base_dev[1]);
+
+			//CONSOLE_MESSAGE ( "Output complete" );
+			// for each discovered by output individual discovered by
+			//outputLog << "\ndiscovered_by = "
+			//outputLog << "\ndiscovered_by = muslim
+			//outputLog << "\ndiscovered_by = ottoman
+		}//end of if for outputLog
+		else {
+			throw std::runtime_error ( "Cannot open log.txt" );
+		}//else if couldn't open file
+
+
+	}
+
 	void TransformPoints ( int desired_width, int desired_height, std::vector<burg_info>& all_burgs, std::vector<cell_info>& all_cells, std::tuple<int, int, int, int>& extents )
 	{
 
@@ -2044,6 +2081,7 @@
 
 		}
 
+		CONSOLE_MESSAGE ("Points Transformed");
 
 		
 	}
@@ -2174,7 +2212,7 @@
 				//CONSOLE_LOG ( fname, "Burg is at", FNACT );
 				//CONSOLE_LOG ( "X", all_burgs_copy[i].x_longitude );
 				//CONSOLE_LOG ( "Y", all_burgs_copy[i].y_latitude );
-				//VUCO_WAN ( all_burgs_copy[i].y_latitude); VUCO_WAN (all_burgs_copy[i].x_longitude);
+				//CONSOLE_MESSAGE ( all_burgs_copy[i].y_latitude); CONSOLE_MESSAGE (all_burgs_copy[i].x_longitude);
 				if ((all_burgs_copy[i].y_latitude >= Ymin && all_burgs_copy[i].y_latitude <= Ymax) && (all_burgs_copy[i].x_longitude >= Xmin && all_burgs_copy[i].x_longitude <= Xmax)) {
 					CONSOLE_LOG ( fname, "Burg assigned!", FNACT );
 					CONSOLE_LOG ( all_burgs_copy[i].name, each_cell.id, FNACT );
@@ -2269,7 +2307,7 @@
 			} while (!std::get<1>( all_TAGS.emplace( temporary_tag ) ));
 			elem.TAG = temporary_tag;
 		}
-		VUCO_WAN ( "Tags parsed." );
+		CONSOLE_MESSAGE ( "Tags parsed." );
 		return all_TAGS;
 	}
 
@@ -2287,7 +2325,7 @@
 
 			all_provinces.push_back ( new_province );
 		}
-		VUCO_WAN ( "Created provinces." );
+		CONSOLE_MESSAGE ( "Created provinces." );
 		return all_provinces;
 	}
 
