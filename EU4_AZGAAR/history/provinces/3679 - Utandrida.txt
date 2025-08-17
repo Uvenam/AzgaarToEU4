@@ -1,0 +1,13 @@
+
+culture = luzonanilo
+religion = 
+capital = Utandrida
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 99
+hre = no
+base_tax = 20
+base_production = 1

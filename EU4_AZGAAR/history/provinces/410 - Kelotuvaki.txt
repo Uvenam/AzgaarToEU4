@@ -1,0 +1,13 @@
+
+culture = utiorhola
+religion = 
+capital = Kelotuvaki
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 71
+hre = no
+base_tax = 15
+base_production = 1

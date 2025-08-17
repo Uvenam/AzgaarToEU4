@@ -1,0 +1,13 @@
+
+culture = maldongham
+religion = 
+capital = Gatesbury
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 41
+hre = no
+base_tax = 14
+base_production = 6

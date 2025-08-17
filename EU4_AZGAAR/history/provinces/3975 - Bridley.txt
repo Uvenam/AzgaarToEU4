@@ -1,0 +1,13 @@
+
+culture = kenil
+religion = 
+capital = Bridley
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 81
+hre = no
+base_tax = 17
+base_production = 1

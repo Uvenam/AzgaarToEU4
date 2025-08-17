@@ -1,0 +1,13 @@
+
+culture = kaskika
+religion = 
+capital = Tuuraha
+owner = VIL
+controller = VIL
+add_core = VIL
+is_city = yes
+trade_goods = 
+base_manpower = 213
+hre = no
+base_tax = 43
+base_production = 1

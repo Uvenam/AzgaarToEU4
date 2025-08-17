@@ -1,0 +1,13 @@
+
+culture = bouzy
+religion = 
+capital = Chatescreneuf
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 76
+hre = no
+base_tax = 16
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = pesco
+religion = 
+capital = Normanico
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 28
+hre = no
+base_tax = 6
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = pfafenbuorn
+religion = 
+capital = Guten
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 54
+hre = no
+base_tax = 11
+base_production = 1

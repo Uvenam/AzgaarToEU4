@@ -1,0 +1,13 @@
+
+culture = tulurala
+religion = 
+capital = Hyvinumuot
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 77
+hre = no
+base_tax = 32
+base_production = 16

@@ -1,0 +1,13 @@
+
+culture = potiereleroy
+religion = 
+capital = Boiscray
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 126
+hre = no
+base_tax = 26
+base_production = 1

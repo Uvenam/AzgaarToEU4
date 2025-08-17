@@ -1,0 +1,13 @@
+
+culture = lagarrera
+religion = 
+capital = Luzontes
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 104
+hre = no
+base_tax = 49
+base_production = 28

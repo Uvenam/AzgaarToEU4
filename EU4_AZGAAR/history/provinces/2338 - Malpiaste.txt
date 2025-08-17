@@ -1,0 +1,13 @@
+
+culture = pueblla
+religion = 
+capital = Malpiaste
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 69
+hre = no
+base_tax = 14
+base_production = 1

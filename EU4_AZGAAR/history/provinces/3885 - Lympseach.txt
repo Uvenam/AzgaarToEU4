@@ -1,0 +1,13 @@
+
+culture = chingrave
+religion = 
+capital = Lympseach
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 91
+hre = no
+base_tax = 19
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = nivalankip
+religion = 
+capital = Heinola
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 3
+hre = no
+base_tax = 1
+base_production = 1

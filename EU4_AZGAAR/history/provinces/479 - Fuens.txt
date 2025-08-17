@@ -1,0 +1,13 @@
+
+culture = iniescas
+religion = 
+capital = Fuens
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 57
+hre = no
+base_tax = 12
+base_production = 1

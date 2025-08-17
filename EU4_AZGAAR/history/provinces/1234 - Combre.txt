@@ -1,0 +1,13 @@
+
+culture = chevileicheb
+religion = 
+capital = Combre
+owner = AUI
+controller = AUI
+add_core = AUI
+is_city = yes
+trade_goods = 
+base_manpower = 52
+hre = no
+base_tax = 13
+base_production = 3

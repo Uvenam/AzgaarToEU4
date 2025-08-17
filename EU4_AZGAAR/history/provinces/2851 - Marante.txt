@@ -1,0 +1,13 @@
+
+culture = vicallina
+religion = 
+capital = Marante
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 37
+hre = no
+base_tax = 14
+base_production = 6

@@ -1,0 +1,13 @@
+
+culture = psychena
+religion = 
+capital = Cyrena
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 52
+hre = no
+base_tax = 27
+base_production = 17

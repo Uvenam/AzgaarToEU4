@@ -1,0 +1,13 @@
+
+culture = cerdo
+religion = 
+capital = Roiatenero
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 22
+hre = no
+base_tax = 5
+base_production = 1

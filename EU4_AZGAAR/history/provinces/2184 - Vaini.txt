@@ -1,0 +1,13 @@
+
+culture = karpasa
+religion = 
+capital = Vaini
+owner = VIL
+controller = VIL
+add_core = VIL
+is_city = yes
+trade_goods = 
+base_manpower = 5
+hre = no
+base_tax = 1
+base_production = 1

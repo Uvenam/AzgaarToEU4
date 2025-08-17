@@ -1,0 +1,13 @@
+
+culture = vrignogentbar
+religion = 
+capital = Pithis
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 12
+hre = no
+base_tax = 4
+base_production = 2

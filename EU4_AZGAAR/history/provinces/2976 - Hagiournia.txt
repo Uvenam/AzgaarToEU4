@@ -1,0 +1,13 @@
+
+culture = psychipoli
+religion = 
+capital = Hagiournia
+owner = APH
+controller = APH
+add_core = APH
+is_city = yes
+trade_goods = 
+base_manpower = 27
+hre = no
+base_tax = 6
+base_production = 1

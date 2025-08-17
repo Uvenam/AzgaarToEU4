@@ -1,0 +1,13 @@
+
+culture = piediano
+religion = 
+capital = Pognano
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 20
+hre = no
+base_tax = 4
+base_production = 1

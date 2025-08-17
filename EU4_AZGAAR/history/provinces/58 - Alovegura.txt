@@ -1,0 +1,13 @@
+
+culture = paredos
+religion = 
+capital = Alovegura
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 138
+hre = no
+base_tax = 28
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = oakhan
+religion = 
+capital = Comberbury
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 32
+hre = no
+base_tax = 7
+base_production = 1

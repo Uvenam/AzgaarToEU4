@@ -1,0 +1,13 @@
+
+culture = tourneuvilet
+religion = 
+capital = Treileroly
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 94
+hre = no
+base_tax = 19
+base_production = 1

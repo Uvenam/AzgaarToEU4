@@ -1,0 +1,13 @@
+
+culture = bacyleslo
+religion = 
+capital = Bonyronvil
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 39
+hre = no
+base_tax = 8
+base_production = 1

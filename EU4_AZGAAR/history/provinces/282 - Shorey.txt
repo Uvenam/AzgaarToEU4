@@ -1,0 +1,13 @@
+
+culture = hornbrampt
+religion = 
+capital = Shorey
+owner = HEI
+controller = HEI
+add_core = HEI
+is_city = yes
+trade_goods = 
+base_manpower = 65
+hre = no
+base_tax = 16
+base_production = 3

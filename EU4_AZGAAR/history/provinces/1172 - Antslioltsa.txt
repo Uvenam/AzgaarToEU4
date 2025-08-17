@@ -1,0 +1,13 @@
+
+culture = purmolak
+religion = 
+capital = Antslioltsa
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 69
+hre = no
+base_tax = 14
+base_production = 1

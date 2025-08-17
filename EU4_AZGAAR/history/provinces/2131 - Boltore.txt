@@ -1,0 +1,13 @@
+
+culture = castley
+religion = 
+capital = Boltore
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 97
+hre = no
+base_tax = 20
+base_production = 1

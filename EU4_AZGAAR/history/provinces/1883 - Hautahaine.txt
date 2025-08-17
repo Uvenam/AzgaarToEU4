@@ -1,0 +1,13 @@
+
+culture = ouludasja
+religion = 
+capital = Hautahaine
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 14
+hre = no
+base_tax = 3
+base_production = 1

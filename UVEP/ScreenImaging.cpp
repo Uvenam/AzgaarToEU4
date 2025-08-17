@@ -967,3 +967,5 @@ bool BMPImage::writefile( const char* filename )
 
 	return true;
 }
+
+

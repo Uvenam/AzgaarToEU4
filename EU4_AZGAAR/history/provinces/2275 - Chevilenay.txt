@@ -1,0 +1,13 @@
+
+culture = confly
+religion = 
+capital = Chevilenay
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 70
+hre = no
+base_tax = 41
+base_production = 27

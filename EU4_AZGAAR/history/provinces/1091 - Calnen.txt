@@ -1,0 +1,13 @@
+
+culture = exnine
+religion = 
+capital = Calnen
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 1
+hre = no
+base_tax = 1
+base_production = 1

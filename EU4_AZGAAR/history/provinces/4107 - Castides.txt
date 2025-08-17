@@ -1,0 +1,13 @@
+
+culture = ribalverda
+religion = 
+capital = Castides
+owner = LON
+controller = LON
+add_core = LON
+is_city = yes
+trade_goods = 
+base_manpower = 17
+hre = no
+base_tax = 4
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = kauharep
+religion = 
+capital = Forsmukivi
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 146
+hre = no
+base_tax = 30
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = pfafenbuorn
+religion = 
+capital = Sexau
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 61
+hre = no
+base_tax = 13
+base_production = 1

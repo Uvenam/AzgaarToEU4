@@ -1,0 +1,13 @@
+
+culture = briaray
+religion = 
+capital = Coligiroly
+owner = CHA
+controller = CHA
+add_core = CHA
+is_city = yes
+trade_goods = 
+base_manpower = 211
+hre = no
+base_tax = 107
+base_production = 65

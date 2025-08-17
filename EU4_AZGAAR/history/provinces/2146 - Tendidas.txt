@@ -1,0 +1,13 @@
+
+culture = fuentares
+religion = 
+capital = Tendidas
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 7
+hre = no
+base_tax = 2
+base_production = 1

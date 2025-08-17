@@ -1,0 +1,13 @@
+
+culture = abinge
+religion = 
+capital = Newenewboro
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 36
+hre = no
+base_tax = 8
+base_production = 1

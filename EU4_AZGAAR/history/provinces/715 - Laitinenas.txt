@@ -1,0 +1,13 @@
+
+culture = nivalankip
+religion = 
+capital = Laitinenas
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 99
+hre = no
+base_tax = 20
+base_production = 1

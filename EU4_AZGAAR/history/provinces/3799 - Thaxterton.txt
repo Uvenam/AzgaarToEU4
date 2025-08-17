@@ -1,0 +1,13 @@
+
+culture = kilkhamouth
+religion = 
+capital = Thaxterton
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 64
+hre = no
+base_tax = 13
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = vilja
+religion = 
+capital = Kauniovik
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 31
+hre = no
+base_tax = 7
+base_production = 1

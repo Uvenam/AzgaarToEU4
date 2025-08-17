@@ -1,0 +1,13 @@
+
+culture = grisentecoq
+religion = 
+capital = Vilaillerea
+owner = NES
+controller = NES
+add_core = NES
+is_city = yes
+trade_goods = 
+base_manpower = 127
+hre = no
+base_tax = 26
+base_production = 1

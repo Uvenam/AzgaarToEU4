@@ -1,0 +1,13 @@
+
+culture = kauha
+religion = 
+capital = Kohtluvarvi
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 26
+hre = no
+base_tax = 6
+base_production = 1

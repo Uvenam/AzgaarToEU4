@@ -1,0 +1,13 @@
+
+culture = ponte
+religion = 
+capital = Tintamerton
+owner = HEI
+controller = HEI
+add_core = HEI
+is_city = yes
+trade_goods = 
+base_manpower = 68
+hre = no
+base_tax = 14
+base_production = 1

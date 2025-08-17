@@ -1,0 +1,13 @@
+
+culture = aigosthena
+religion = 
+capital = Sozophalos
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 80
+hre = no
+base_tax = 16
+base_production = 1

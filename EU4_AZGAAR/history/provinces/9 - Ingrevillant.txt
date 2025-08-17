@@ -1,0 +1,13 @@
+
+culture = ladongy
+religion = 
+capital = Ingrevillant
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 137
+hre = no
+base_tax = 28
+base_production = 1

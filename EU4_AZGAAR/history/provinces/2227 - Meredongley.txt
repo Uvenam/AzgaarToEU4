@@ -1,0 +1,13 @@
+
+culture = bidefnal
+religion = 
+capital = Meredongley
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 85
+hre = no
+base_tax = 17
+base_production = 1

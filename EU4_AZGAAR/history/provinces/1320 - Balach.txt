@@ -1,0 +1,13 @@
+
+culture = hausensteil
+religion = 
+capital = Balach
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 5
+hre = no
+base_tax = 1
+base_production = 1

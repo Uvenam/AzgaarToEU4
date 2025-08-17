@@ -1,0 +1,13 @@
+
+culture = luroyrik
+religion = 
+capital = Stamsvika
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 181
+hre = no
+base_tax = 48
+base_production = 12

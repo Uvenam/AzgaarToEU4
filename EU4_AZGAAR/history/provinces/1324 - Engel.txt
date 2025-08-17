@@ -1,0 +1,13 @@
+
+culture = marchen
+religion = 
+capital = Engel
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 50
+hre = no
+base_tax = 10
+base_production = 1

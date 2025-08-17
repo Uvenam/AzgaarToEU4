@@ -1,0 +1,13 @@
+
+culture = hertfelton
+religion = 
+capital = Kenilmondb
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 119
+hre = no
+base_tax = 24
+base_production = 1

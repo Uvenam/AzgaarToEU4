@@ -1,0 +1,13 @@
+
+culture = yebrantalo
+religion = 
+capital = Ilmagas
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 186
+hre = no
+base_tax = 42
+base_production = 5

@@ -1,0 +1,13 @@
+
+culture = yebrantalo
+religion = 
+capital = Pinilmadro
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 65
+hre = no
+base_tax = 24
+base_production = 11

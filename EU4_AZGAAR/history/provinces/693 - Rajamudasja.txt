@@ -1,0 +1,13 @@
+
+culture = ahlaiormase
+religion = 
+capital = Rajamudasja
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 31
+hre = no
+base_tax = 23
+base_production = 17

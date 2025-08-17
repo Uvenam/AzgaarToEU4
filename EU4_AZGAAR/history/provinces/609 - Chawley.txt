@@ -1,0 +1,13 @@
+
+culture = harboumey
+religion = 
+capital = Chawley
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 63
+hre = no
+base_tax = 23
+base_production = 10

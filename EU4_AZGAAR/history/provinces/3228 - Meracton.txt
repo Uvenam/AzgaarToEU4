@@ -1,0 +1,13 @@
+
+culture = axbritham
+religion = 
+capital = Meracton
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 56
+hre = no
+base_tax = 12
+base_production = 1

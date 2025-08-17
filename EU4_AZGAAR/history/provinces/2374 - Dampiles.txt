@@ -1,0 +1,13 @@
+
+culture = sougy
+religion = 
+capital = Dampiles
+owner = NES
+controller = NES
+add_core = NES
+is_city = yes
+trade_goods = 
+base_manpower = 71
+hre = no
+base_tax = 15
+base_production = 1

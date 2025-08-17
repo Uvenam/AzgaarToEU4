@@ -1,0 +1,13 @@
+
+culture = triguslonail
+religion = 
+capital = Chueles
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 19
+hre = no
+base_tax = 4
+base_production = 1

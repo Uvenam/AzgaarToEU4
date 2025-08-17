@@ -1,0 +1,13 @@
+
+culture = maldongham
+religion = 
+capital = Towcester
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 17
+hre = no
+base_tax = 4
+base_production = 1

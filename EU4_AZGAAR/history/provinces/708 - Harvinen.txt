@@ -1,0 +1,13 @@
+
+culture = ahola
+religion = 
+capital = Harvinen
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 131
+hre = no
+base_tax = 27
+base_production = 1

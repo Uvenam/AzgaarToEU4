@@ -1,0 +1,13 @@
+
+culture = holkeid
+religion = 
+capital = Holarkvik
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 53
+hre = no
+base_tax = 11
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = lvovetskil
+religion = 
+capital = Yuryeremys
+owner = ZUB
+controller = ZUB
+add_core = ZUB
+is_city = yes
+trade_goods = 
+base_manpower = 94
+hre = no
+base_tax = 25
+base_production = 6

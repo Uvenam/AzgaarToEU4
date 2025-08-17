@@ -1,0 +1,13 @@
+
+culture = luzonguita
+religion = 
+capital = Paredejar
+owner = LUQ
+controller = LUQ
+add_core = LUQ
+is_city = yes
+trade_goods = 
+base_manpower = 35
+hre = no
+base_tax = 7
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = paredos
+religion = 
+capital = Gerinalver
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 86
+hre = no
+base_tax = 33
+base_production = 16

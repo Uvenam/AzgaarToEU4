@@ -1,0 +1,13 @@
+
+culture = ribalverda
+religion = 
+capital = Lillosa
+owner = LON
+controller = LON
+add_core = LON
+is_city = yes
+trade_goods = 
+base_manpower = 1
+hre = no
+base_tax = 1
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = coligentenoy
+religion = 
+capital = Chatiarery
+owner = AUI
+controller = AUI
+add_core = AUI
+is_city = yes
+trade_goods = 
+base_manpower = 123
+hre = no
+base_tax = 25
+base_production = 1

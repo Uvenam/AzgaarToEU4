@@ -1,0 +1,13 @@
+
+culture = amershin
+religion = 
+capital = Kingtandon
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 31
+hre = no
+base_tax = 20
+base_production = 14

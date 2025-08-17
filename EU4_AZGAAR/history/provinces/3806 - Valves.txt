@@ -1,0 +1,13 @@
+
+culture = chozadola
+religion = 
+capital = Valves
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 88
+hre = no
+base_tax = 30
+base_production = 12

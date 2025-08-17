@@ -1,0 +1,13 @@
+
+culture = maldongham
+religion = 
+capital = Rothborough
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 33
+hre = no
+base_tax = 7
+base_production = 1

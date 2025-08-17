@@ -1,0 +1,13 @@
+
+culture = alcaueque
+religion = 
+capital = Puertande
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 52
+hre = no
+base_tax = 11
+base_production = 1

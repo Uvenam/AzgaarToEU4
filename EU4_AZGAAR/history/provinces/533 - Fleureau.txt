@@ -1,0 +1,13 @@
+
+culture = intvile
+religion = 
+capital = Fleureau
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 6
+hre = no
+base_tax = 2
+base_production = 1

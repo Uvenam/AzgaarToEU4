@@ -1,0 +1,13 @@
+
+culture = solterais
+religion = 
+capital = Chambertin
+owner = AUI
+controller = AUI
+add_core = AUI
+is_city = yes
+trade_goods = 
+base_manpower = 41
+hre = no
+base_tax = 19
+base_production = 11

@@ -15,7 +15,7 @@ import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.430"
+#define		VERSION_STAMP	"V 0.431"
 #define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
@@ -183,7 +183,7 @@ void Fill_Descriptions () {
 	DESC[ENGLISH][FLAG2] = "Unfortunately, retrieving and rendering .svg files is out of the scope of this application";
 	DESC[ENGLISH][FLAG3] = "FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
 	DESC[ENGLISH][FLAG4] = "Generate at least 700 flags of size 128x128";
-	DESC[ENGLISH][FLAG5] = "Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
+	DESC[ENGLISH][FLAG5] = "Required settings for 1920x1080screen: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.335";
 	DESC[ENGLISH][FLAG6] = "Export as PNG, place within flags folder.You should do this 3 or 4 times, and thus will have 3 or 4.png files";
 	DESC[ENGLISH][FLAG7] = "You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
 	DESC[ENGLISH][FLAG8] = "Regions will be using flags from the same pack/file";
@@ -229,6 +229,66 @@ void Fill_Descriptions () {
 }
 
 
+void process_tile ( cv::Mat const& src
+	, cv::Size const& roi_size
+	, int32_t tile_col
+	, int32_t tile_row )
+{
+	cv::Rect roi_bounds ( tile_col * roi_size.width
+		, tile_row * roi_size.height
+		, roi_size.width
+		, roi_size.height );
+	cv::Mat roi ( src ( roi_bounds ) );
+
+	//std::string file_name ( str ( boost::format ( "tiles/tile_%03d_%03d.png" ) % tile_col % tile_row ) );
+
+	std::string file_name = "D:\\O\\A\\OpenAndEdit\\AZGAAR\\flags\\tile-" + std::to_string (tile_col) + "-" + std::to_string (tile_row) + ".png";
+
+
+	//std::vector<int32_t> compression_params{ CV_IMWRITE_PNG_COMPRESSION , 0 };
+	//cv::imwrite ( file_name, roi, compression_params );
+
+	cv::imwrite ( file_name, roi );
+}
+
+class ParallelSaveTiles
+	: public cv::ParallelLoopBody
+{
+public:
+	ParallelSaveTiles ( cv::Mat const& src, cv::Size const& roi_size )
+		: src ( src )
+		, roi_size ( roi_size )
+	{
+	}
+
+	virtual void operator()( cv::Range const& range ) const
+	{
+		int32_t const TILE_COLS ( src.cols / roi_size.width );
+
+		for (int32_t r ( range.start ); r < range.end; ++r) {
+			for (int32_t c ( 0 ); c < TILE_COLS; ++c) {
+				process_tile ( src, roi_size, c, r );
+			}
+		}
+	}
+
+private:
+	cv::Mat const& src;
+	cv::Size const& roi_size;
+};
+
+
+
+void save_tiles ( cv::Mat const& src, cv::Size const& roi_size )
+{
+	CV_Assert ( src.cols % roi_size.width == 0 );
+	CV_Assert ( src.rows % roi_size.height == 0 );
+
+	int32_t const TILE_ROWS ( src.rows / roi_size.height );
+
+	ParallelSaveTiles parallel_impl ( src, roi_size );
+	cv::parallel_for_ ( cv::Range ( 0, TILE_ROWS ), parallel_impl );
+}
 
 
 
@@ -257,7 +317,7 @@ CONSOLE_LOG ( "", TODO_TASK );
 
 	CONSOLE_LOG( "", DESC[selected_language][LOADING1] );
 	settings options;
-	ConfigureSettings ( options );
+//	ConfigureSettings ( options );
 
 
 	CONSOLE_LOG("", DESC[selected_language][AFFIRM1] );
@@ -800,17 +860,37 @@ CONSOLE_LOG ( "", TODO_TASK );
 // CREATION OF FLAGS
 /*################################################################################################*/
 
+/// 21. Flag Creation
+
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG3], TRUE ); //"FOR MASS GENERATION: Use external resource ARMORIA to generate flags OR WIFI GET";
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG4], TRUE );							//"Generate at least 700 flags of size 128x128";
 	// WANT 140, not 128!!!!!
 	// Following is for 128:
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG5], TRUE ); //"Required settings: HUGE gallery, NO SIMPLE shield, white border of thickness 0, scale 1.333";
-	// FIND RESULTS FOR 140!!!!!!
+	// FIND RESULTS FOR 140
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG6], TRUE ); //"Export as PNG, place within flags folder. You should do this 3 or 4 times, and thus will have 3 or 4 .png files";
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG7], TRUE ); // Vertical separation is 8 pixels //"You MUST state the number of flags horizontally in the file name, underscore, and then a unique identifier after. EX: 5_A.png OR 20_1Julius.png";
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG8], TRUE ); //"Regions will be using flags from the same pack/file";
 	CONSOLE_LOG ( "FLAGS", DESC[selected_language][FLAG9], TRUE ); // "CUSTOM flags can be done AFTER mass generation, it is up to YOU to edit this";
 
+
+	// Open D:\O\A\OpenAndEdit\AZGAAR\flags\flags.jpeg
+
+	std::string image_path = "D:\\O\\A\\OpenAndEdit\\AZGAAR\\flags\\flags1.jpeg";
+	cv::Mat flags_img = cv::imread ( image_path, 1 );
+
+//	cv::imshow ( "Display window", flags_img );
+//	int k = cv::waitKey ( 0 ); // Wait for a keystroke in the window
+
+	//cv::Mat src ( 1300, 2400, CV_8UC3 );
+//	cv::randu ( flags_img, 0, 256 );
+	cv::Size const ROI_SIZE ( 128, 128 ); // width, height
+	save_tiles ( flags_img, ROI_SIZE );
+
+	// Start at upper left, splice into 128x128 flags
+	// name as "flags1_row#_col#_1
+
+	// Convert flags to .tga
 
 
 

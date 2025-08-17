@@ -1,0 +1,13 @@
+
+culture = vaamasmaja
+religion = 
+capital = Royklauki
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 38
+hre = no
+base_tax = 8
+base_production = 1

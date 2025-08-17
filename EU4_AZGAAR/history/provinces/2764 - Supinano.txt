@@ -1,0 +1,13 @@
+
+culture = vicallina
+religion = 
+capital = Supinano
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 113
+hre = no
+base_tax = 69
+base_production = 46

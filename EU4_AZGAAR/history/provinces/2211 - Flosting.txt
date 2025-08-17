@@ -1,0 +1,13 @@
+
+culture = luroyrik
+religion = 
+capital = Flosting
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 113
+hre = no
+base_tax = 23
+base_production = 1

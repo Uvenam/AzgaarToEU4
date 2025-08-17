@@ -1,0 +1,13 @@
+
+culture = camarroyo
+religion = 
+capital = Belvita
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 169
+hre = no
+base_tax = 34
+base_production = 1

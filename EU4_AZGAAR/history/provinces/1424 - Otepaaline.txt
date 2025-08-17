@@ -1,0 +1,13 @@
+
+culture = raisijarvi
+religion = 
+capital = Otepaaline
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 89
+hre = no
+base_tax = 18
+base_production = 1

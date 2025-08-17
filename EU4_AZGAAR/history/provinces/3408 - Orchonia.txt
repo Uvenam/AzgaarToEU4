@@ -1,0 +1,13 @@
+
+culture = aigosthena
+religion = 
+capital = Orchonia
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 54
+hre = no
+base_tax = 15
+base_production = 5

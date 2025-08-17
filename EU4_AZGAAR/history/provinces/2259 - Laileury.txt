@@ -1,0 +1,13 @@
+
+culture = grisentecoq
+religion = 
+capital = Laileury
+owner = NES
+controller = NES
+add_core = NES
+is_city = yes
+trade_goods = 
+base_manpower = 65
+hre = no
+base_tax = 13
+base_production = 1

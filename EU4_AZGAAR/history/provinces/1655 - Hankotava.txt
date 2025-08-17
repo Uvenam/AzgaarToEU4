@@ -1,0 +1,13 @@
+
+culture = vilja
+religion = 
+capital = Hankotava
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 39
+hre = no
+base_tax = 17
+base_production = 9

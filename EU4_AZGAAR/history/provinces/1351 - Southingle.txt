@@ -1,0 +1,13 @@
+
+culture = harboumey
+religion = 
+capital = Southingle
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 84
+hre = no
+base_tax = 32
+base_production = 16

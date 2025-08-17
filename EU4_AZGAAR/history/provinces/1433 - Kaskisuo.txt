@@ -1,0 +1,13 @@
+
+culture = kauharep
+religion = 
+capital = Kaskisuo
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 12
+hre = no
+base_tax = 3
+base_production = 1

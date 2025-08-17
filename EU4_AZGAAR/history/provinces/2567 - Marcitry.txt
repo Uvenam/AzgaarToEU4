@@ -1,0 +1,13 @@
+
+culture = feroleuses
+religion = 
+capital = Marcitry
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 2
+hre = no
+base_tax = 1
+base_production = 1

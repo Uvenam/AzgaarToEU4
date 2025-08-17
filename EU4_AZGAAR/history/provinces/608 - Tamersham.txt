@@ -1,0 +1,13 @@
+
+culture = harboumey
+religion = 
+capital = Tamersham
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 62
+hre = no
+base_tax = 13
+base_production = 1

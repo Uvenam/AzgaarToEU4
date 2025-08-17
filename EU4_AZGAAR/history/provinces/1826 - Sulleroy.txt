@@ -1,0 +1,13 @@
+
+culture = cortrcellevoq
+religion = 
+capital = Sulleroy
+owner = NES
+controller = NES
+add_core = NES
+is_city = yes
+trade_goods = 
+base_manpower = 85
+hre = no
+base_tax = 17
+base_production = 1

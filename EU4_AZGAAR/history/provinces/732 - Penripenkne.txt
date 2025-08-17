@@ -1,0 +1,13 @@
+
+culture = combey
+religion = 
+capital = Penripenkne
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 36
+hre = no
+base_tax = 15
+base_production = 8

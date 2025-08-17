@@ -1,0 +1,13 @@
+
+culture = holkeid
+religion = 
+capital = Vandvund
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 110
+hre = no
+base_tax = 26
+base_production = 4

@@ -1,0 +1,13 @@
+
+culture = castestabl
+religion = 
+capital = Santornal
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 73
+hre = no
+base_tax = 44
+base_production = 30

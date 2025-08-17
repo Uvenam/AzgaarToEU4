@@ -1,0 +1,13 @@
+
+culture = fengton
+religion = 
+capital = Newendover
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 48
+hre = no
+base_tax = 30
+base_production = 21

@@ -1,0 +1,13 @@
+
+culture = harboumey
+religion = 
+capital = Stotfield
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 116
+hre = no
+base_tax = 32
+base_production = 9

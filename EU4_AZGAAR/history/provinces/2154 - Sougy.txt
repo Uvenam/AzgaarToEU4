@@ -1,0 +1,13 @@
+
+culture = jargedsieres
+religion = 
+capital = Sougy
+owner = NES
+controller = NES
+add_core = NES
+is_city = yes
+trade_goods = 
+base_manpower = 47
+hre = no
+base_tax = 10
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = castestabl
+religion = 
+capital = Buenalmero
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 132
+hre = no
+base_tax = 27
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = holkeid
+religion = 
+capital = Hafnir
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 75
+hre = no
+base_tax = 15
+base_production = 1

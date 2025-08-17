@@ -1,0 +1,13 @@
+
+culture = leibeamea
+religion = 
+capital = Iasos
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 46
+hre = no
+base_tax = 24
+base_production = 15

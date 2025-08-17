@@ -1,0 +1,13 @@
+
+culture = nikmonalaa
+religion = 
+capital = Bentskogeva
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 58
+hre = no
+base_tax = 12
+base_production = 1

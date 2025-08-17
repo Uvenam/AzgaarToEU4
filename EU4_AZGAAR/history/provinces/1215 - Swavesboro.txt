@@ -1,0 +1,13 @@
+
+culture = brutorough
+religion = 
+capital = Swavesboro
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 95
+hre = no
+base_tax = 30
+base_production = 11

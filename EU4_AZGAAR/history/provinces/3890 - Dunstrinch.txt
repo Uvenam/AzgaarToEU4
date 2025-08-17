@@ -1,0 +1,13 @@
+
+culture = thatchet
+religion = 
+capital = Dunstrinch
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 11
+hre = no
+base_tax = 3
+base_production = 1

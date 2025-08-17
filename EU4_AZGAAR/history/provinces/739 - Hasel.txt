@@ -1,0 +1,13 @@
+
+culture = kapfloch
+religion = 
+capital = Hasel
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 96
+hre = no
+base_tax = 20
+base_production = 1

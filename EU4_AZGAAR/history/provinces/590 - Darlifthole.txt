@@ -1,0 +1,13 @@
+
+culture = ponte
+religion = 
+capital = Darlifthole
+owner = HEI
+controller = HEI
+add_core = HEI
+is_city = yes
+trade_goods = 
+base_manpower = 182
+hre = no
+base_tax = 37
+base_production = 1

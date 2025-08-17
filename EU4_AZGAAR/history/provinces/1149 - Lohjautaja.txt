@@ -1,0 +1,13 @@
+
+culture = purmoykoski
+religion = 
+capital = Lohjautaja
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 17
+hre = no
+base_tax = 4
+base_production = 1

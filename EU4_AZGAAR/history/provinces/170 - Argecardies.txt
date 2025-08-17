@@ -1,0 +1,13 @@
+
+culture = alcaueque
+religion = 
+capital = Argecardies
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 32
+hre = no
+base_tax = 7
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = exnintagel
+religion = 
+capital = Betley
+owner = HEI
+controller = HEI
+add_core = HEI
+is_city = yes
+trade_goods = 
+base_manpower = 28
+hre = no
+base_tax = 6
+base_production = 1

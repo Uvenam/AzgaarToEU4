@@ -1,0 +1,13 @@
+
+culture = cazalida
+religion = 
+capital = Setillo
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 51
+hre = no
+base_tax = 13
+base_production = 3

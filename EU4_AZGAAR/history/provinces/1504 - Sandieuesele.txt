@@ -1,0 +1,13 @@
+
+culture = oisonviles
+religion = 
+capital = Sandieuesele
+owner = CHA
+controller = CHA
+add_core = CHA
+is_city = yes
+trade_goods = 
+base_manpower = 183
+hre = no
+base_tax = 37
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = mirables
+religion = 
+capital = Ocentiledo
+owner = LON
+controller = LON
+add_core = LON
+is_city = yes
+trade_goods = 
+base_manpower = 64
+hre = no
+base_tax = 13
+base_production = 1

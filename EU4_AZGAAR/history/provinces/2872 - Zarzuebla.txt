@@ -1,0 +1,13 @@
+
+culture = lagarrera
+religion = 
+capital = Zarzuebla
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 20
+hre = no
+base_tax = 4
+base_production = 1

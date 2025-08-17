@@ -1,0 +1,13 @@
+
+culture = gascuelaste
+religion = 
+capital = Cincontar
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 20
+hre = no
+base_tax = 11
+base_production = 7

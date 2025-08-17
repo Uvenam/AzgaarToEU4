@@ -1,0 +1,13 @@
+
+culture = kauharep
+religion = 
+capital = Seina
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 8
+hre = no
+base_tax = 2
+base_production = 1

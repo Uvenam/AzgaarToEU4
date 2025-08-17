@@ -1,0 +1,13 @@
+
+culture = canalacanale
+religion = 
+capital = Teroiate
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 49
+hre = no
+base_tax = 10
+base_production = 1

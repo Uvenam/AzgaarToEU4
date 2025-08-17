@@ -1,0 +1,13 @@
+
+culture = samosisia
+religion = 
+capital = Hieraclea
+owner = APH
+controller = APH
+add_core = APH
+is_city = yes
+trade_goods = 
+base_manpower = 91
+hre = no
+base_tax = 19
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = noston
+religion = 
+capital = Peterd
+owner = A00
+controller = A00
+add_core = A00
+is_city = yes
+trade_goods = 
+base_manpower = 16
+hre = no
+base_tax = 4
+base_production = 1

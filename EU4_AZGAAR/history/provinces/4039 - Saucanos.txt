@@ -1,0 +1,13 @@
+
+culture = burgo
+religion = 
+capital = Saucanos
+owner = LON
+controller = LON
+add_core = LON
+is_city = yes
+trade_goods = 
+base_manpower = 36
+hre = no
+base_tax = 59
+base_production = 1

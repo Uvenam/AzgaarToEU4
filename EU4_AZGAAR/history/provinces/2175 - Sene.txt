@@ -1,0 +1,13 @@
+
+culture = pithigny
+religion = 
+capital = Sene
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 24
+hre = no
+base_tax = 5
+base_production = 1

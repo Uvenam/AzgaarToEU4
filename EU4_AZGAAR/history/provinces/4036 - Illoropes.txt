@@ -1,0 +1,13 @@
+
+culture = mirables
+religion = 
+capital = Illoropes
+owner = LON
+controller = LON
+add_core = LON
+is_city = yes
+trade_goods = 
+base_manpower = 13
+hre = no
+base_tax = 3
+base_production = 1

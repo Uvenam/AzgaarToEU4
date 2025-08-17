@@ -1,0 +1,13 @@
+
+culture = nevoy
+religion = 
+capital = Morvinvillant
+owner = AUI
+controller = AUI
+add_core = AUI
+is_city = yes
+trade_goods = 
+base_manpower = 5
+hre = no
+base_tax = 53
+base_production = 1
