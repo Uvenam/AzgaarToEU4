@@ -304,6 +304,8 @@ public:
 	// Normal: RGB, B is always 255. G for vertical changes (Max increase top to bottom:0, max decrease top to bottom: 255). R for horizontal changes (Max incease left to right: 0, max decrease left to right: 255). Increase: black to white, decrease: white to black
 	short height;
 	short biome;
+	short terrain;
+	short trees;
 	std::string type;
 	bool hre;
 	bool is_city;

@@ -1986,7 +1986,7 @@
 
 			outputLog << "\nculture = " << single_province.culture;
 			outputLog << "\nreligion = " << single_province.religion;
-			outputLog << "\ncapital = " << single_province.name;
+			outputLog << "\ncapital = " << "\"" << single_province.name << "\"";
 			outputLog << "\nowner = " << single_province.owner;
 			outputLog << "\ncontroller = " << single_province.owner;
 			outputLog << "\nadd_core = " << single_province.owner;

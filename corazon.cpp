@@ -14,8 +14,8 @@ import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.432"
-#define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'"
+#define		VERSION_STAMP	"V 0.433"
+#define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'. Working on terrain.bmp"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
 
@@ -1469,6 +1469,92 @@ country_decisions = {
 		// for each province, see the cell_id's and their respective "states" and "provinces"
 		each_province.owner = ID_to_TAG[all_cell_map[each_province.cell_ids[0]].country];
 	}
+
+/// 23A. Assign biomes and trees to provinces to match EU4 terrain.txt
+
+	/*
+	ocean 		color = { 255 255 255 }
+	inland_ocean		color = { 0 0 200 }
+	glacier		color = { 235 235 235 }
+	farmlands		color = { 179 255 64 }
+	forest		color = { 18 74 9 }
+	hills		color = { 113 176 151 }
+	woods		color = { 41 155 22 }
+	mountain 		color = { 105 24 4 }
+	impassable_mountains 		color = { 128 128 128 }
+	grasslands		color = { 90 235 27 }
+	jungle		color = { 98 163 18 }
+	marsh 		color = { 13 189 130 }
+	desert 		color = { 242 242 111 }
+	coastal_desert 		color = { 255 211 110 }
+	coastline 		color = { 49 175 191 }
+	drylands = 		color = { 232 172 102 }	
+	highlands 		color = { 176 129 21 }
+	savannah		color = { 248 199 23  }
+	steppe 		color = { 147 200 83  }
+
+	##################################################################
+### Graphical terrain
+###		type	=	refers to the terrain defined above, "terrain category"'s 
+### 	color 	= 	index in bitmap color table (see terrain.bmp)
+###
+
+terrain = {
+	grasslands			= { type = grasslands		color = { 	0	 } }
+	hills				= { type = hills			color = { 	1	 } }
+	desert_mountain		= { type = mountain			color = { 	2	 } }
+	desert				= { type = desert			color = { 	3	 } }
+
+	plains				= { type = grasslands		color = { 	4	 } }
+	terrain_5			= { type = grasslands		color = { 	5	 } }
+	mountain			= { type = mountain			color = { 	6	 } }
+	desert_mountain_low	= { type = desert			color = { 	7	 } }
+
+	terrain_8			= { type = hills			color = { 	8	 } }
+	marsh				= { type = marsh			color = { 	9	 } }
+	terrain_10			= { type = farmlands		color = { 	10	 } }
+	terrain_11			= { type = farmlands		color = { 	11	 } }
+
+	forest_12			= { type = forest			color = { 	12	 } }
+	forest_13			= { type = forest			color = { 	13	 } }
+	forest_14			= { type = forest			color = { 	14	 } }
+	ocean				= { type = ocean			color = { 	15	 } }
+
+	snow				= { type = mountain 		color = { 	16	 } } # (SPECIAL CASE) Used to identify permanent snow
+	inland_ocean_17 	= { type = inland_ocean		color = {	17	 } }
+
+	coastal_desert_18	= { type = coastal_desert	color = { 	19	 } }
+	coastline			= { type = coastline		color = { 	35	 } }
+	
+	savannah			= { type = savannah 		color = {	20	 } }
+	drylands			= { type = drylands			color = {	22	 } }
+	highlands			= { type = highlands		color = {	23	 } }
+	dry_highlands		= { type = highlands		color = {	24	 } }
+	
+	woods				= { type = woods			color = { 	255	 } }
+	jungle				= { type = jungle			color = { 	254	 } }
+	
+	terrain_21			= { type = farmlands		color = { 	21	 } }	
+}
+	
+	##################################################################
+### Tree terrain
+###		terrain	=	refers to the terrain tag defined above
+### 	color 	= 	index in bitmap color table (see tree.bmp)
+###
+
+tree = {
+	forest				= { terrain = forest 			color = { 	3 4 6 7 19 20	} }
+	woods				= { terrain = woods 			color = { 	2 5 8 18	} }
+	jungle				= { terrain = jungle 			color = { 	13 14 15	} }
+	palms				= { terrain = desert 			color = { 	12	} }
+	savana				= { terrain = grasslands 		color = { 	27 28 29 30	} }
+}
+
+
+
+	
+	*/
 
 /// 24. Create /history/provinces folder and files
 	// format:
