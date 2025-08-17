@@ -8,14 +8,13 @@
 
 #include <exception>
 #include <stdexcept>
-
 #include "ocv.h"
 
 import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.431"
+#define		VERSION_STAMP	"V 0.432"
 #define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
@@ -147,13 +146,6 @@ common
 const std::string cell_file = "cell_map.geojson";
 const std::string cell_file_t = "cell_map_t.geojson";
 const std::string file_test = "file_test.txt"; // for testing if comparisons work
-
-
-
-
-
-
-
 
 
 ///TODO: Implement Localization at ANY point text is output to user (put enums into header? Desire these to be global
@@ -317,7 +309,7 @@ CONSOLE_LOG ( "", TODO_TASK );
 
 	CONSOLE_LOG( "", DESC[selected_language][LOADING1] );
 	settings options;
-//	ConfigureSettings ( options );
+	ConfigureSettings ( options );
 
 
 	CONSOLE_LOG("", DESC[selected_language][AFFIRM1] );
@@ -459,97 +451,62 @@ CONSOLE_LOG ( "", TODO_TASK );
 	}
 
 /*##########################     ASSIGN UNIQUE COLORS TO PROV    #################################*/
-	/// Needs tested \/+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\/
 
+/// 15. Give unique color per province
+	
 	//std::unordered_set<unsigned char[3]> unique_prov_colors;		// CAN'T DO HASH OF ARRAY (or at least can't do it like its done here)
 
 	// find total number of provinces
 	int province_count = all_provinces.size();
 	CONSOLE_LOG ( "PROV_COUNT", province_count, TRUE );
 	// generate list of unique numbers (for RGB, add 1 to R. After max, G = G+2 and then add 1 to R. After G max, B = B+2, and etc.
-	std::vector<int> number_list;
+	std::vector<IPixel> number_list;
 	unsigned char temp_rt = 0x02;
 	unsigned char temp_gt = 0x02;
 	unsigned char temp_bt = 0x02;
-	CONSOLE_LOG ( "PROV", "About to modify list...", TRUE );
+	CONSOLE_LOG ( "PROV", "Assigning RGB values list...", TRUE );
 
-	int tracking_value = province_count;
+	for (short r_val = 0x02; r_val < 0xFF; r_val += 0x01) {
+		for (short b_val = 0x02; b_val < 0xFF; b_val += 0x01) {
+			for (short g_val = 0x02; g_val < 0xFF; g_val += 0x01) {
 
-
-	for (short r_val = 0x02; r_val < 0xFF; r_val += 0x02) {
-		for (short b_val = 0x02; b_val < 0xFF; b_val += 0x02) {
-			for (short g_val = 0x02; g_val < 0xFF; g_val += 0x02) {
-				if (tracking_value-- <= 0) {
-					break;
-				}
-				number_list.push_back ( (r_val << 0 + g_val << 8 + b_val << 16) );
-
-			}
-			if (tracking_value-- <= 0) {
-				break;
+				CONSOLE_LOG ( "PROV - R:", r_val, false );
+				CONSOLE_LOG ( "PROV - G:", g_val, false );
+				CONSOLE_LOG ( "PROV - B:", b_val, false );
+				IPixel number_value ( r_val, g_val, b_val );
+				number_list.push_back ( number_value );
 			}
 		}
-		if (tracking_value-- <= 0) {
-			break;
-		}
-
 	}
-
-	for (int i = 0; i == province_count; i++) {
-
-		CONSOLE_LOG ( "PROV", "Modifying list...", TRUE );
-
-		number_list.push_back (( temp_rt << 0 + temp_gt << 8 + temp_bt << 16 ));
-
-		if ((temp_rt + 0x02) > (0xFF - 0x03)) {
-			temp_rt = 0x02 + 1;
-			if ((temp_gt + 0x02) > (0xFF - 0x03)){
-				temp_gt = 0x02 + 1;
-				temp_bt += 0x02;		}
-			temp_gt += 0x02;				}
-		temp_rt += 0x02;						}
+	// number_list full of unique values
 	// randomize list order
 	auto rng = std::default_random_engine{};
 	std::shuffle ( std::begin ( number_list ), std::end ( number_list ), rng );
 	// iterate through each province and each random number in list
-	for (int i = 0; i == province_count; i++) {
-		unsigned char rt = static_cast<unsigned char>((number_list[i] & 0x000000FF) >> 0);
-		unsigned char gt = static_cast<unsigned char>((number_list[i] & 0x0000FF00) >> 8);
-		unsigned char bt = static_cast<unsigned char>((number_list[i] & 0x00FF0000) >> 16);
+	int prov_itr=0;
+	for (auto& each_province_itr : all_provinces) {
+		prov_itr++;
 
-		all_provinces[i].color_rgb[0] = rt;
-		all_provinces[i].color_rgb[1] = gt;
-		all_provinces[i].color_rgb[2] = bt;
+		each_province_itr.color_rgb[0] = number_list[prov_itr].r ;
+		each_province_itr.color_rgb[1] = number_list[prov_itr].g ;
+		each_province_itr.color_rgb[2] = number_list[prov_itr].b ;
 
-
-		std::string temporary_output = std::to_string ( number_list[i] );
-
-		CONSOLE_LOG ( "PROV", temporary_output, false);
-
-		temporary_output = std::to_string ( all_provinces[i].color_rgb[0] );
+		std::string temporary_output = "PROVID" + std::to_string ( prov_itr );
 
 		CONSOLE_LOG ( "PROV", temporary_output, false );
-		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
+
+		temporary_output = "R:" + std::to_string (each_province_itr.color_rgb[0]);
 
 		CONSOLE_LOG ( "PROV", temporary_output, false );
-		temporary_output = std::to_string ( all_provinces[i].color_rgb[1] );
+		temporary_output = "G:" + std::to_string (each_province_itr.color_rgb[1]);
+
+		CONSOLE_LOG ( "PROV", temporary_output, false );
+		temporary_output = "B:" + std::to_string (each_province_itr.color_rgb[2]);
 
 		CONSOLE_LOG ( "PROV", temporary_output, false );
 	
 	}
-
-
-
-
-
-
-
-
-
-
-	/// Needs tested /\+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++/\
-
-
+	CONSOLE_LOG ( "RGB Values assigned", TRUE );
 
 
 /*##########################      PARSE RELIGIONS	             #################################*/
@@ -875,22 +832,24 @@ CONSOLE_LOG ( "", TODO_TASK );
 
 
 	// Open D:\O\A\OpenAndEdit\AZGAAR\flags\flags.jpeg
+	if (options.PERFORM_FLAG_IMAGE_SPLICING) {
+		std::string image_path = "D:\\O\\A\\OpenAndEdit\\AZGAAR\\flags\\flags1.jpeg";
+		cv::Mat flags_img = cv::imread ( image_path, 1 );
 
-	std::string image_path = "D:\\O\\A\\OpenAndEdit\\AZGAAR\\flags\\flags1.jpeg";
-	cv::Mat flags_img = cv::imread ( image_path, 1 );
+		//	cv::imshow ( "Display window", flags_img );
+		//	int k = cv::waitKey ( 0 ); // Wait for a keystroke in the window
 
-//	cv::imshow ( "Display window", flags_img );
-//	int k = cv::waitKey ( 0 ); // Wait for a keystroke in the window
+			//cv::Mat src ( 1300, 2400, CV_8UC3 );
+		//	cv::randu ( flags_img, 0, 256 );
+		cv::Size const ROI_SIZE ( 128, 128 ); // width, height
+		save_tiles ( flags_img, ROI_SIZE );
 
-	//cv::Mat src ( 1300, 2400, CV_8UC3 );
-//	cv::randu ( flags_img, 0, 256 );
-	cv::Size const ROI_SIZE ( 128, 128 ); // width, height
-	save_tiles ( flags_img, ROI_SIZE );
+		// Start at upper left, splice into 128x128 flags
+		// name as "flags1_row#_col#_1
 
-	// Start at upper left, splice into 128x128 flags
-	// name as "flags1_row#_col#_1
+		// Convert flags to .tga
+	}
 
-	// Convert flags to .tga
 
 
 
@@ -1552,16 +1511,17 @@ country_decisions = {
 	ScreenRaster EU4_MAP( 5632, 2048 );
 
 	//std::cout << "\nGenerating polygonmap from all_cells...";
-	CONSOLE_LOG( "", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
+	CONSOLE_LOG( "POLYGONMAP", DESC[selected_language][POLYMAP_GENERATION1] );					//"Generating polygonmap from all_cells...";
 
 	std::vector<std::string> definitions_csv;
 
 	definitions_csv.push_back ( "province;red;green;blue;x;x" );
 
-	for (int dp_itr = 0; dp_itr < all_cells.size() - 1; dp_itr++) {
+	/*
+	for (int dp_itr = 0; dp_itr < all_cells.size () - 1; dp_itr++) {
 
-		int height_col = (3248+all_cells[dp_itr].height)/99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
-		IPixel color_rgb( height_col, height_col, height_col );
+		int height_col = (3248 + all_cells[dp_itr].height) / 99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
+		IPixel color_rgb ( height_col, height_col, height_col );
 
 		//IPixel land( 0xFFFFFF );
 		//IPixel water( 0x000FFF );
@@ -1583,16 +1543,47 @@ country_decisions = {
 
 		//temp_poly2.points = all_cells[dp_itr+1].verticies; // TEMP, ALSO CHANGE size()-1 to size()
 		//temp_poly.MergePoly(temp_poly2);
-		DrawPolygon( &temp_poly, &color_rgb, EU4_MAP );
+		DrawPolygon ( &temp_poly, &color_rgb, EU4_MAP );
 		std::string definitions_province_line;
-		definitions_province_line = definitions_province_line + std::to_string(all_cells[dp_itr].id) 
-			+ ";" 
+		definitions_province_line = definitions_province_line + std::to_string ( all_cells[dp_itr].id )
+			+ ";"
 			+ std::to_string ( color_rgb.r ) + ";"
-			+ std::to_string ( color_rgb.g ) + ";" 
+			+ std::to_string ( color_rgb.g ) + ";"
 			+ std::to_string ( color_rgb.b ) + ";"
-			+ "name" + std::to_string( all_cells[dp_itr].culture) + ";" + "x";
+			+ "name" + std::to_string ( all_cells[dp_itr].culture ) + ";" + "x";
 		definitions_csv.push_back ( definitions_province_line );
 	}
+	*/
+	CONSOLE_LOG ( "POLYGONMAP", "Generating again...");
+
+	for (auto& each_province_polygonmap : all_provinces) {
+		for (auto& each_cell_id : each_province_polygonmap.cell_ids) {
+
+			int height_col = (3248 + all_cell_map[each_cell_id].height) / 99;	// shift up by 3248 to be purely positive height, divide by 99 to be 0 to 255.6 (0.6 gets truncated off)
+			IPixel color_rgb ( height_col, height_col, height_col );
+			RPoly temp_poly;
+			//RPoly temp_poly2;									// TEMP
+			temp_poly.points = all_cell_map[each_cell_id].verticies;
+
+			color_rgb.r = each_province_polygonmap.color_rgb[0];
+			color_rgb.g = each_province_polygonmap.color_rgb[1];
+			color_rgb.b = each_province_polygonmap.color_rgb[2];
+
+			DrawPolygon ( &temp_poly, &color_rgb, EU4_MAP );		
+		}
+
+		std::string definitions_province_line;
+		definitions_province_line = definitions_province_line + std::to_string(each_province_polygonmap.prov_id)
+			+ ";"
+			+ std::to_string ( each_province_polygonmap.color_rgb[0]) + ";"
+			+ std::to_string ( each_province_polygonmap.color_rgb[1] ) + ";"
+			+ std::to_string ( each_province_polygonmap.color_rgb[2] ) + ";"
+			+ each_province_polygonmap.name + ";" + "x";
+		definitions_csv.push_back ( definitions_province_line );
+
+	}
+
+
 
 	EnsureDirectory ( dir_EU4 );
 	OutputToTextFile ( definitions_csv, dir_EU4 + "/definitions.csv" );

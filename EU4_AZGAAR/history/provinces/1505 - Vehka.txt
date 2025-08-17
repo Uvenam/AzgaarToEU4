@@ -1,0 +1,13 @@
+
+culture = jarve
+religion = 
+capital = Vehka
+owner = VIL
+controller = VIL
+add_core = VIL
+is_city = yes
+trade_goods = 
+base_manpower = 176
+hre = no
+base_tax = 36
+base_production = 1

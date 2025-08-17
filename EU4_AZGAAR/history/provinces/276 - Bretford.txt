@@ -1,0 +1,13 @@
+
+culture = bridgley
+religion = 
+capital = Bretford
+owner = HEI
+controller = HEI
+add_core = HEI
+is_city = yes
+trade_goods = 
+base_manpower = 70
+hre = no
+base_tax = 14
+base_production = 1

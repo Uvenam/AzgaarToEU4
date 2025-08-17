@@ -1,0 +1,13 @@
+
+culture = amersalisb
+religion = 
+capital = Alcesolihu
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 180
+hre = no
+base_tax = 40
+base_production = 4

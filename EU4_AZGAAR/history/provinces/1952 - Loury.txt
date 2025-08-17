@@ -1,5 +1,5 @@
 
-culture = marcivrain
+culture = darvontbou
 religion = 
 capital = Loury
 owner = EGN

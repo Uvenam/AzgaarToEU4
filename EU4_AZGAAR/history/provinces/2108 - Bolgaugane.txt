@@ -1,0 +1,13 @@
+
+culture = sorvaudark
+religion = 
+capital = Bolgaugane
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 68
+hre = no
+base_tax = 14
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = koskulpio
+religion = 
+capital = Klaukabole
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 74
+hre = no
+base_tax = 15
+base_production = 1

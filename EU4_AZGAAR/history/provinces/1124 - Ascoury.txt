@@ -1,0 +1,13 @@
+
+culture = bacherolivet
+religion = 
+capital = Ascoury
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 13
+hre = no
+base_tax = 3
+base_production = 1

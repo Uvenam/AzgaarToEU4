@@ -1,0 +1,13 @@
+
+culture = rustendorf
+religion = 
+capital = Feldbruckap
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 64
+hre = no
+base_tax = 13
+base_production = 1

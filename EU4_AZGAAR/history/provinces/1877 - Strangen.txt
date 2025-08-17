@@ -1,0 +1,13 @@
+
+culture = sorvaudark
+religion = 
+capital = Strangen
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 74
+hre = no
+base_tax = 15
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = ormskeley
+religion = 
+capital = Gatested
+owner = BEL
+controller = BEL
+add_core = BEL
+is_city = yes
+trade_goods = 
+base_manpower = 79
+hre = no
+base_tax = 16
+base_production = 1

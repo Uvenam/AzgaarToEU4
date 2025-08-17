@@ -1,0 +1,13 @@
+
+culture = penzapenkne
+religion = 
+capital = Credifield
+owner = BIE
+controller = BIE
+add_core = BIE
+is_city = yes
+trade_goods = 
+base_manpower = 52
+hre = no
+base_tax = 11
+base_production = 1

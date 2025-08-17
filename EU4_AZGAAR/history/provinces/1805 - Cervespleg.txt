@@ -1,0 +1,13 @@
+
+culture = albartuera
+religion = 
+capital = Cervespleg
+owner = TOR
+controller = TOR
+add_core = TOR
+is_city = yes
+trade_goods = 
+base_manpower = 213
+hre = no
+base_tax = 2
+base_production = 11

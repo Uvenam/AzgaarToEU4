@@ -1,0 +1,13 @@
+
+culture = hormidila
+religion = 
+capital = Domineravas
+owner = LUQ
+controller = LUQ
+add_core = LUQ
+is_city = yes
+trade_goods = 
+base_manpower = 88
+hre = no
+base_tax = 18
+base_production = 1

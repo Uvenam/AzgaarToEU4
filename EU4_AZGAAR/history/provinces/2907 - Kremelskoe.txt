@@ -1,0 +1,13 @@
+
+culture = murav
+religion = 
+capital = Kremelskoe
+owner = ZUB
+controller = ZUB
+add_core = ZUB
+is_city = yes
+trade_goods = 
+base_manpower = 5
+hre = no
+base_tax = 1
+base_production = 1

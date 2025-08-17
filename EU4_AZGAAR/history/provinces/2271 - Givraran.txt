@@ -1,0 +1,13 @@
+
+culture = darvontbou
+religion = 
+capital = Givraran
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 31
+hre = no
+base_tax = 7
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = azuqurgos
+religion = 
+capital = Canta
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 58
+hre = no
+base_tax = 12
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = tornisaari
+religion = 
+capital = Kuhmoisakue
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 7
+hre = no
+base_tax = 2
+base_production = 1

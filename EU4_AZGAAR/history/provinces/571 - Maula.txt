@@ -1,0 +1,13 @@
+
+culture = kemijarvi
+religion = 
+capital = Maula
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 18
+hre = no
+base_tax = 4
+base_production = 1

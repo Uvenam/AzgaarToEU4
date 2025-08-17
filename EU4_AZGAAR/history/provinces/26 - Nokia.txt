@@ -1,5 +1,5 @@
 
-culture = ahlaiormase
+culture = tornisaari
 religion = 
 capital = Nokia
 owner = POR

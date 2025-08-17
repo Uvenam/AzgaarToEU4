@@ -1,0 +1,13 @@
+
+culture = viljaaksy
+religion = 
+capital = Raisitala
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 53
+hre = no
+base_tax = 11
+base_production = 1

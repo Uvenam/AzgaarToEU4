@@ -1,0 +1,13 @@
+
+culture = belyinets
+religion = 
+capital = Dubkinsk
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 14
+hre = no
+base_tax = 3
+base_production = 1

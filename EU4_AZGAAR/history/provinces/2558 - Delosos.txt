@@ -1,0 +1,13 @@
+
+culture = agrinalcis
+religion = 
+capital = Delosos
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 54
+hre = no
+base_tax = 11
+base_production = 1

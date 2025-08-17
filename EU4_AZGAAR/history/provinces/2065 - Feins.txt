@@ -1,0 +1,13 @@
+
+culture = darvontbou
+religion = 
+capital = Feins
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 30
+hre = no
+base_tax = 6
+base_production = 1

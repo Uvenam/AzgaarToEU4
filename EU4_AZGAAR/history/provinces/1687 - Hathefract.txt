@@ -1,0 +1,13 @@
+
+culture = mitfolihul
+religion = 
+capital = Hathefract
+owner = CHI
+controller = CHI
+add_core = CHI
+is_city = yes
+trade_goods = 
+base_manpower = 109
+hre = no
+base_tax = 22
+base_production = 1

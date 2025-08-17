@@ -1,5 +1,5 @@
 
-culture = brutorough
+culture = norharmout
 religion = 
 capital = Thetford
 owner = CHI

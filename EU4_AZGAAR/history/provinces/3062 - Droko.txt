@@ -1,0 +1,13 @@
+
+culture = logoskoe
+religion = 
+capital = Droko
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 29
+hre = no
+base_tax = 6
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = duronos
+religion = 
+capital = Milmalegas
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 92
+hre = no
+base_tax = 32
+base_production = 14

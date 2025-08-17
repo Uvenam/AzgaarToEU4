@@ -1,0 +1,13 @@
+
+culture = hyrylanva
+religion = 
+capital = Ylojaara
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 18
+hre = no
+base_tax = 4
+base_production = 1

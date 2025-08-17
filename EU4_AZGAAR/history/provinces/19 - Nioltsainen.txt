@@ -1,0 +1,13 @@
+
+culture = tornisaari
+religion = 
+capital = Nioltsainen
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 39
+hre = no
+base_tax = 8
+base_production = 1

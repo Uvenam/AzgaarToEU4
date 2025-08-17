@@ -82,6 +82,8 @@ struct settings {
 
 	std::vector<std::string[2]> RELIGION_MAPPING;	// std::vector<std::pair<std::string,std::string>> ?
 
+	bool PERFORM_FLAG_IMAGE_SPLICING = FALSE;
+
 	bool USE_DIPLOMACY_CSV = FALSE;
 	bool USE_MILITARY_CSV = FALSE;
 	bool MILITARY_TRUE_NONE_OR_FALSE_ECONOMY = TRUE;

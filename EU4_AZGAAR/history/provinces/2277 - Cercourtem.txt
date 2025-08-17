@@ -1,0 +1,13 @@
+
+culture = morviloy
+religion = 
+capital = Cercourtem
+owner = EGN
+controller = EGN
+add_core = EGN
+is_city = yes
+trade_goods = 
+base_manpower = 50
+hre = no
+base_tax = 24
+base_production = 14

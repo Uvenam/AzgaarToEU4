@@ -1,0 +1,13 @@
+
+culture = buryn
+religion = 
+capital = Kamenov
+owner = ORC
+controller = ORC
+add_core = ORC
+is_city = yes
+trade_goods = 
+base_manpower = 9
+hre = no
+base_tax = 2
+base_production = 1

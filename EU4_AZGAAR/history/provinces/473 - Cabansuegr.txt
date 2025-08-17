@@ -1,0 +1,13 @@
+
+culture = hormidila
+religion = 
+capital = Cabansuegr
+owner = LUQ
+controller = LUQ
+add_core = LUQ
+is_city = yes
+trade_goods = 
+base_manpower = 61
+hre = no
+base_tax = 13
+base_production = 1

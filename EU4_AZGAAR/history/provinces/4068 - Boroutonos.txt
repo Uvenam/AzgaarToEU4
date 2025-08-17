@@ -1,0 +1,13 @@
+
+culture = merdeley
+religion = 
+capital = Boroutonos
+owner = ALC
+controller = ALC
+add_core = ALC
+is_city = yes
+trade_goods = 
+base_manpower = 57
+hre = no
+base_tax = 12
+base_production = 1

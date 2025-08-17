@@ -1,0 +1,13 @@
+
+culture = peral
+religion = 
+capital = Ajofroyosa
+owner = COS
+controller = COS
+add_core = COS
+is_city = yes
+trade_goods = 
+base_manpower = 64
+hre = no
+base_tax = 20
+base_production = 7

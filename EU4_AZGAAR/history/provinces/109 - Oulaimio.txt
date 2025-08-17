@@ -1,0 +1,13 @@
+
+culture = koskulvilat
+religion = 
+capital = Oulaimio
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 124
+hre = no
+base_tax = 25
+base_production = 1

@@ -1,0 +1,13 @@
+
+culture = sorvaudark
+religion = 
+capital = Holmakken
+owner = PAN
+controller = PAN
+add_core = PAN
+is_city = yes
+trade_goods = 
+base_manpower = 60
+hre = no
+base_tax = 25
+base_production = 13

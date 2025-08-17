@@ -1,5 +1,5 @@
 
-culture = vaamasmaja
+culture = esporimat
 religion = 
 capital = Ahlai
 owner = KLA

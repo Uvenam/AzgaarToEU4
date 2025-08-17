@@ -1,0 +1,13 @@
+
+culture = hormidila
+religion = 
+capital = Taraveras
+owner = LUQ
+controller = LUQ
+add_core = LUQ
+is_city = yes
+trade_goods = 
+base_manpower = 67
+hre = no
+base_tax = 14
+base_production = 1

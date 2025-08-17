@@ -1,0 +1,13 @@
+
+culture = pants
+religion = 
+capital = Moulilly
+owner = CRA
+controller = CRA
+add_core = CRA
+is_city = yes
+trade_goods = 
+base_manpower = 51
+hre = no
+base_tax = 11
+base_production = 1

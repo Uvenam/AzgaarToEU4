@@ -1,0 +1,13 @@
+
+culture = tornisaari
+religion = 
+capital = Kaskinokia
+owner = POR
+controller = POR
+add_core = POR
+is_city = yes
+trade_goods = 
+base_manpower = 22
+hre = no
+base_tax = 5
+base_production = 1

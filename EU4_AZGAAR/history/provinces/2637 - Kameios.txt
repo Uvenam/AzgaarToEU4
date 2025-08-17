@@ -1,0 +1,13 @@
+
+culture = surakorint
+religion = 
+capital = Kameios
+owner = APH
+controller = APH
+add_core = APH
+is_city = yes
+trade_goods = 
+base_manpower = 100
+hre = no
+base_tax = 20
+base_production = 1

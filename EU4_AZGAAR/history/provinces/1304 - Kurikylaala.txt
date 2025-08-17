@@ -1,0 +1,13 @@
+
+culture = keurutio
+religion = 
+capital = Kurikylaala
+owner = KLA
+controller = KLA
+add_core = KLA
+is_city = yes
+trade_goods = 
+base_manpower = 44
+hre = no
+base_tax = 9
+base_production = 1
