@@ -14,7 +14,7 @@ import opencv_personal;
 import screens;
 // commit all, then push
 
-#define		VERSION_STAMP	"V 0.433"
+#define		VERSION_STAMP	"V 0.434"
 #define		TODO_TASK		"Religion needs fixed - change origins to not be sreg_end and change it to include 'potential'. Working on terrain.bmp"
 // Most recent change: Moving files into ../UVEP/
 // Most recent goal
@@ -1472,9 +1472,67 @@ country_decisions = {
 
 /// 23A. Assign biomes and trees to provinces to match EU4 terrain.txt
 
-	/*
-	ocean 		color = { 255 255 255 }
-	inland_ocean		color = { 0 0 200 }
+	// Read in Biomes.csv, which has ID linked to biome string
+
+
+
+	/* ASSUME AZGAAR ID : BIOME
+		1	Hot desert
+		2	Cold desert
+		3	Savanna
+		4	Grassland
+		5	Tropical seasonal forest
+		6	Temperate deciduous forest
+		7	Tropical rainforest
+		8	Temperate rainforest
+		9	Taiga
+		10	Tundra
+		11	Glacier
+		12	Wetland
+	*/
+
+
+	/* EX OF BIOME ID ASSIGNMENT TO EU4 ASSIGNMENT
+	Grassland -> savanna (hot) / steppe (cold)
+	Temperate Deciduous Forest -> grasslands
+	Wetland -> farmland
+	Temperate rainforest -> woods
+	glacier -> mountains
+	taiga -> forest
+	cold desert -> steppe / desert
+	tundra -> forest / mountains (heightmap)
+	savanna -> desert / drylands / coastal desert
+	hot desert -> % savanna (if bordering savanna) / desert / coastal desert
+	tropical seasonal forest -> jungle
+	tropical rainforest -> % marsh
+	if heightmap too high -> mountains
+	if heightmap medium, bordering highlands -> % for hills,
+	if heightmap high, bordering highlands or mountain -> % highlands
+	*/
+
+	/* ASSUME AZGAAR ID : BIOME
+	1	Hot desert -> desert
+	2	Cold desert -> steppe
+	3	Savanna -> savanna
+	4	Grassland
+	5	Tropical seasonal forest
+	6	Temperate deciduous forest
+	7	Tropical rainforest
+	8	Temperate rainforest
+	9	Taiga
+	10	Tundra
+	11	Glacier
+	12	Wetland
+	*/
+
+
+
+
+
+
+	/* EU4 DETAILS
+	ocean 		color = { 255 255 255 } (sea tile)
+	inland_ocean		color = { 0 0 200 } (sea tile)
 	glacier		color = { 235 235 235 }
 	farmlands		color = { 179 255 64 }
 	forest		color = { 18 74 9 }
@@ -1487,7 +1545,7 @@ country_decisions = {
 	marsh 		color = { 13 189 130 }
 	desert 		color = { 242 242 111 }
 	coastal_desert 		color = { 255 211 110 }
-	coastline 		color = { 49 175 191 }
+	coastline 		color = { 49 175 191 } (islands / some provinces)
 	drylands = 		color = { 232 172 102 }	
 	highlands 		color = { 176 129 21 }
 	savannah		color = { 248 199 23  }
